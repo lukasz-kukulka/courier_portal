@@ -26,16 +26,20 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );
-});
+// Route::get('/', function () {
+//     return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );
+// });
 
-Route::get('/post/{id}', function ($id) {
-    dd( $id );
-    return response( 'Post' . $id );
-})->where( 'id', '[0-9]+' );
+// Route::get('/post/{id}', function ($id) {
+//     dd( $id );
+//     return response( 'Post' . $id );
+// })->where( 'id', '[0-9]+' );
 
-Route::get('search', function ( Request $request ) {
-    dd( $request );
-    return response( 'Post' . $id );
-})->where( 'id', '[0-9]+' );
+// Route::get('search', function ( Request $request ) {
+//     dd( $request );
+//     return response( 'Post' . $id );
+// })->where( 'id', '[0-9]+' );
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
