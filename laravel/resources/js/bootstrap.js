@@ -1,4 +1,12 @@
-import 'bootstrap';
+// import '@popperjs/core';
+// import 'popper.js';
+//import 'bootstrap';
+
+try {
+    window.$ = window.jQuery = require('jquery');
+    window.Popper = require('popper.js').default;
+    require('bootstrap');
+} catch (e) {}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
