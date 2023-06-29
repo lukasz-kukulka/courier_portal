@@ -6,7 +6,8 @@
         "bootstrap-scripts": "cp node_modules/bootstrap/dist/js/bootstrap.bundle.min.js public/js/bootstrap.js",
         "bootstrap-styles": "cp node_modules/bootstrap/dist/css/bootstrap.min.css public/css/bootstrap.css",
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "production": "NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",

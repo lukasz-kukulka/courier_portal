@@ -11,13 +11,11 @@
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "test2",
-                "link" : "#",
-                "type" : "standard"
+                "link" : "#"
             },
             "ele2" : {
-                "name" : "",
-                "link" : "",
-                "type" : "standard"
+                "name" : "test33a",
+                "link" : "#"
             }
         }
     }
