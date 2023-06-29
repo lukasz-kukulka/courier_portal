@@ -16,6 +16,12 @@
     <!-- Scripts -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    {{-- @php
+        $menu_settings = json_decode( "resources/settings/top_menu.json" , true);
+    @endphp --}}
+    @php
+        $menuData = app(\App\Http\Controllers\JsonParserControler::class)->menuAction();
+    @endphp
 </head>
 <body>
     <div id="app">
@@ -32,26 +38,26 @@
                     <!-- Left Side Of Navbar -->
 
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                          </li>
-                          <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              Dropdown
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="#">Something else here</a>
-                            </div>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Disabled</a>
-                          </li>
+                        @foreach ( $menuData as $item )
+
+                            @if ( $item['type'] == "standard" )
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ $item['link'] }}">{{ $item['name'] }}</a>
+                                </li>
+                            @elseif ( $item['type'] == "dropdown" )
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {{ $item['name'] }}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @foreach ( $item[ 'dropdown_elements' ] as $subelement )
+                                        <a class="dropdown-item" href="{{ $item['link'] }}">{{ $item['name'] }}</a>
+                                        <div class="dropdown-divider"></div>
+                                    @endforeach
+                                    </div>
+                                </li>
+                            @endif
+                        @endforeach
                     </ul>
 
                     <!-- Right Side Of Navbar -->

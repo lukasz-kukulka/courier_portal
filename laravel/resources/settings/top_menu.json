@@ -1,0 +1,22 @@
+{
+    "home" : {
+        "name" : "test1",
+        "link" : "#",
+        "type" : "standard"
+    },
+    "deklaracja" : {
+        "name" : "test_drop",
+        "link" : "",
+        "type" : "dropdown",
+        "dropdown_elements" : {
+            "ele1" : {
+                "name" : "test2",
+                "link" : "#"
+            },
+            "ele2" : {
+                "name" : "test33a",
+                "link" : "#"
+            }
+        }
+    }
+}
