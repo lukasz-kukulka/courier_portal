@@ -1,20 +1,20 @@
 {
     "home" : {
-        "name" : "test1",
-        "link" : "#",
+        "name" : "Strona główna",
+        "link" : "./",
         "type" : "standard"
     },
     "deklaracja" : {
-        "name" : "test_drop",
+        "name" : "Deklaracje",
         "link" : "",
         "type" : "dropdown",
         "dropdown_elements" : {
             "ele1" : {
-                "name" : "test2",
+                "name" : "Deklaracja CN22",
                 "link" : "#"
             },
             "ele2" : {
-                "name" : "test33a",
+                "name" : "Deklaracja CN23",
                 "link" : "#"
             }
         }

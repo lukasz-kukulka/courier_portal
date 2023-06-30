@@ -51,7 +51,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @foreach ( $item[ 'dropdown_elements' ] as $subelement )
-                                        <a class="dropdown-item" href="{{ $item['link'] }}">{{ $item['name'] }}</a>
+                                        <a class="dropdown-item" href="{{ $subelement['link'] }}">{{ $subelement['name'] }}</a>
                                         <div class="dropdown-divider"></div>
                                     @endforeach
                                     </div>
