@@ -1,0 +1,76 @@
+{
+	"rotate_text": 0,
+    "font_name": "times",
+    "default_font_size": 14,
+    "sender_name": [ 37, 39 ],
+    "sender_address": [ 37, 45 ],
+    "sender_city": [ 37, 50 ],
+    "sender_country": [ 37, 55 ],
+    "sender_post_code": [ 37, 60 ],
+    "parcel_details": {
+        "checkbox_font_size": 11,
+        "gift": [ 41, 68 ],
+        "documents": [ 41, 72 ],
+        "selling_goods": [ 41, 76 ],
+        "sample": [ 68, 68 ],
+        "returned_goods": [ 68, 72 ],
+        "others": [ 68, 76 ],
+        "others_description_font_size": 10,
+        "others_description": [ 75, 76]
+    },
+    "parcel_items_font_size": 12,
+    "parcel_items": [
+        {
+            "description": [ 13, 84 ],
+            "quantity": [ 65, 84 ],
+            "weight": [ 78, 84 ],
+            "value": [ 92, 84 ]
+        },
+        {
+            "description": [ 13, 88 ],
+            "quantity": [ 65, 88 ],
+            "weight": [ 78, 88 ],
+            "value": [ 92, 88 ]
+        },
+        {
+            "description": [ 13, 92 ],
+            "quantity": [ 65, 92 ],
+            "weight": [ 78, 92 ],
+            "value": [ 92, 92 ]
+        },
+        {
+            "description": [ 13, 96 ],
+            "quantity": [ 65, 96 ],
+            "weight": [ 78, 96 ],
+            "value": [ 92, 96 ]
+        },
+        {
+            "description": [ 13, 100 ],
+            "quantity": [ 65, 100 ],
+            "weight": [ 78, 100 ],
+            "value": [ 92, 100 ]
+        },
+        {
+            "description": [ 13, 104 ],
+            "quantity": [ 65, 104 ],
+            "weight": [ 78, 104 ],
+            "value": [ 92, 104 ]
+        },
+        {
+            "description": [ 13, 108 ],
+            "quantity": [ 65, 108 ],
+            "weight": [ 78, 108 ],
+            "value": [ 92, 108 ]
+        }
+    ],
+    "parcel_summary": {
+        "parcel_summary_font_size": 14,
+        "total_weight": [ 78, 110 ],
+        "total_value":  [ 92, 110 ]
+    },
+    "business_section": {
+        "business_section_font_size": 14,
+        "vat_eori_num": [ 62, 124 ],
+        "tariff_num":  [ 62,  118]
+    }
+}

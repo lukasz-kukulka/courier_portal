@@ -1,0 +1,59 @@
+{
+    "numbers_of_max_items_cn22": 7,
+    "numbers_of_max_items_cn23": 4,
+    "messages": {
+        "add_item_button_conditions": "Mozliwość dodania kolejnego przedmiotu pojawi się jak zostana poprawnie wypełnine powyższe dane"
+    },
+    "conditions": {
+        "name_conditions": "Dozwolone małe i duże litery oraz spacja",
+        "business_conditions": "Dozwolone małe i duże litery oraz spacja",
+        "street_conditions": "Dozwolone małe, duże litery, cyfry, oraz spacja",
+        "city_condition": "Dozwolone małe i duże litery oraz spacja", 
+        "country_conditions": "Dozwolone małe i duże litery oraz spacja",
+        "post_code_conditions": "Dozwolone małe, duże litery, cyfry, oraz znak minus"
+    },
+    "items_details": {
+        "items_description": "Opis przedmiotu",
+        "items_quantity": "Ilość",
+        "items_weight": "Waga",
+        "items_value": "Wartość"
+    },
+    "sender": {
+        "name": "Imię i nazwisko nadawcy",
+        "business_name": "Nazwa firmy(opcjonalnie)",
+        "street": "Numer, nazwa ulicy i numer mieszkania nadawcy",
+        "city": "Miejscowość nadawcy",
+        "country": "Kraj nadawcy",
+        "post_code": "Kod pocztowy nadawcy"
+    },
+    "receiver": {
+        "name": "Imię i nazwisko odbiorcy",
+        "business_name": "Nazwa firmy(opcjonalnie)",
+        "street": "Numer, nazwa ulicy i numer mieszkania odbiorcy",
+        "city": "Miejscowość odbiorcy",
+        "country": "Kraj odbiorcy",
+        "post_code": "Kod pocztowy odbiorcy"
+    },
+    "checkboxes_names": {
+        "gift": "Prezent",
+        "document": "Dokumenty",
+        "sale": "Towary na sprzedaż",
+        "samples": "Próbki handlowe",
+        "returned": "Zwrot towaru",
+        "others": "Inne"
+    },
+    "parcel_summary": {
+        "checkbox": "Automatyczne podsumowanie",
+        "total_parcel_weight": "Waga całej paczki",
+        "total_parcel_weight_conditions": "Dozwolone tylko cyfry i kropka",
+        "total_parcel_value": "Wartość całej paczki",
+        "total_parcel_conditions": "Dozwolone cyfry i kropka"
+    },
+    "business_info": {
+        "checkbox": "Wysyłam jako firma",
+        "vat_eori": "Numer EORI/VAT",
+        "vat_eori_conditions": "Dozwolone tylko małe i duże litery, oraz cyfry",
+        "tariff_num": "Numer taryfy celnej",
+        "tariff_num_conditions": "Dozwolone cyfry i kropka"
+    }
+}

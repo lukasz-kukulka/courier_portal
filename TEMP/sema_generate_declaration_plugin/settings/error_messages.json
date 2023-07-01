@@ -1,0 +1,16 @@
+{
+    "personal_data": {
+        "name": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "address":  "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "city":  "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "country":  "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "post_code":  "xxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "parcel_items": {
+        "description": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "quantity": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "weight": "xxxxxxxxxxxxxxxxxxxxxxxxx",
+        "value": "xxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    "checkboxes": "Przynajmniej jedno pole wyboru jest obowiązkowe"
+}
