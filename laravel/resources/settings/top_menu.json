@@ -11,11 +11,11 @@
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "Deklaracja CN22",
-                "link" : "#"
+                "link" : "cn22"
             },
             "ele2" : {
                 "name" : "Deklaracja CN23",
-                "link" : "#"
+                "link" : "cn23"
             }
         }
     }

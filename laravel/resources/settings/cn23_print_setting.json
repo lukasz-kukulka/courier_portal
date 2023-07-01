@@ -1,0 +1,65 @@
+{
+    "rotate_text": 90,
+	"font_name": "times",
+    "default_font_size": 18,
+    "sender_name": [ 7, 252 ],
+    "sender_business_name": [ 14, 248 ],
+    "sender_address": [ 21, 253 ],
+    "sender_city": [ 29, 197 ],
+    "sender_country": [ 36, 249 ],
+    "sender_post_code": [ 29, 247 ],
+    "receiver_name": [ 44, 252 ],
+    "receiver_business_name": [ 51, 248 ],
+    "receiver_address": [ 58, 253 ],
+    "receiver_city": [ 66, 197 ],
+    "receiver_country": [ 73, 249 ],
+    "receiver_post_code": [ 66, 247 ],
+    "parcel_details": {
+        "checkbox_font_size": 12,
+        "gift": [ 140, 265 ],
+        "documents": [ 145, 265 ],
+        "selling_goods": [ 0, 0 ],
+        "sample": [ 134, 212 ],
+        "returned_goods": [ 140, 212 ],
+        "others": [ 146, 212 ],
+        "others_description_font_size": 12,
+        "others_description": [ 140, 160]
+    },
+    "parcel_items_font_size": 22,
+    "parcel_items": [
+        {
+            "description": [ 93, 265 ],
+            "quantity": [ 50, 130 ],
+            "weight": [ 50, 140 ],
+            "value": [ 50, 150 ]
+        },
+        {
+            "description": [ 100, 265 ],
+            "quantity": [ 50, 230 ],
+            "weight": [ 50, 240 ],
+            "value": [ 50, 250 ]
+        },
+        {
+            "description": [ 107, 265 ],
+            "quantity": [ 0, 0 ],
+            "weight": [ 0, 0 ],
+            "value": [ 0, 0 ]
+        },
+        {
+            "description": [ 114, 265 ],
+            "quantity": [ 0, 0 ],
+            "weight": [ 0, 0 ],
+            "value": [ 0, 0 ]
+        }
+    ],
+    "parcel_summary": {
+        "parcel_summary_font_size": 33,
+        "total_weight": [ 50, 200 ],
+        "total_value":  [ 70, 200 ]
+    },
+    "business_section": {
+        "business_section_font_size": 33,
+        "vat_eori_num": [ 100, 100 ],
+        "tariff_num":  [ 150, 150 ]
+    }
+}
