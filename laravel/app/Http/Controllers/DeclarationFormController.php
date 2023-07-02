@@ -104,7 +104,6 @@ class DeclarationFormController extends Controller
     private function printCN22DeclarationForm() {
         $form = null;
 
-        $form .= '<h1>Deklaracja CN22</h1>';
         $form .= '<h2>Dane nadawcy</h2>';
         $form .= $this->printTextInputs();
 
@@ -117,9 +116,10 @@ class DeclarationFormController extends Controller
 
     private function printCN23DeclarationForm() {
         $form = null;
-        $form .= '<h1>Deklaracja CN23</h1>';
+
         $form .= '<h2>Dane nadawcy</h2>';
         $form .= $this->printTextInputs( true, false );
+
         $form .= '<h2>Dane odbiorcy</h2>';
         $form .= $this->printTextInputs( false, false );
         $form .= '<h2>Dane przesyłki</h2>';

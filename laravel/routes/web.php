@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CN22Controller;
+use App\Http\Controllers\DeclarationFormController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,15 +23,19 @@ Route::get('/hello', function () {
     return 'TEST COS';
 });
 
-// Route::get('/cn22', function () {
-//     return view('cn22');
-// });
+Route::get('/cn22', function () {
+    return view('cn22');
+});
+
+Route::get('/cn23', function () {
+    return view('cn23');
+});
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/cn22', [CN22Controller::class, 'generateCN22DeclarationForm']);
+//Route::get('/cn22', [App\Http\Controllers\DeclarationFormController::class, 'generateCN22DeclarationForm']);
 
 // Route::get('/', function () {
 //     return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );

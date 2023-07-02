@@ -1,2 +1,2 @@
 import './bootstrap';
-import './declaration_scripts';
+// import './declaration_scripts';

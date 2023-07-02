@@ -30,7 +30,7 @@ function clickAddNewItemButton() {
                 delete_item_button.style.display = "none";
             });
         })(i);
-    } 
+    }
 }
 
 function deleteItemButton() {
@@ -56,7 +56,7 @@ function deleteItemButton() {
               delete_item_button.style.display = "inline";
           });
       })(i);
-  } 
+  }
 }
 
 function ButtonConditions (is_description, is_quantity, is_value ) {
@@ -66,7 +66,7 @@ function ButtonConditions (is_description, is_quantity, is_value ) {
 }
 
 function checkAllInputsInItems() {
-  
+
   var inputs_description = document.querySelectorAll('[id^="input_description_"]');
   var inputs_quantity = document.querySelectorAll('[id^="input_quantity_"]');
   var inputs_value = document.querySelectorAll('[id^="input_value_"]');
@@ -96,13 +96,13 @@ function resetAllItemConditionsToFalse( index, buttonConditionsArray ) {
       checkAllConditionsForCurrentAndPrevItems( buttonConditionsArray );
     });
   })( index );
-  
+
 }
 
 function checkInputTextSingleItem( inputs, index, buttonConditionsArray ) {
   var input = inputs[ index ];
     input.addEventListener('input', function() {
-      
+
       if (input.value.length >= 3 ) {
         buttonConditionsArray[ index ].is_description = true;
       } else {
@@ -152,7 +152,7 @@ function checkAllConditionsForAllButtons( index, buttonConditionsArray ) {
       buttonConditionsArray[ i ].is_quantity == false ||
       buttonConditionsArray[ i ].is_value == false ) {
         return false;
-    } 
+    }
   }
 
   return true;
@@ -214,7 +214,7 @@ function checkBusinessCheckbox() {
     }
   });
 }
-  
+
 document.addEventListener('DOMContentLoaded', function() {
     sendFormButton();
     checkSummaryCheckbox()
