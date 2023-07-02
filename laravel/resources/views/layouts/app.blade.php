@@ -20,8 +20,10 @@
         $menu_settings = json_decode( "resources/settings/top_menu.json" , true);
     @endphp --}}
     @php
-        $menuData = app(\App\Http\Controllers\JsonParserControler::class)->menuAction();
+        $JsonParserControler = app(\App\Http\Controllers\JsonParserControler::class);
+        $menuData = $JsonParserControler->menuAction();
     @endphp
+    @yield('add_header')
 </head>
 <body>
     <div id="app">
@@ -51,7 +53,7 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @foreach ( $item[ 'dropdown_elements' ] as $subelement )
-                                        <a class="dropdown-item" href="{{ $item['link'] }}">{{ $item['name'] }}</a>
+                                        <a class="dropdown-item" href="{{ DIRECTORY_SEPARATOR . $subelement['link'] }}">{{ $subelement['name'] }}</a>
                                         <div class="dropdown-divider"></div>
                                     @endforeach
                                     </div>
@@ -66,13 +68,13 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Zaloguj') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Rejestracja') }}</a>
                                 </li>
                             @endif
                         @else

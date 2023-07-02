@@ -1,6 +1,11 @@
 <?php
 
-class declarationFormGenerator {
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class DeclarationFormController extends Controller
+{
     function __construct()
     {
         $this->setDefaultGeneralSettings();
@@ -40,7 +45,7 @@ class declarationFormGenerator {
     }
 
     private function setDefaultGeneralSettings( ) {
-        $general_settings_file_name = plugin_dir_path( __FILE__ )."settings/general_setting.json";
+        $general_settings_file_name = resource_path('settings'. DIRECTORY_SEPARATOR . 'declaration_form_setting.json');
         $this->general_settings = json_decode( file_get_contents( $general_settings_file_name ) );
         $this->gen_msg = $this->general_settings->messages;
     }
@@ -57,13 +62,13 @@ class declarationFormGenerator {
         $form .= '</br><div class="single_item_parcel_title"><h2 class="title_parcel_item">Przedmiot '.$this->current_showing_items_num.'</h2>'.$parcel_item_delete_text.'</div>';
         $form .= $this->generateFormLabel( 'item_'.$this->current_showing_items_num.'_description', 'Opis przedmiotu' );
         $form .= $this->getSingleTextInput( 'description_'.$this->current_showing_items_num, '[a-zA-Z0-9!@#$%^&*()_ +-=]*', 'Opis przedmiotu', $required, '' );
-        
+
         $form .= $this->generateFormLabel( 'quantity_input_'.$this->current_showing_items_num, 'Ilość', $required != '' ? true : false );
         $form .= $this->generateSingleNumberInput( 'input_quantity_'.$this->current_showing_items_num, 'sztuk', $required );
-        
+
         $form .= $this->generateFormLabel( 'weight_input_'.$this->current_showing_items_num, 'Waga', $required != '' ? true : false );
         $form .= $this->generateSingleNumberInput( 'input_weight_'.$this->current_showing_items_num, 'kg', $required );
-       
+
         $form .= $this->generateFormLabel( 'value_input_'.$this->current_showing_items_num, 'Wartość', $required != '' ? true : false );
         $form .= $this->generateSingleNumberInput( 'input_value_'.$this->current_showing_items_num, '£', $required );
 
@@ -105,7 +110,7 @@ class declarationFormGenerator {
 
         $form .= '<h2>Dane przesyłki</h2>';
         $form .= $this->generateAllCheckBoxes();
-        $form .= $this->createAllItemsInParcel( $this->maximum_items_in_declaration ); 
+        $form .= $this->createAllItemsInParcel( $this->maximum_items_in_declaration );
 
         return $form;
     }
@@ -119,7 +124,7 @@ class declarationFormGenerator {
         $form .= $this->printTextInputs( false, false );
         $form .= '<h2>Dane przesyłki</h2>';
         $form .= $this->generateAllCheckBoxes( );
-        $form .= $this->createAllItemsInParcel( $this->maximum_items_in_declaration ); 
+        $form .= $this->createAllItemsInParcel( $this->maximum_items_in_declaration );
         return $form;
     }
 
@@ -133,7 +138,7 @@ class declarationFormGenerator {
             $person = $this->general_settings->receiver;
             $prefix_name = "receiver_";
         }
-        
+
         $conditions = $this->general_settings->conditions;
 
         $form .= $this->generateFormLabel( $prefix_name.'name_surname', $person->name );
@@ -146,13 +151,13 @@ class declarationFormGenerator {
 
         $form .= $this->generateFormLabel( $prefix_name.'street', $person->street );
         $form .= $this->getSingleTextInput( $prefix_name.'street', '[a-zA-Z0-9\s]+', $conditions->street_conditions, '', '' );
-        
+
         $form .= $this->generateFormLabel( $prefix_name.'city', $person->city );
         $form .= $this->getSingleTextInput( $prefix_name.'city', '[a-zA-Z\s]+', $conditions->city_condition, '', '' );
-        
+
         $form .= $this->generateFormLabel( $prefix_name.'country', $person->country);
         $form .= $this->getSingleTextInput( $prefix_name.'country', 'a-zA-Z\s]+', $conditions->country_conditions, '', '' );
-        
+
         $form .= $this->generateFormLabel( $prefix_name.'post_code', $person->post_code );
         $form .= $this->getSingleTextInput( $prefix_name.'post_code', '[a-zA-Z0-9-]+', $conditions->post_code_conditions, '', '' );
         return $form;
@@ -173,7 +178,7 @@ class declarationFormGenerator {
         for ($i = 0; $i < 6; $i++ ) {
             $form .= $this->generateSingeCheckBox( $check_boxes_data[$i][1], $i + 1, $check_boxes_data[$i][0] );
         }
-        
+
         $form .= '</div>';
         $form .= '<div id="text_others_div"></div>';
         return $form;
@@ -188,11 +193,11 @@ class declarationFormGenerator {
     }
 
     private function getSingleTextInput( $name, $pattern, $title, $required = '', $placeholder = '', $autofocus = '' ) {
-        return '</br><input type="text" id="input_'.$name.'_id" name="'.$name.'" 
-                placeholder="'.$placeholder.'" 
+        return '</br><input type="text" id="input_'.$name.'_id" name="'.$name.'"
+                placeholder="'.$placeholder.'"
                 '.$required.'
                 '.$autofocus.'
-                pattern="'.$pattern.'" 
+                pattern="'.$pattern.'"
                 title="'.$title.'"></br>';
     }
 
@@ -236,7 +241,7 @@ class declarationFormGenerator {
         $form .= $this->getSingleTextInput( 'tariff_num', '[0-9.]+', $info->tariff_num_conditions, '', '' );
         $form .= '</div>';
         return $form;
-    } 
+    }
 
     private $general_settings;
     private $gen_msg;
