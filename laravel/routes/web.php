@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DeclarationFormController;
+use App\Http\Controllers\DeclarationPrintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Route::get('/cn22', [App\Http\Controllers\DeclarationFormController::class, 'generateCN22DeclarationForm']);
+Route::post('/pdf_gen', function (Request $request) {
+    $postData = $request->all();
+
+    $pdf = app()->makeWith(DeclarationPrintController::class, ['post' => $postData]);
+    return $pdf->generatePDFDocument();
+})->name('pdf_gen');
 
 // Route::get('/', function () {
 //     return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );
