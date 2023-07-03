@@ -45,9 +45,8 @@ class SingePagePDF {
 
     private function setPersonalDataToPrintSender( $data ) {
         $this->pdf->SetFont( $this->json_decode->font_name, '', $this->json_decode->default_font_size );
-
         $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $this->json_decode->sender_name[ 0 ], $this->json_decode->sender_name[ 1 ], $data[ "name_surname" ] );
-        if ( isset( $data[ "name_surname" ] ) ) {
+        if ( $data['form_type'] == 'cn23' ) {
             $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $this->json_decode->sender_business_name[ 0 ], $this->json_decode->sender_business_name[ 1 ], $data[ "business_name" ] );
         }
         $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $this->json_decode->sender_address[ 0 ], $this->json_decode->sender_address[ 1 ], $data[ "street" ] );
@@ -123,8 +122,8 @@ class SingePagePDF {
         }
 
         $this->pdf->SetFont( $this->json_decode->font_name, '', $parcel_summary->parcel_summary_font_size );
-        $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $parcel_summary->total_weight[ 0 ], $parcel_summary->total_weight[ 1 ], $weight_summary." kg" );
-        $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $parcel_summary->total_value[ 0 ], $parcel_summary->total_value[ 1 ], "£".$value_summary );
+        $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $parcel_summary->total_weight[ 0 ], $parcel_summary->total_weight[ 1 ], $weight_summary );
+        $this->rotateTextIfAngleMoreThanZero( $this->json_decode->rotate_text, $parcel_summary->total_value[ 0 ], $parcel_summary->total_value[ 1 ], $value_summary );
 
         $this->pdf->SetFont( $this->json_decode->font_name, '', $this->json_decode->default_font_size );
     }
