@@ -20,8 +20,8 @@
         $menu_settings = json_decode( "resources/settings/top_menu.json" , true);
     @endphp --}}
     @php
-        $JsonParserControler = app(\App\Http\Controllers\JsonParserControler::class);
-        $menuData = $JsonParserControler->menuAction();
+        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
+        $menuData = $JsonParserController->menuAction();
     @endphp
     @yield('add_header')
 </head>

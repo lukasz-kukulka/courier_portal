@@ -13,10 +13,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Formularz do deklaracji CN22') }}</div>
+                <div class="card-header">{{ __('Formularz do deklaracji CN23') }}</div>
 
                 <div class="card-body">
-                    {!! $declarationFormController->generateCN22DeclarationForm() !!}
+                    {!! $declarationFormController->generateCN23DeclarationForm() !!}
                 </div>
             </div>
         </div>

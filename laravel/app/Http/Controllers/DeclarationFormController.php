@@ -15,8 +15,9 @@ class DeclarationFormController extends Controller
         $form = null;
         $this->maximum_items_in_declaration = $this->general_settings->numbers_of_max_items_cn22;
         $form .= '<div class="CN22wrapper">';
-        $form .= '<form id="full_form" action="STRONAXXXXXXXXXXXXXXXXXXXXXX" method="post" target="_blank">';
+        $form .= '<form id="full_form" action="' . route('pdf_gen') . '" method="post" target="_blank">';
         $form .= '<input type="hidden" name="form_type" value="cn22">';
+        $form .= csrf_field();
         $form .= $this->printCN22DeclarationForm();
         $form .= '<input type="hidden" name="items_num_to_print" value="'.$this->current_showing_items_num.'">';
         $form .= $this->generateSummarySection();
@@ -31,9 +32,9 @@ class DeclarationFormController extends Controller
         $form = null;
         $this->maximum_items_in_declaration = $this->general_settings->numbers_of_max_items_cn23;
         $form .= '<div class="CN23wrapper">';
-        $form .= '<form id="full_form" action="STRONAXXXXXXXXXXXXXXXXXXXXXX" method="post" target="_blank">';
+        $form .= '<form id="full_form" action="' . route('pdf_gen') . '" method="post" target="_blank">';
         $form .= '<input type="hidden" name="form_type" value="cn23">';
-        $form .= '<form method="post">';
+        $form .= csrf_field();
         $form .= $this->printCN23DeclarationForm();
         $form .= '<input type="hidden" name="items_num_to_print" value="'.$this->current_showing_items_num.'">';
         $form .= $this->generateSummarySection();
@@ -104,7 +105,6 @@ class DeclarationFormController extends Controller
     private function printCN22DeclarationForm() {
         $form = null;
 
-        $form .= '<h1>Deklaracja CN22</h1>';
         $form .= '<h2>Dane nadawcy</h2>';
         $form .= $this->printTextInputs();
 
@@ -117,9 +117,10 @@ class DeclarationFormController extends Controller
 
     private function printCN23DeclarationForm() {
         $form = null;
-        $form .= '<h1>Deklaracja CN23</h1>';
+
         $form .= '<h2>Dane nadawcy</h2>';
         $form .= $this->printTextInputs( true, false );
+
         $form .= '<h2>Dane odbiorcy</h2>';
         $form .= $this->printTextInputs( false, false );
         $form .= '<h2>Dane przesyłki</h2>';
