@@ -6,6 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "backpack/crud": "v6.x-dev",
+        "backpack/theme-coreuiv2": "^1.1",
+        "backpack/theme-coreuiv4": "^1.0",
+        "bordercloud/codemirror": "5.65.13",
         "elibyy/tcpdf-laravel": "^10.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -14,8 +18,29 @@
         "laravel/ui": "^4.2",
         "tecnickcom/tcpdf": "^6.6"
     },
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "bordercloud/codemirror",
+                "version": "5.65.13",
+                "source": {
+                    "url": "https://github.com/codemirror/CodeMirror",
+                    "type": "git",
+                    "reference": "5.65.13"
+                },
+                "autoload": {
+                    "classmap": [
+                        "lib/"
+                    ]
+                }
+            }
+        }
+    ],
     "require-dev": {
+        "backpack/generators": "^4.0",
         "fakerphp/faker": "^1.9.1",
+        "laracasts/generators": "^2.0",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
@@ -49,7 +74,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "post-install-cmd": ["php artisan storage:link"]
     },
     "extra": {
         "laravel": {
