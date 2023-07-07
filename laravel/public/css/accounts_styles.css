@@ -1,0 +1,31 @@
+.account-name {
+    height: 150px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold !important;
+    font-size: 40px !important;
+  }
+
+.account-price {
+    text-align: center !important;
+    vertical-align: middle !important;
+  }
+
+.account-old-price {
+    text-decoration: line-through !important;
+    text-decoration-thickness: 3px !important;
+    font-size: 22px !important;
+  }
+
+.account-new-price {
+    font-weight: bold !important;
+    font-size: 30px !important;
+  }
+
+  ul {
+    list-style-type: none; /* Wyłączanie domyślnego stylu punktów listy */
+  }
+
+  li {
+    list-style-image: url('sciezka/do/obrazu.png');
+  }
