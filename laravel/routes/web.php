@@ -31,6 +31,10 @@ Route::get('/cn23', function () {
     return view('cn23');
 });
 
+Route::get('/accounts/account_register', function () {
+    return view('accounts/account_register');
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

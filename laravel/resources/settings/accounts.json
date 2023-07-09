@@ -1,0 +1,86 @@
+{
+    "standard" : {
+        "name": "Standard",
+        "description" : {
+            "can" : {
+                "status" : "can",
+                "title" : "Co bedziesz mógł robić",
+                "options" : [
+                    "one",
+                    "two",
+                    "three"
+                ]
+            },
+            "can_not" : {
+                "status" : "can_not",
+                "title" : "Co nie bedziesz mógł robić",
+                "options" : [
+                    "one",
+                    "two",
+                    "three"
+                ]
+            }
+        },
+        "price" : {
+            "discount" : true,
+            "old_price" : "200zł",
+            "new_price" : "0zł"
+        }
+    },
+    "kurier" : {
+        "name": "Kurier",
+        "description" : {
+            "can" : {
+                "status" : "can",
+                "title" : "Co bedziesz mógł robić",
+                "options" : [
+                    "one",
+                    "two",
+                    "three"
+                ]
+            },
+            "can_not" : {
+                "status" : "can_not",
+                "title" : "Co nie bedziesz mógł robić",
+                "options" : [
+                    "one",
+                    "two",
+                    "three"
+                ]
+            }
+        },
+        "price" : {
+            "discount" : true,
+            "old_price" : "200zł",
+            "new_price" : "0zł"
+        }
+    },
+    "kurier_pro" : {
+        "name": "Kurier PRO",
+        "description" : {
+            "can" : {
+                "status" : "can",
+                "title" : "Co bedziesz mógł robić",
+                "options" : [
+                    "one",
+                    "two",
+                    "three"
+                ]
+            },
+            "can_not" : {
+                "status" : "can_not",
+                "title" : "Co nie bedziesz mógł robić",
+                "options" : [
+                    "one",
+                    "two",
+                    "three"
+                ]
+            }
+        },
+        "price" : {
+            "discount" : true,
+            "old_price" : "200zł",
+            "new_price" : "0zł"
+        }
+    }
+}

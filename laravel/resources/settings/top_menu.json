@@ -4,7 +4,12 @@
         "link" : "./",
         "type" : "standard"
     },
-    "deklaracja" : {
+    "accounts" : {
+        "name" : "Wybierz typ konta",
+        "link" : "./accounts/account_register",
+        "type" : "standard"
+    },
+    "declaration" : {
         "name" : "Deklaracje",
         "link" : "",
         "type" : "dropdown",
