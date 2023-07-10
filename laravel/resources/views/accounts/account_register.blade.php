@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('add_header')
-    {{-- <script src="{{ asset('js/declaration_scripts.js') }}"></script> --}}
+    <script src="{{ asset('js/accounts_scripts.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/accounts_styles.css') }}">
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
@@ -10,9 +10,38 @@
 @endsection
 
 @section('content')
+
 <div class="container">
+    @foreach ( $accountData as $account )
+        <div class="rectangle">
+            <div class="account_name">{{ $account[ 'name' ] }}</div>
+                @foreach ( $account[ 'description' ] as $description )
+                    <div class="acount_description">{{ $description[ 'title' ]}}</div>
+                    @if (  $description[ 'status' ] == "can" )
+                         <ul class="list_with_can">
+                    @else
+                        <ul class="list_with_can_not">
+                    @endif
+                    @foreach ( $description[ 'options' ] as $option )
+                        <li>{{ $option }}</li>
+                    @endforeach
+                    </ul>
+                @endforeach
+                <div class="account_price" >
+                    @if ( $account[ 'price' ][ 'discount' ] == true )
+                        <span class="account_old_price">{{ $account[ 'price' ][ 'old_price' ] }}</br></span>
+                    @endif
+                        <span class="account_new_price">{{ $account[ 'price' ][ 'new_price' ] }}</span>
+
+                </div>
+        </div>
+    @endforeach
+</div>
+
+
+{{-- <div class="container">
     <div class="row justify-content-center">
-        <table class="table table-hover table-dark">
+        <table class="table table-hover table-dark table-hover-clickable table_account">
             <thead>
               <tr>
                 <th scope="col" class="col-2" ></th>
@@ -23,8 +52,8 @@
             <tbody>
 
                 @foreach ( $accountData as $account )
-                <tr>
-                <th class="account-name"> {{ $account[ 'name' ] }} </th>
+                <tr class="account_row">
+                <th class="account_name"> {{ $account[ 'name' ] }} </th>
                     <td>
                     <table class="table table-bordered table-dark">
                         @foreach ( $account[ 'description' ] as $description )
@@ -35,10 +64,14 @@
                         </thead>
                         <tbody>
                             <td>
-                                <ul>
-                                    @foreach ( $description[ 'options' ] as $option )
-                                        <li>{{ $option }}</li>
-                                    @endforeach
+                                @if (  $description[ 'status' ] == "can" )
+                                    <ul class="list-with-can">
+                                @else
+                                    <ul class="list-with-can_not">
+                                @endif
+                                @foreach ( $description[ 'options' ] as $option )
+                                    <li>{{ $option }}</li>
+                                @endforeach
                                 </ul>
                             </td>
                         </tbody>
@@ -54,61 +87,9 @@
                     </td>
                 </tr>
                 @endforeach
-                {{-- <th class="account-name" scope="row" class="account-row"><h1>Standard</h1></th>
-                <td>
-                    <table class="table table-bordered table-dark">
-                        <thead>
-                            <tr>
-                                <th>Co bedziesz mógł robić</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <td>
-                                <ul>
-                                    <li>xxxxx</li>
-                                    <li>xxxxx</li>
-                                    <li>xxxxx</li>
-                                    <li>xxxxx</li>
-                                </ul>
-                            </td>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered table-dark">
-                        <thead>
-                            <tr>
-                                <th>Czego nie będziesz mógł robić</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <td>
-                                <ul>
-                                    <li>xxxxx</li>
-                                    <li>xxxxx</li>
-                                    <li>xxxxx</li>
-                                    <li>xxxxx</li>
-                                </ul>
-                            </td>
-                        </tbody>
-                    </table>
-                </td>
-                <td>
-
-                </td>
-
-              </tr>
-              <tr>
-                <th  class="account-name" scope="row" class="account-row"><h1>Kurier</h1></th>
-                <td>kurier opis</td>
-                <td>kurier cena</td>
-
-              </tr>
-              <tr>
-                <th  class="account-name" scope="row" class="account-row"><h1>Kurier PRO</h1></th>
-                <td>pro opis</td>
-                <td> pro cena</td>--}}
 
             </tbody>
           </table>
     </div>
-</div>
+</div> --}}
 @endsection
