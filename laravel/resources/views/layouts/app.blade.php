@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-
+    @yield('add_header')
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -23,7 +23,7 @@
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $menuData = $JsonParserController->menuAction();
     @endphp
-    @yield('add_header')
+
 </head>
 <body>
     <div id="app">
