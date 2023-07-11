@@ -35,6 +35,10 @@ Route::get('/accounts/account_register', function () {
     return view('accounts/account_register');
 });
 
+Route::post('/accounts/confirmed_account', function () {
+    return view('accounts/confirmed_account');
+})->name('confirmed_account');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
