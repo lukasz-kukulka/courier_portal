@@ -13,11 +13,16 @@
 
 <div class="container">
     <form action="{{ route('confirmed_account') }}" method="POST" id="account_register_form">
+        @csrf
+        {{ $your_choice = '' }}
+        {{-- {{ Auth::user()->name }} --}}
         <div class="account_options">
+        <input type="hidden" name="account_type_input_id" value="{{ $your_choice }}">
         @foreach ( $accountData[ 'accounts_types' ] as $account )
-            <div class="rectangle">
+            <div class="rectangle"  id="{{ $account[ 'id' ] }}">
                 <div class="account_name">{{ $account[ 'name' ] }}</div>
-                <input type="hidden" name="account_type_name" value="{{ $account[ 'id' ] }}">
+
+                {{ var_dump($account[ 'id' ] ) }}
                     @foreach ( $account[ 'description' ] as $description )
                         <div class="acount_description">{{ $description[ 'title' ]}}</div>
                         @if (  $description[ 'status' ] == "can" )
@@ -32,14 +37,15 @@
                     @endforeach
                     <div class="account_price" >
                         @if ( $account[ 'price' ][ 'discount' ] == true )
-                            <span class="account_old_price">{{ $account[ 'price' ][ 'old_price' ] }}</br></span>
+                            <span class="account_old_price">{{ $account[ 'price' ][ 'old_price' ] }}<br></span>
                         @endif
                             <span class="account_new_price">{{ $account[ 'price' ][ 'new_price' ] }}</span>
                     </div>
             </div>
         @endforeach
         </div>
-    <div class="account_choice_button_container"><button type="submit" class="account_choice_button">{{ $accountData[ 'button_account_choice' ] }}</a></div>
+        <div id="button_errors_container">{{ $accountData[ 'errors' ][ 'account_choice' ]}}</div>
+    <div class="account_choice_button_container"><button type="submit" class="account_choice_button">{{ $accountData[ 'button_account_choice' ] }}</button></div>
     </form>
 </div>
 @endsection

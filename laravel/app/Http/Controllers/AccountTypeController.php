@@ -6,20 +6,14 @@ use Illuminate\Http\Request;
 
 class AccountTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view( 'accounts.account_register' );
-    }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create( Request $request )
     {
-        //
+        var_dump( $request );
+        // return redirect('/');
     }
 
     /**

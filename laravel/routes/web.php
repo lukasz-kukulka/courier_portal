@@ -17,7 +17,7 @@ use App\Http\Controllers\DeclarationPrintController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/hello', function () {
     return 'TEST COS';
@@ -25,17 +25,18 @@ Route::get('/hello', function () {
 
 Route::get('/cn22', function () {
     return view('cn22');
-});
+})->name('cn22');;
 
 Route::get('/cn23', function () {
     return view('cn23');
-});
+})->name('cn23');;
 
 Route::get('/accounts/account_register', function () {
-    return view('accounts/account_register');
-});
+    return view('accounts.account_register');
+})->name('account_register');
 
-Route::post('/accounts/confirmed_account', function () {
+
+Route::post('accounts/confirmed_account', function () {
     return view('accounts/confirmed_account');
 })->name('confirmed_account');
 
@@ -49,6 +50,8 @@ Route::post('/pdf_gen', function (Request $request) {
     $pdf = app()->makeWith(DeclarationPrintController::class, ['post' => $postData]);
     return $pdf->generatePDFDocument();
 })->name('pdf_gen');
+
+Route::post('/person_data', 'App\Http\Controllers\AccountTypeController@create')->name('create_person_data');
 
 // Route::get('/', function () {
 //     return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );

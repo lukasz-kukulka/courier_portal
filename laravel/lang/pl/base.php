@@ -68,4 +68,9 @@ return [
     'confirm_new_password' => 'Potwierdź nowe hasło',
     'throttled'            => 'Ostatnio już wysłałeś prośbę o zresetowanie hasła. Sprawdź swoją skrzynkę e-mailową. Jeśli nie otrzymasz naszej wiadomości, spróbuj ponownie później.',
     'throttled_request'    => 'Przekroczono limit prób. Poczekaj kilka minut i spróbuj ponownie.',
+
+    'name'                   => 'Imię',
+    'surname'                => 'Nazwisko',
+    'phone_number'           => 'Numer telefonu',
+
 ];
