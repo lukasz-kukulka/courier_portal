@@ -12,8 +12,10 @@ class AccountTypeController extends Controller
      */
     public function create( Request $request )
     {
-        var_dump( $request );
-        // return redirect('/');
+        dump($request->all());
+        //var_dump( $request );
+        //return redirect('/');
+        //return var_dump( $request );
     }
 
     /**

@@ -72,5 +72,6 @@ return [
     'name'                   => 'Imię',
     'surname'                => 'Nazwisko',
     'phone_number'           => 'Numer telefonu',
+    'send'                   => 'Wyślij'
 
 ];

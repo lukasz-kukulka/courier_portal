@@ -1,0 +1,42 @@
+{
+    "standard" : {
+        "name": "standard",
+        "show_name" : "Podstawowa",
+        "privilege" : [
+            "x",
+            "y"
+        ]
+    },
+    "standard_pro" : {
+        "name": "standard_pro",
+        "show_name" : "Podstawowa PRO",
+        "privilege" : [
+            "x",
+            "y"
+        ]
+    },
+    "courier" : {
+        "name": "courier",
+        "show_name" : "Kurier",
+        "privilege" : [
+            "x",
+            "y"
+        ]
+    },
+    "courier_pro" : {
+        "name": "courier_pro",
+        "show_name" : "Kurier PRO",
+        "privilege" : [
+            "x",
+            "y"
+        ]
+    },
+    "administrator" : {
+        "name": "administrator",
+        "show_name" : "Administrator",
+        "privilege" : [
+            "x",
+            "y"
+        ]
+    }
+}
