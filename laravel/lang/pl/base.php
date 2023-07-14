@@ -72,6 +72,7 @@ return [
     'name'                   => 'Imię',
     'surname'                => 'Nazwisko',
     'phone_number'           => 'Numer telefonu',
-    'send'                   => 'Wyślij'
+    'send'                   => 'Wyślij',
+    'd_o_b'                  => 'Data urodzenia'
 
 ];
