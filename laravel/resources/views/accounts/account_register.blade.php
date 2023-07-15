@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('add_header')
-    <script src="{{ asset('js/accounts_scripts.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/accounts_styles.css') }}">
+    <script src="{{ asset('js/accounts_type_scripts.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/accounts_type_styles.css') }}">
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $accountData = $JsonParserController->accountAction();

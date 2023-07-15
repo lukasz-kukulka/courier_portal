@@ -69,10 +69,21 @@ return [
     'throttled'            => 'Ostatnio już wysłałeś prośbę o zresetowanie hasła. Sprawdź swoją skrzynkę e-mailową. Jeśli nie otrzymasz naszej wiadomości, spróbuj ponownie później.',
     'throttled_request'    => 'Przekroczono limit prób. Poczekaj kilka minut i spróbuj ponownie.',
 
+
+    'account_congratulation' => 'Super, wybrałeś ',
+    'account_last_step'      => 'Jeszcze tylko potrzebujemy kilku twoich danych do zakończenia procesu',
+    'accounts_form'          => 'Uzupełnij brakujące dane',
     'name'                   => 'Imię',
     'surname'                => 'Nazwisko',
     'phone_number'           => 'Numer telefonu',
     'send'                   => 'Wyślij',
-    'd_o_b'                  => 'Data urodzenia'
+    'd_o_b'                  => 'Data urodzenia',
+    'company_section_title'  => 'Dane firmy:',
+    'company_name'           => 'Nazwa',
+    'company_adress'         => 'Adres( ulica, numer )',
+    'company_phone_number'   => 'Numer telefonu',
+    'company_post_code'      => 'Kod pocztowy',
+    'company_city'           => 'Miasto',
+    'company_country'        => 'Kraj'
 
 ];
