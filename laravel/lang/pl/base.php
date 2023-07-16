@@ -70,7 +70,7 @@ return [
     'throttled_request'    => 'Przekroczono limit prób. Poczekaj kilka minut i spróbuj ponownie.',
 
 
-    'account_congratulation' => 'Super, wybrałeś ',
+    'account_congratulation' => 'Super, wybrałeś konto ',
     'account_last_step'      => 'Jeszcze tylko potrzebujemy kilku twoich danych do zakończenia procesu',
     'accounts_form'          => 'Uzupełnij brakujące dane',
     'name'                   => 'Imię',
@@ -80,7 +80,7 @@ return [
     'd_o_b'                  => 'Data urodzenia',
     'company_section_title'  => 'Dane firmy:',
     'company_name'           => 'Nazwa',
-    'company_adress'         => 'Adres( ulica, numer )',
+    'company_address'         => 'Adres( ulica, numer )',
     'company_phone_number'   => 'Numer telefonu',
     'company_post_code'      => 'Kod pocztowy',
     'company_city'           => 'Miasto',

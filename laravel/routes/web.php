@@ -36,9 +36,13 @@ Route::get('/accounts/account_register', function () {
 })->name('account_register');
 
 
-Route::post('accounts/confirmed_account', function () {
-    return view('accounts/confirmed_account');
+Route::post('/accounts/confirmed_account', function () {
+    return view('accounts.confirmed_account');
 })->name('confirmed_account');
+
+Route::get('/accounts/confirmed_account', function () {
+    return view('accounts.confirmed_account');
+})->name('confirmed_account_get');
 
 Auth::routes();
 
