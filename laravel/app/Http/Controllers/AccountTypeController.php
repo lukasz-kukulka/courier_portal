@@ -16,6 +16,8 @@ class AccountTypeController extends Controller
         $validator = $this->validator( $request->all() );
         if ($validator->fails()) {
             return redirect()->route('confirmed_account_get', $request->all() )->withErrors( $validator )->withInput();
+        } else {
+            return redirect()->route('confirmed_account_last' );
         }
     }
 

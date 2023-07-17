@@ -84,6 +84,10 @@ return [
     'company_phone_number'   => 'Numer telefonu',
     'company_post_code'      => 'Kod pocztowy',
     'company_city'           => 'Miasto',
-    'company_country'        => 'Kraj'
+    'company_country'        => 'Kraj',
+    'thank_you_for_filled_account' => 'Dziekujemy za uzupełnienie brakujących danych',
+    'you_account_is_ready'   => 'Twoje konto jest gortowe do użycia',
+    'back_to_home_page'      => 'Przejdź do strony głównej',
+    'you_account_is_ready_redirected' => 'Za chwile nastapi przekierowanie do strony głównej'
 
 ];
