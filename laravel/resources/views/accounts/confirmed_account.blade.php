@@ -14,10 +14,10 @@
                     $account_type = $_POST[ 'account_type_input_id' ];
                 }
             } else if(request()->isMethod('GET')) {
-                // if ( $account[ 'id' ] == $_GET[ 'account_type_input_id' ] ) {
-                //     $account_name = $account[ 'name' ];
-                //     $account_type = $_GET[ 'account_type_input_id' ];
-                // }
+                if ( $account[ 'id' ] == $_GET[ 'account_type' ] ) {
+                    $account_name = $account[ 'name' ];
+                    $account_type = $_GET[ 'account_type' ];
+                }
             }
         }
     @endphp

@@ -13,20 +13,10 @@ class AccountTypeController extends Controller
      */
     public function create( Request $request )
     {
-        // $this->validate($request, [
-        //     'csrf_token' => 'required',
-        // ]);
-        // dump( $request->method() );
-        // dump( $request->all() );
-
         $validator = $this->validator( $request->all() );
-
         if ($validator->fails()) {
-            return redirect()->route('confirmed_account_get')->withErrors( $validator )->withInput();
+            return redirect()->route('confirmed_account_get', $request->all() )->withErrors( $validator )->withInput();
         }
-        //var_dump( $request );
-        //return redirect('/');
-        //return var_dump( $request );
     }
 
     private function validator(array $data)
@@ -34,7 +24,8 @@ class AccountTypeController extends Controller
         $validate_result = Validator::make($data, [
             'name' => ['required', 'string', 'max:55'],
             'surname' => ['required', 'string', 'max:55'],
-            'phone_number' => ['required', 'numeric', 'min:9', 'max:14'],
+            'phone_number' => ['required', 'numeric', 'digits_between:9,14'],
+            'd_o_b' => ['required', 'date', 'before:2010-01-01'],
         ]);
 
         if ( $data['name'] == 'account_type' ) {
@@ -64,6 +55,7 @@ class AccountTypeController extends Controller
             'company_post_code' => __('base.company_post_code'),
             'company_city' => __('base.company_city'),
             'company_country' => __('base.company_country'),
+            'd_o_b' => __('base.d_o_b'),
         ]);
 
         return $data;
