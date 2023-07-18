@@ -42,7 +42,7 @@ class AccountTypeController extends Controller
 
             $validate_result->merge( $company_validate_result );
         }
-
+        $validate_result->save();
         return $this->setAttributesFormNames( $validate_result );
     }
 

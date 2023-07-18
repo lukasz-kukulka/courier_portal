@@ -40,6 +40,7 @@
                     <!-- Left Side Of Navbar -->
 
                     <ul class="navbar-nav me-auto">
+                        @auth
                         @foreach ( $menuData as $item )
 
                             @if ( $item['type'] == "standard" )
@@ -60,6 +61,7 @@
                                 </li>
                             @endif
                         @endforeach
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
