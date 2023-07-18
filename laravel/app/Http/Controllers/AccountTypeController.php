@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\User;
 class AccountTypeController extends Controller
 {
 
@@ -15,9 +15,10 @@ class AccountTypeController extends Controller
     {
         $validator = $this->validator( $request->all() );
         if ($validator->fails()) {
-            return redirect()->route('confirmed_account_get', $request->all() )->withErrors( $validator )->withInput();
+            return redirect()->route('account_confirmed_get', $request->all() )->withErrors( $validator )->withInput();
         } else {
-            return redirect()->route('confirmed_account_last' );
+            $this->update( $request );
+            return redirect()->route('account_last_confirmed' );
         }
     }
 
@@ -42,7 +43,7 @@ class AccountTypeController extends Controller
 
             $validate_result->merge( $company_validate_result );
         }
-        $validate_result->save();
+        // $validate_result->save();
         return $this->setAttributesFormNames( $validate_result );
     }
 
@@ -90,9 +91,27 @@ class AccountTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update( Request $request )
     {
-        //
+        $user = auth()->user();
+        //dd( $user, $request->all()  );
+        $user->name = $request->input('name');
+        $user->surname = $request->input('surname');
+        $user->phone_number = $request->input('phone_number');
+        $user->d_o_b = $request->input('d_o_b');
+        $user->group = $request->input('account_type');
+        $user->account_type = $request->input('account_type');
+
+
+        if( $request->input('account_type') === 'courier_pro' ) {
+            // $user->company_name = $request->input('company_name');
+            // $user->company_address = $request->input('company_address');
+            // $user->company_phone_number = $request->input('company_phone_number');
+            // $user->company_post_code = $request->input('company_post_code');
+            // $user->company_city = $request->input('company_city');
+            // $user->company_country = $request->input('company_country');
+        }
+        $user->save();
     }
 
     /**

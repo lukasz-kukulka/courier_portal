@@ -18,8 +18,13 @@ class CheckIsAccountTypeRegistered
     {
 
         if ( auth()->check() && auth()->user()->account_type === null &&
-             !in_array($request->path(), [ 'logout' ]) &&
-             !Str::startsWith( $request->path(), 'accounts/') ) {
+             !in_array($request->path(), [
+                'logout',
+                'accounts/account_register',
+                'accounts/confirmed_account',
+                'person_data',
+                'accounts/confirmed_account_last'
+             ]) ) {
            return redirect()->route( 'account_register' );
         }
 
