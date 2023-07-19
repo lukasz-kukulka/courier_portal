@@ -17,7 +17,7 @@ class CheckIsAccountTypeRegistered
     public function handle(Request $request, Closure $next): Response
     {
 
-        if ( auth()->check() && auth()->user()->account_type === null &&
+        if ( auth()->check() && auth()->user()->account_type === null && auth()->user()->email_verified_at !== null &&
              !in_array($request->path(), [
                 'logout',
                 'accounts/account_register',

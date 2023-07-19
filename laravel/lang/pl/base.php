@@ -70,6 +70,11 @@ return [
     'throttled_request'    => 'Przekroczono limit prób. Poczekaj kilka minut i spróbuj ponownie.',
 
 
+    'check_email_info'       => 'Zanim przejdziesz dalej, sprawdź, czy w wiadomości e-mail znajduje się link weryfikacyjny.',
+    'if_you_dont_receinve_email' => 'Jeżeli nie otrzymałeś wiadomosći Email.',
+    'resend_verification_email' => 'naciśnij aby wysłać ponownie Email weryfikacyjny',
+    'verify_your_email_address' => 'Zweryfikuj swój adres Email',
+    'login_in'               => 'Jesteś zalogowany',
     'account_congratulation' => 'Super, wybrałeś konto ',
     'account_last_step'      => 'Jeszcze tylko potrzebujemy kilku twoich danych do zakończenia procesu',
     'accounts_form'          => 'Uzupełnij brakujące dane',

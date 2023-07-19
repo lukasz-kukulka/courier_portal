@@ -15,15 +15,11 @@ use App\Http\Controllers\DeclarationPrintController;
 |
 */
 
-Auth::routes();
+Auth::routes( ['verify' => true] );
 
 Route::get('/', function () {
     return view('welcome');
 })->name('main');
-
-Route::get('/hello', function () {
-    return 'TEST COS';
-});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -31,39 +27,39 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/cn22', function () {
     return view('cn22');
-})->name('cn22')->middleware('auth');
+})->name('cn22')->middleware( ['auth', 'verified'] );
 
 Route::get('/cn23', function () {
     return view('cn23');
-})->name('cn23')->middleware('auth');
+})->name('cn23')->middleware( ['auth', 'verified'] );
 
 Route::post('/pdf_gen', function (Request $request) {
     $postData = $request->all();
 
     $pdf = app()->makeWith(DeclarationPrintController::class, ['post' => $postData]);
     return $pdf->generatePDFDocument();
-})->name('pdf_gen')->middleware('auth'); // nie wiem czy bedzie działać trzeba przetestować
+})->name('pdf_gen')->middleware( ['auth', 'verified'] ); // nie wiem czy bedzie działać trzeba przetestować
 
 //############################### ACCOUNT TYPES ########################
 
 Route::get('/accounts/account_register', function () {
     return view('accounts.account_register');
-})->name('account_register')->middleware('auth');
+})->name('account_register')->middleware( ['auth', 'verified'] );
 
 
 Route::post('/accounts/confirmed_account', function () {
     return view('accounts.confirmed_account');
-})->name('confirmed_account')->middleware('auth');
+})->name('confirmed_account')->middleware( ['auth', 'verified'] );
 
 Route::get('/accounts/confirmed_account', function () {
     return view('accounts.confirmed_account');
-})->name('account_confirmed_get')->middleware('auth');
+})->name('account_confirmed_get')->middleware( ['auth', 'verified'] );
 
-Route::post('/person_data', 'App\Http\Controllers\AccountTypeController@create')->name('create_person_data')->middleware('auth');
+Route::post('/person_data', 'App\Http\Controllers\AccountTypeController@create')->name('create_person_data')->middleware( ['auth', 'verified'] );
 
 Route::get('/accounts/confirmed_account_last', function () {
     return view('accounts.confirmed_account_last');
-})->name('account_last_confirmed')->middleware('auth');
+})->name('account_last_confirmed')->middleware( ['auth', 'verified'] );
 
 // Route::get('/', function () {
 //     return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );
