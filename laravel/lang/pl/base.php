@@ -74,6 +74,8 @@ return [
     'if_you_dont_receinve_email' => 'Jeżeli nie otrzymałeś wiadomosći Email.',
     'resend_verification_email' => 'naciśnij aby wysłać ponownie Email weryfikacyjny',
     'verify_your_email_address' => 'Zweryfikuj swój adres Email',
+    'fresh_verification_link' => 'Nowy link weryfikacyjny został wysłany na twój adress Email.',
+
     'login_in'               => 'Jesteś zalogowany',
     'account_congratulation' => 'Super, wybrałeś konto ',
     'account_last_step'      => 'Jeszcze tylko potrzebujemy kilku twoich danych do zakończenia procesu',
