@@ -1,114 +1,124 @@
 {
-    "standard" : {
-        "name": "Standard",
-        "description" : {
-            "can" : {
-                "status" : "can",
-                "title" : "Co bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
+    "button_account_choice" : "Wybieram",
+    "accounts_types" : {
+        "standard" : {
+            "id" : "standard",
+            "name": "Standard",
+            "description" : {
+                "can" : {
+                    "status" : "can",
+                    "title" : "Co bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                },
+                "can_not" : {
+                    "status" : "can_not",
+                    "title" : "Co nie bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                }
             },
-            "can_not" : {
-                "status" : "can_not",
-                "title" : "Co nie bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
+            "price" : {
+                "discount" : true,
+                "old_price" : "200zł",
+                "new_price" : "0zł"
             }
         },
-        "price" : {
-            "discount" : true,
-            "old_price" : "200zł",
-            "new_price" : "0zł"
+        "standard_pro" : {
+            "id" : "standard_pro",
+            "name": "Standard PRO",
+            "description" : {
+                "can" : {
+                    "status" : "can",
+                    "title" : "Co bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                },
+                "can_not" : {
+                    "status" : "can_not",
+                    "title" : "Co nie bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                }
+            },
+            "price" : {
+                "discount" : true,
+                "old_price" : "200zł",
+                "new_price" : "0zł"
+            }
+        },
+        "courier" : {
+            "id" : "courier",
+            "name": "Kurier",
+            "description" : {
+                "can" : {
+                    "status" : "can",
+                    "title" : "Co bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                },
+                "can_not" : {
+                    "status" : "can_not",
+                    "title" : "Co nie bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                }
+            },
+            "price" : {
+                "discount" : true,
+                "old_price" : "200zł",
+                "new_price" : "0zł"
+            }
+        },
+        "courier_pro" : {
+            "id" : "courier_pro",
+            "name": "Kurier PRO",
+            "description" : {
+                "can" : {
+                    "status" : "can",
+                    "title" : "Co bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                },
+                "can_not" : {
+                    "status" : "can_not",
+                    "title" : "Co nie bedziesz mógł robić",
+                    "options" : [
+                        "one",
+                        "two",
+                        "three"
+                    ]
+                }
+            },
+            "price" : {
+                "discount" : true,
+                "old_price" : "200zł",
+                "new_price" : "0zł"
+            }
         }
     },
-    "standard_pro" : {
-        "name": "Standard PRO",
-        "description" : {
-            "can" : {
-                "status" : "can",
-                "title" : "Co bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
-            },
-            "can_not" : {
-                "status" : "can_not",
-                "title" : "Co nie bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
-            }
-        },
-        "price" : {
-            "discount" : true,
-            "old_price" : "200zł",
-            "new_price" : "0zł"
-        }
-    },
-    "kurier" : {
-        "name": "Kurier",
-        "description" : {
-            "can" : {
-                "status" : "can",
-                "title" : "Co bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
-            },
-            "can_not" : {
-                "status" : "can_not",
-                "title" : "Co nie bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
-            }
-        },
-        "price" : {
-            "discount" : true,
-            "old_price" : "200zł",
-            "new_price" : "0zł"
-        }
-    },
-    "kurier_pro" : {
-        "name": "Kurier PRO",
-        "description" : {
-            "can" : {
-                "status" : "can",
-                "title" : "Co bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
-            },
-            "can_not" : {
-                "status" : "can_not",
-                "title" : "Co nie bedziesz mógł robić",
-                "options" : [
-                    "one",
-                    "two",
-                    "three"
-                ]
-            }
-        },
-        "price" : {
-            "discount" : true,
-            "old_price" : "200zł",
-            "new_price" : "0zł"
-        }
+    "errors" : {
+        "account_choice" : "Wybierz rodzaj konta*"
     }
 }

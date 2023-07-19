@@ -2,11 +2,13 @@
     "home" : {
         "name" : "Strona główna",
         "link" : "./",
+        "short" : "home",
         "type" : "standard"
     },
     "accounts" : {
         "name" : "Wybierz typ konta",
-        "link" : "./accounts/account_register",
+        "link" : "accounts/account_register",
+        "short" : "account_register",
         "type" : "standard"
     },
     "declaration" : {
@@ -16,11 +18,13 @@
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "Deklaracja CN22",
-                "link" : "cn22"
+                "link" : "cn22",
+                "short" : "cn22"
             },
             "ele2" : {
                 "name" : "Deklaracja CN23",
-                "link" : "cn23"
+                "link" : "cn23",
+                "short" : "cn23"
             }
         }
     }

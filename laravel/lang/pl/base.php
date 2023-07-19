@@ -68,4 +68,33 @@ return [
     'confirm_new_password' => 'Potwierdź nowe hasło',
     'throttled'            => 'Ostatnio już wysłałeś prośbę o zresetowanie hasła. Sprawdź swoją skrzynkę e-mailową. Jeśli nie otrzymasz naszej wiadomości, spróbuj ponownie później.',
     'throttled_request'    => 'Przekroczono limit prób. Poczekaj kilka minut i spróbuj ponownie.',
+
+
+    'check_email_info'       => 'Zanim przejdziesz dalej, sprawdź, czy w wiadomości e-mail znajduje się link weryfikacyjny.',
+    'if_you_dont_receinve_email' => 'Jeżeli nie otrzymałeś wiadomosći Email.',
+    'resend_verification_email' => 'naciśnij aby wysłać ponownie Email weryfikacyjny',
+    'verify_your_email_address' => 'Zweryfikuj swój adres Email',
+    'fresh_verification_link' => 'Nowy link weryfikacyjny został wysłany na twój adress Email.',
+
+    'login_in'               => 'Jesteś zalogowany',
+    'account_congratulation' => 'Super, wybrałeś konto ',
+    'account_last_step'      => 'Jeszcze tylko potrzebujemy kilku twoich danych do zakończenia procesu',
+    'accounts_form'          => 'Uzupełnij brakujące dane',
+    'name'                   => 'Imię',
+    'surname'                => 'Nazwisko',
+    'phone_number'           => 'Numer telefonu',
+    'send'                   => 'Wyślij',
+    'd_o_b'                  => 'Data urodzenia',
+    'company_section_title'  => 'Dane firmy:',
+    'company_name'           => 'Nazwa',
+    'company_address'         => 'Adres( ulica, numer )',
+    'company_phone_number'   => 'Numer telefonu',
+    'company_post_code'      => 'Kod pocztowy',
+    'company_city'           => 'Miasto',
+    'company_country'        => 'Kraj',
+    'thank_you_for_filled_account' => 'Dziekujemy za uzupełnienie brakujących danych',
+    'you_account_is_ready'   => 'Twoje konto jest gortowe do użycia',
+    'back_to_home_page'      => 'Przejdź do strony głównej',
+    'you_account_is_ready_redirected' => 'Za chwile nastapi przekierowanie do strony głównej'
+
 ];

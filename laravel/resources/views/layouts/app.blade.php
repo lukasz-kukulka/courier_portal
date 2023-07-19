@@ -40,11 +40,12 @@
                     <!-- Left Side Of Navbar -->
 
                     <ul class="navbar-nav me-auto">
+                        @auth
                         @foreach ( $menuData as $item )
 
                             @if ( $item['type'] == "standard" )
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ $item['link'] }}">{{ $item['name'] }}</a>
+                                    <a class="nav-link" href="{{ route( $item['short'] ) }}">{{ $item['name'] }}</a>
                                 </li>
                             @elseif ( $item['type'] == "dropdown" )
                                 <li class="nav-item dropdown">
@@ -53,13 +54,14 @@
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     @foreach ( $item[ 'dropdown_elements' ] as $subelement )
-                                        <a class="dropdown-item" href="{{ DIRECTORY_SEPARATOR . $subelement['link'] }}">{{ $subelement['name'] }}</a>
+                                        <a class="dropdown-item" href="{{ route( $subelement['short'] ) }}">{{ $subelement['name'] }}</a>
                                         <div class="dropdown-divider"></div>
                                     @endforeach
                                     </div>
                                 </li>
                             @endif
                         @endforeach
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
