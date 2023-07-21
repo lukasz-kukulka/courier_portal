@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('post_code_receiving');
             $table->string('phone_number', 15 );
             $table->string('email');
-            $table->unsignedBigInteger('cargo_parameters'); // klucz obcy
+            $table->date('expect_sending_date');
+            $table->date('experience_date');
             $table->timestamps();
         });
     }
