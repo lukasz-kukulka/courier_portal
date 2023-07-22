@@ -72,13 +72,6 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-        //$user->sendEmailVerificationNotification();
-
         return $user;
-    }
-
-    protected function registered( Request $request, $user) {
-        $user->notify(new VerifyEmail);
     }
 }

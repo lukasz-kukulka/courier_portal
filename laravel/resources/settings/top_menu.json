@@ -1,14 +1,17 @@
 {
     "home" : {
         "name" : "Strona główna",
-        "link" : "./",
-        "short" : "home",
+        "route_name" : "home",
         "type" : "standard"
     },
     "accounts" : {
         "name" : "Wybierz typ konta",
-        "link" : "accounts/account_register",
-        "short" : "account_register",
+        "route_name" : "account_register",
+        "type" : "standard"
+    },
+    "user_announcement" : {
+        "name" : "Dodaj ogłoszenie",
+        "route_name" : "user_announcement.create",
         "type" : "standard"
     },
     "declaration" : {
@@ -19,12 +22,12 @@
             "ele1" : {
                 "name" : "Deklaracja CN22",
                 "link" : "cn22",
-                "short" : "cn22"
+                "route_name" : "cn22"
             },
             "ele2" : {
                 "name" : "Deklaracja CN23",
                 "link" : "cn23",
-                "short" : "cn23"
+                "route_name" : "cn23"
             }
         }
     }
