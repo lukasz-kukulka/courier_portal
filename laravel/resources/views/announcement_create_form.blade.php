@@ -3,6 +3,10 @@
 @section('add_header')
     {{-- <script src="{{ asset('js/accounts_scripts.js') }}"></script> --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/accounts_form_styles.css') }}"> --}}
+    @php
+        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
+        $directionsData = $JsonParserController->directionsAction();
+    @endphp
 @endsection
 
 @section('content')
@@ -16,10 +20,15 @@
                         <div class="card-body">
                             <form action="{{ route('user_announcement.store') }}" method="POST" id="user_announcement_form">
                                 @csrf
-                                <x-input_form_component name="title" type="text" />
-                                <textarea name="comment">TEST</textarea>
-                                <x-input_form_component name="annuncement" type="text" />
-                                <x-input_form_component name="XXXXXX" type="text" />
+                                <x-input_form_component name="announcement_title" type="text" />
+                                <x-input_form_component name="annuncement_contetnt" type="textarea" />
+                                {{-- {{var_dump( $directionsData )}} --}}
+                                <x-input_form_component name="direction" type="select" :options="$directionsData" />
+                                <x-input_form_component name="post_code_sending" type="text" />
+                                <x-input_form_component name="post_code_receiving" type="text" />
+                                <x-input_form_component name="phone_number" type="text" />
+                                <x-input_form_component name="expect_sending_date" type="date" />
+                                <x-input_form_component name="experience_date" type="date" />
                             </form>
                         </div>
                     </div>

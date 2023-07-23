@@ -31,7 +31,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">{{ __('base.accounts_form') }}</div>
-                        {{-- {{ var_dump( $accountDate ) }} --}}
+
                         <div class="card-body">
                             <div class="confirm_info_account">{{ __('base.account_congratulation') . $account_name }}</div>
                             <div class="confirm_info_step">{{ __('base.account_last_step') }}</div><br>
