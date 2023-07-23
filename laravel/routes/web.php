@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
+use App\Http\Controllers\UserAnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,26 +56,13 @@ Route::get('/accounts/confirmed_account', function () {
     return view('accounts.confirmed_account');
 })->name('account_confirmed_get')->middleware( ['auth', 'verified'] );
 
-Route::post('/person_data', 'App\Http\Controllers\AccountTypeController@create')->name('create_person_data')->middleware( ['auth', 'verified'] );
+Route::post('/person_data', 'App\Http\Controllers\CustomUserController@create')->name('create_person_data')->middleware( ['auth', 'verified'] );
 
 Route::get('/accounts/confirmed_account_last', function () {
     return view('accounts.confirmed_account_last');
 })->name('account_last_confirmed')->middleware( ['auth', 'verified'] );
 
-// Route::get('/', function () {
-//     return response( '<h1>xxxxx</h1>' )->header( 'Content-Type', 'text/plain' );
-// });
+// ############################### OTHERS ########################################endregion
 
-// Route::get('/post/{id}', function ($id) {
-//     dd( $id );
-//     return response( 'Post' . $id );
-// })->where( 'id', '[0-9]+' );
-
-// Route::get('search', function ( Request $request ) {
-//     dd( $request );
-//     return response( 'Post' . $id );
-// })->where( 'id', '[0-9]+' );
-
-// Auth::routes();
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/announcement_create_form', 'App\Http\Controllers\UserAnnouncementController@create')->name('user_announcement')->middleware( ['auth', 'verified'] );
+Route::resource('user_announcement', UserAnnouncementController::class)->middleware(['auth', 'verified']);

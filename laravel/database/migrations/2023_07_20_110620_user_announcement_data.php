@@ -11,10 +11,14 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->unsignedBigInteger('author'); // klucz obcy
-            $table->longText( 'announcement_content' );
-            $table->string('post_code_pl');
-            $table->string('post_code_uk');
-            $table->unsignedBigInteger('cargo_type'); // klucz obcy
+            $table->longText( 'order_description' )->nullable();
+            $table->string('direction');
+            $table->string('post_code_sending');
+            $table->string('post_code_receiving');
+            $table->string('phone_number', 15 );
+            $table->string('email');
+            $table->date('expect_sending_date');
+            $table->date('experience_date');
             $table->timestamps();
         });
     }
