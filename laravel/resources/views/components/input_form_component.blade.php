@@ -2,8 +2,11 @@
 <div>
     <div class="row mb-3">
         <label for="{{ $name }}" class="col-md-4 col-form-label text-md-end">{{ __('base.'.$name) }}</label>
-
+        @php $default_phone_number = null @endphp
         <div class="col-md-6">
+            @if ( $name === 'phone_number' )
+                @php $default_phone_number = Auth::user()->phone_number; @endphp
+            @endif
             @if ( $type === 'textarea' )
                 <textarea id="{{ $name }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" required autocomplete="{{ $name }}" rows="3">{{ old( $name ) }}</textarea>
             @elseif ( $type === 'select' )
@@ -13,8 +16,9 @@
                         <option value="{{ $direction[ 'name' ] }}">{{ $direction[ 'print_name' ] }}</option>
                     @endforeach
                 </select>
+
             @else
-                <input id="{{ $name }}" type="{{ $type }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" value="{{ old( $name ) }}" required autocomplete="{{ $name }}">
+                <input id="{{ $name }}" type="{{ $type }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" value="{{ old( $name, $default_phone_number ) }}" required autocomplete="{{ $name }}">
             @endif
             @error( $name )
                 <span class="invalid-feedback" role="alert">
