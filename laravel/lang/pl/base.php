@@ -84,6 +84,8 @@ return [
     'surname'                => 'Nazwisko',
     'phone_number'           => 'Numer telefonu',
     'send'                   => 'Wyślij',
+    'next'                   => 'Dalej',
+    'prev'                   => 'Powrót',
     'd_o_b'                  => 'Data urodzenia',
     'company_section_title'  => 'Dane firmy:',
     'company_name'           => 'Nazwa',
@@ -96,12 +98,30 @@ return [
     'you_account_is_ready'   => 'Twoje konto jest gortowe do użycia',
     'back_to_home_page'      => 'Przejdź do strony głównej',
     'you_account_is_ready_redirected' => 'Za chwile nastapi przekierowanie do strony głównej',
-    'announcement_title'    => 'Tytuł ogłoszenia',
-    'annuncement_contetnt' => 'Treść ogłoszenia',
+    'title'    => 'Tytuł ogłoszenia',
+    'order_description' => 'Treść ogłoszenia',
     'direction'            => 'Trasa',
     'post_code_sending'    => 'Kod pocztowy nadania',
     'post_code_receiving' => 'Kod pocztowy dostawy',
     'expect_sending_date'  => 'Orientacyjna data wysłania',
     'experience_date' => 'Wazność ogłoszenia',
+    'email' => "Adres Email",
+    'user_announcement_card_name' => 'Generator ogłoszenia',
+    'looking_transport_for' => 'Szukam transportu dla:',
+
+
+    //  #######################   CARGO  ####################
+    'parcel' => "Paczek",
+    'pallet' => "Palet",
+    'human' => "Osób",
+    'animal' => "Zwierząt",
+    'other' => "Innch rzeczy",
+    'weight' => "Kg.",
+    'length' => "Cm.",
+    'width' => "Cm.",
+    'height' => "Cm.",
+    'adult' => "Osób dorosłych",
+    'kids' => "Dzieci",
+
 
 ];

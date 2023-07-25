@@ -10,6 +10,7 @@ class JsonParserController extends Controller
         $this->menu_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'top_menu.json');
         $this->account_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'accounts.json');
         $this->directions_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'directions.json');
+        $this->cargo_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'cargo.json');
 
     }
 
@@ -30,7 +31,14 @@ class JsonParserController extends Controller
         return $jsonData;
     }
 
+    public function cargoAction() {
+        $jsonData = file_get_contents( $this->cargo_json_file );
+        $json = json_decode( $jsonData, true );
+        return $json;
+    }
+
     private $menu_json_file;
     private $account_json_file;
     private $directions_json_file;
+    private $cargo_json_file;
 }
