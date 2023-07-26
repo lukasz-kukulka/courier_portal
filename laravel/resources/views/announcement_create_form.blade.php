@@ -29,6 +29,7 @@
                                 <x-input_form_component name="expect_sending_date" type="date" />
                                 <x-input_form_component name="experience_date" type="date" />
                                 <div class="col-md-14 border-bottom"></div>
+
                                 <div>
                                     <div class="row mb-3">
                                         <label class="form-label col-md-4 d-flex align-items-center justify-content-end" for="looking_transport_for">{{ __('base.looking_transport_for') }}</label>
@@ -36,7 +37,7 @@
                                             @foreach ( $cargoData[ 'cargo_types' ] as $cargo_type )
                                                 <div class="form-outline row mb-3">
                                                     <div class="col-md-8">
-                                                        <br><input type="number" id="{{ $cargo_type[ 'id' ] }}" class="form-control {{ "control_cargo_" . $cargo_type[ 'id' ] }}" value="0"/>
+                                                        <br><input name="{{ $cargo_type[ 'id' ] }}" type="number" id="{{ $cargo_type[ 'id' ] }}" class="form-control {{ "control_cargo_" . $cargo_type[ 'id' ] }}" value="0"/>
                                                     </div>
                                                     <label class="form-label col-md-4 mt-1" for="{{ $cargo_type[ 'id' ] }}"><br>{{ __( 'base.' . $cargo_type[ 'id' ] )}}</label>
                                                     <br>

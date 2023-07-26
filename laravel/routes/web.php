@@ -67,4 +67,4 @@ Route::get('/accounts/confirmed_account_last', function () {
 // Route::get('/announcement_create_form', 'App\Http\Controllers\UserAnnouncementController@create')->name('user_announcement')->middleware( ['auth', 'verified'] );
 Route::resource('user_announcement', UserAnnouncementController::class)->middleware(['auth', 'verified']);
 
-Route::post('user_announcement/cargoDataGenerator', [UserAnnouncementController::class, 'cargoDataGenerator'])->middleware(['auth', 'verified'])->name('user_announcement.cargoDataGenerator');
+Route::post('cargo_generator', [UserAnnouncementController::class, 'cargoDataGenerator'])->middleware(['auth', 'verified'])->name('user_announcement.cargoDataGenerator');
