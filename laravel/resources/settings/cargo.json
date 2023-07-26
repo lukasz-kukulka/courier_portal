@@ -1,0 +1,87 @@
+{
+    "cargo_types" : {
+        "parcel" : {
+            "id" : "parcel",
+            "params" : {
+                "param1" : {
+                    "id": "weight",
+                    "type" : "number"
+                },
+                "param2" : {
+                    "id": "length",
+                    "type" : "number"
+                },
+                "param3" : {
+                    "id": "width",
+                    "type" : "number"
+                },
+                "param4" : {
+                    "id": "height",
+                    "type" : "number"
+                }
+            }
+        },
+        "human" : {
+            "id" : "human",
+            "params" : {
+                "param1" : {
+                    "id": "adult",
+                    "type" : "number"
+                },
+                "param2" : {
+                    "id": "kids",
+                    "type" : "number"
+                }
+            }
+        },
+        "pallet" : {
+            "id" : "pallet",
+            "params" : {
+                "param1" : {
+                    "id": "weight",
+                    "type" : "number"
+                },
+                "param2" : {
+                    "id": "length",
+                    "type" : "number"
+                },
+                "param3" : {
+                    "id": "width",
+                    "type" : "number"
+                },
+                "param4" : {
+                    "id": "height",
+                    "type" : "number"
+                }
+            }
+        },
+        "animal" : {
+            "id" : "animal",
+            "params" : {
+                "param1" : {
+                    "id": "animal_type",
+                    "type" : "text"
+                },
+                "param2" : {
+                    "id": "weight",
+                    "type" : "number"
+                },
+                "param3" : {
+                    "id": "short_animal_description",
+                    "type" : "textarea",
+                    "textarea_size" : 3
+                }
+            }
+        },
+        "other" : {
+            "id" : "other",
+            "params" : {
+                "param1" : {
+                    "id": "description",
+                    "type" : "textarea",
+                    "textarea_size" : 3
+                }
+            }
+        }
+    }
+}
