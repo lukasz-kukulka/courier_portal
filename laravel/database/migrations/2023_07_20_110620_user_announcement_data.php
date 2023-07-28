@@ -9,9 +9,7 @@ return new class extends Migration
     public function up(): void {
         Schema::create('user_announcement_data', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->unsignedBigInteger('author'); // klucz obcy
-            $table->longText( 'order_description' )->nullable();
             $table->string('direction');
             $table->string('post_code_sending');
             $table->string('post_code_receiving');
@@ -19,6 +17,9 @@ return new class extends Migration
             $table->string('email');
             $table->date('expect_sending_date');
             $table->date('experience_date');
+            $table->string('title');
+            $table->longText( 'order_description_short' );
+            $table->longText( 'order_description_long' );
             $table->timestamps();
         });
     }

@@ -33,11 +33,11 @@
                                             }
                                         }
                                     @endphp
-                                    <x-cargo_details_component :name="$cargo_type[ 'id' ]" :number="$_POST[ $cargo_type[ 'id' ] ]" :params="json_encode( $cargo_type[ 'params' ] )" />
-
+                                    @if ( $_POST[ $cargo_type[ 'id' ] ] > 0 )
+                                        <x-cargo_details_component :name="$cargo_type[ 'id' ]" :number="$_POST[ $cargo_type[ 'id' ] ]" :params="json_encode( $cargo_type[ 'params' ] )" />
+                                    @endif
                                 @endforeach
                                 <input type="hidden" name="quantity" value="{{ json_encode( $items_quantity ) }}">
-                                {{-- <input type="hidden" name="{{ $cargo_type[ 'id' ] . "_quantity" }}" value="{{ $_POST[ $cargo_type[ 'id' ] ] }}"> --}}
                                 <input type="hidden" name="json_data" value="{{ json_encode( $params_data ) }}">
                                 <div class="row mb-0">
                                     <div class="col text-end">
