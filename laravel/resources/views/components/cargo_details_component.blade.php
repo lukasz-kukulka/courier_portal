@@ -24,7 +24,6 @@
                         @foreach ( $params as $param )
                             <td>
                                 <div class="d-flex align-items-center">
-
                                 @if ( $param[ 'type' ] === "number" )
                                     <input name="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" type="number" id="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" class="form-control" value="0"/>
                                 @elseif ( $param[ 'type' ] === "text" )
