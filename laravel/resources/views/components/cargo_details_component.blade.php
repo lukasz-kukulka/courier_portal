@@ -25,19 +25,18 @@
                             <td>
                                 <div class="d-flex align-items-center">
                                 @if ( $param[ 'type' ] === "number" )
-                                    <input name="{{ $name }}" type="number" id="{{ $name }}" class="form-control" value="0"/>
+                                    <input name="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" type="number" id="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" class="form-control" value="0"/>
                                 @elseif ( $param[ 'type' ] === "text" )
-                                    <input name="{{ $name }}" type="text" id="{{ $name }}" class="form-control"/>
+                                    <input name="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" type="text" id="{{ $name . "_" . $param[ 'id' ] ."_". $i}}" class="form-control"/>
                                 @elseif ( $param[ 'type' ] === "textarea" )
-                                    <textarea id="{{ $name }}" class="form-control" name="{{ $name }}" rows="{{ $param[ 'textarea_size' ] }}"></textarea>
+                                    <textarea id="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" class="form-control" name="{{ $name . "_" . $param[ 'id' ] ."_". $i }}" rows="{{ $param[ 'textarea_size' ] }}"></textarea>
                                 @endif
-                                <label class="form-label mt-1" for="{{ $name }}">&nbsp{{__( 'base.' . $param[ 'id' ] )}}</label>
+                                <label class="form-label mt-1" for="{{ $param[ 'id' ] ."_". $i }}">&nbsp{{__( 'base.' . $param[ 'id' ] )}}</label>
                                 </div>
                             </td>
                         @endforeach
                         </tr>
                     @endfor
-
             </tbody>
           </table>
     </div>

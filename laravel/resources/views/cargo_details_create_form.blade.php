@@ -18,11 +18,27 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.user_announcement_card_name') }}</div>
                         <div class="card-body">
-                            <form action="{{ route('user_announcement.store') }}" method="POST" id="user_announcement_form_cargo_details">
+                            <form action="{{ route('user_announcement.summary') }}" method="POST" id="user_announcement_form_cargo_details">
                                 @csrf
+                                @php
+                                    $params_data = [];
+                                    $items_quantity = [];
+                                @endphp
                                 @foreach ($cargoData[ 'cargo_types' ] as $cargo_type )
+                                    @php
+                                        if ( $_POST[ $cargo_type[ 'id' ] ] > 0 ) {
+                                            array_push( $items_quantity, [ $cargo_type[ 'id' ] => $_POST[ $cargo_type[ 'id' ] ] ] );
+                                            for ( $i = 0; $i < $_POST[ $cargo_type[ 'id' ] ]; $i++ ) {
+                                                array_push( $params_data, [  $cargo_type ] );
+                                            }
+                                        }
+                                    @endphp
                                     <x-cargo_details_component :name="$cargo_type[ 'id' ]" :number="$_POST[ $cargo_type[ 'id' ] ]" :params="json_encode( $cargo_type[ 'params' ] )" />
+
                                 @endforeach
+                                <input type="hidden" name="quantity" value="{{ json_encode( $items_quantity ) }}">
+                                {{-- <input type="hidden" name="{{ $cargo_type[ 'id' ] . "_quantity" }}" value="{{ $_POST[ $cargo_type[ 'id' ] ] }}"> --}}
+                                <input type="hidden" name="json_data" value="{{ json_encode( $params_data ) }}">
                                 <div class="row mb-0">
                                     <div class="col text-end">
                                         <button type="submit" class="btn btn-primary">
@@ -30,6 +46,7 @@
                                         </button>
                                     </div>
                                 </div>
+
 
                             </form>
                         </div>
