@@ -140,4 +140,192 @@ return [
     "short_animal_description" => "",
     "short_animal_description_base" => "Krótki opis zwierzęcia",
 
+    "announcement_title" => "Szukam transportu dla: ",
+    "pl_uk_direction" => "Na trasie Polska -> Anglia.\n",
+    "uk_pl_direction" => "Na trasie Anglia -> Polska.\n",
+    "announcement_date" => "Najbardziej pasującym dniem na transport w/w jest: ",
+    "elastic_date" => "Jestem również otwarty/a na inne dni do transportu.\n",
+    "post_code_send" => "Kod pocztowy wysyłki: ",
+    "post_code_delivery" => "Kod pocztowy dostawy: ",
+    //  #######################   DIFERENT FORMS  ####################
+
+    "parcel_nominative_singular" => "paczka",
+    "parcel_nominative_plural" => "paczki",
+
+    "parcel_nominative_singular_capital" => "Paczka",
+    "parcel_nominative_plural_capital" => "Paczki",
+
+    "parcel_genitive_singular" => "paczki",
+    "parcel_genitive_plural" => "paczek",
+
+    "parcel_genitive_singular_capital" => "Paczki",
+    "parcel_genitive_plural_capital" => "Paczek",
+
+    "parcel_dative_singular" => "paczce",
+    "parcel_dative_plural" => "paczkom",
+
+    "parcel_dative_singular_capital" => "Paczce",
+    "parcel_dative_plural_capital" => "Paczkom",
+
+    "parcel_accusative_singular" => "paczkę",
+    "parcel_accusative_plural" => "paczki",
+
+    "parcel_accusative_singular_capital" => "Paczkę",
+    "parcel_accusative_plural_capital" => "Paczki",
+
+    "parcel_instrumental_singular" => "paczka",
+    "parcel_instrumental_plural" => "paczkami",
+
+    "parcel_instrumental_singular_capital" => "Paczka",
+    "parcel_instrumental_plural_capital" => "Paczkami",
+
+    "parcel_locative_singular" => "paczce",
+    "parcel_locative_plural" => "paczkach",
+
+    "parcel_locative_singular_capital" => "Paczce",
+    "parcel_locative_plural_capital" => "Paczkach",
+
+    "human_nominative_singular" => "osoba",
+    "human_nominative_singular_capital" => "Osoba",
+
+    "human_genitive_singular" => "osoby",
+    "human_genitive_singular_capital" => "Osob",
+
+    "human_dative_singular" => "osobie",
+    "human_dative_singular_capital" => "Osobom",
+
+    "human_accusative_singular" => "osobę",
+    "human_accusative_singular_capital" => "Osobę",
+
+    "human_instrumental_singular" => "osobą",
+    "human_instrumental_singular_capital" => "Osobą",
+
+    "human_locative_singular" => "osobie",
+    "human_locative_singular_capital" => "Osobom",
+
+    "human_nominative_plural" => "osoby",
+    "human_nominative_plural_capital" => "Osoby",
+
+    "human_genitive_plural" => "osób",
+    "human_genitive_plural_capital" => "Osób",
+
+    "human_dative_plural" => "osobom",
+    "human_dative_plural_capital" => "Osobom",
+
+    "human_accusative_plural" => "osoby",
+    "human_accusative_plural_capital" => "Osobę",
+
+    "human_instrumental_plural" => "osobami",
+    "human_instrumental_plural_capital" => "Osobami",
+
+    "human_locative_plural" => "osobach",
+    "human_locative_plural_capital" => "Osobach",
+
+    "pallet_nominative_singular" => "paleta",
+    "pallet_nominative_singular_capital" => "Paleta",
+
+    "pallet_genitive_singular" => "palety",
+    "pallet_genitive_singular_capital" => "Palety",
+
+    "pallet_dative_singular" => "palecie",
+    "pallet_dative_singular_capital" => "Palecie",
+
+    "pallet_accusative_singular" => "paletę",
+    "pallet_accusative_singular_capital" => "Paletę",
+
+    "pallet_instrumental_singular" => "paletą",
+    "pallet_instrumental_singular_capital" => "Paletą",
+
+    "pallet_locative_singular" => "palecie",
+    "pallet_locative_singular_capital" => "Palecie",
+
+    "pallet_nominative_plural" => "palety",
+    "pallet_nominative_plural_capital" => "Palety",
+
+    "pallet_genitive_plural" => "palet",
+    "pallet_genitive_plural_capital" => "Palet",
+
+    "pallet_dative_plural" => "paletom",
+    "pallet_dative_plural_capital" => "Paletom",
+
+    "pallet_accusative_plural" => "palety",
+    "pallet_accusative_plural_capital" => "Palety",
+
+    "pallet_instrumental_plural" => "paletami",
+    "pallet_instrumental_plural_capital" => "Paletami",
+
+    "pallet_locative_plural" => "paletach",
+    "pallet_locative_plural_capital" => "Paletach",
+
+    "animal_nominative_singular" => "zwierzę",
+    "animal_nominative_singular_capital" => "Zwierzę",
+
+    "animal_genitive_singular" => "zwierzęcia",
+    "animal_genitive_singular_capital" => "Zwierzęcia",
+
+    "animal_dative_singular" => "zwierzęciu",
+    "animal_dative_singular_capital" => "Zwierzęciu",
+
+    "animal_accusative_singular" => "zwierzę",
+    "animal_accusative_singular_capital" => "Zwierzę",
+
+    "animal_instrumental_singular" => "zwierzęciem",
+    "animal_instrumental_singular_capital" => "Zwierzęciem",
+
+    "animal_locative_singular" => "zwierzęciu",
+    "animal_locative_singular_capital" => "Zwierzęciu",
+
+    "animal_nominative_plural" => "zwierzęta",
+    "animal_nominative_plural_capital" => "Zwierzęta",
+
+    "animal_genitive_plural" => "zwierząt",
+    "animal_genitive_plural_capital" => "Zwierząt",
+
+    "animal_dative_plural" => "zwierzętom",
+    "animal_dative_plural_capital" => "Zwierzętom",
+
+    "animal_accusative_plural" => "zwierzęta",
+    "animal_accusative_plural_capital" => "Zwierzęta",
+
+    "animal_instrumental_plural" => "zwierzętami",
+    "animal_instrumental_plural_capital" => "Zwierzętami",
+
+    "animal_locative_plural" => "zwierzętach",
+    "animal_locative_plural_capital" => "Zwierzętach",
+
+    "other_nominative_singular" => "niestandardowa przesyłka",
+    "other_nominative_singular_capital" => "Niestandardowa przesyłka",
+
+    "other_genitive_singular" => "niestandardowej przesyłki",
+    "other_genitive_singular_capital" => "Niestandardowej przesyłki",
+
+    "other_dative_singular" => "niestandardowej przesyłce",
+    "other_dative_singular_capital" => "Niestandardowej przesyłce",
+
+    "other_accusative_singular" => "niestandardową przesyłkę",
+    "other_accusative_singular_capital" => "Niestandardową przesyłkę",
+
+    "other_instrumental_singular" => "niestandardową przesyłką",
+    "other_instrumental_singular_capital" => "Niestandardową przesyłką",
+
+    "other_locative_singular" => "niestandardowej przesyłce",
+    "other_locative_singular_capital" => "Niestandardowej przesyłce",
+
+    "other_nominative_plural" => "niestandardowe przesyłki",
+    "other_nominative_plural_capital" => "Niestandardowe przesyłki",
+
+    "other_genitive_plural" => "niestandardowych przesyłek",
+    "other_genitive_plural_capital" => "Niestandardowych przesyłek",
+
+    "other_dative_plural" => "niestandardowym przesyłkom",
+    "other_dative_plural_capital" => "Niestandardowym przesyłkom",
+
+    "other_accusative_plural" => "niestandardowe przesyłki",
+    "other_accusative_plural_capital" => "Niestandardowe przesyłki",
+
+    "other_instrumental_plural" => "niestandardowymi przesyłkami",
+    "other_instrumental_plural_capital" => "Niestandardowymi przesyłkami",
+
+    "other_locative_plural" => "niestandardowych przesyłkach",
+    "other_locative_plural_capital" => "Niestandardowych przesyłkach",
 ];
