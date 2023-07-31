@@ -13,10 +13,10 @@ return new class extends Migration
         Schema::create('parcels_parameters', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('announcement_id'); // klucz obcy
-            $table->unsignedInteger('weight')->nullable();
-            $table->unsignedInteger('length')->nullable();
-            $table->unsignedInteger('width')->nullable();
-            $table->unsignedInteger('height')->nullable();
+            $table->unsignedInteger('weight');
+            $table->unsignedInteger('length');
+            $table->unsignedInteger('width');
+            $table->unsignedInteger('height');
             $table->timestamps();
         });
     }

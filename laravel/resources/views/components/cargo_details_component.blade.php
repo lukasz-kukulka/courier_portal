@@ -18,7 +18,7 @@
                     @for ( $i = 0; $i < $number; $i++ )
                         <tr>
                             @if ( $name === "human" )
-                                @php $i= $number @endphp
+                                @php $number = 0; @endphp
                             @endif
                         <th scope="{{ $name }}row" class="text-center align-middle">{{ $i + 1 }}</th>
                         @foreach ( $params as $param )
