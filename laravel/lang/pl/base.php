@@ -133,8 +133,8 @@ return [
     'kids' => "Ilość",
     'adult_base' => "Ilość osób dorosłych",
     'kids_base' => "Ilość dzieci",
-    'description_base' => 'Opis przedmiotów',
-    'description' => 'Opis',
+    'description_base' => 'Opis przedmiotu',
+    'description' => '',
     "animal_type_base" => "Rodzaj zwierzęcia",
     "animal_type" => "",
     "short_animal_description" => "",
@@ -147,6 +147,12 @@ return [
     "elastic_date" => "Jestem również otwarty/a na inne dni do transportu.\n",
     "post_code_send" => "Kod pocztowy wysyłki: ",
     "post_code_delivery" => "Kod pocztowy dostawy: ",
+
+    "announcement_title_output" => "Tytuł ogłoszenia: ",
+    "announcement_short_output" => "Ogłoszenie: ",
+    "announcement_long_output" => "Szczegóły ogłoszenia: ",
+    "summary_anounncement_title" => "Podsumowanie ogłoszenia: ",
+    "add_announcement_button" => "Dodaj ogłoszenie",
     //  #######################   DIFERENT FORMS  ####################
 
     "parcel_nominative_singular" => "paczka",
