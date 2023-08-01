@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class UserModel extends Model
 {
     use HasFactory;
+    protected $table = 'users';
     protected $fillable = [
-        'username', 'name', 'surname', 'phone_number', 'd_o_b', 'email', 'password', 'account_type', 'group'
+        'username', 'name', 'surname', 'phone_number', 'd_o_b', 'email',
+        'password', 'account_type', 'group'
     ];
 
     public function userAnnouncement() {
-        return $this->hasMany( UserAnnouncementDataModel::class, 'author');
+        return $this->hasMany( UserAnnouncement::class, 'author' );
     }
 }

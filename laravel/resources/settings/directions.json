@@ -1,0 +1,10 @@
+{
+    "pl_uk" : {
+        "name": "pl_uk_direction",
+        "print_name": "Polska -> Anglia"
+    },
+    "uk_pl" : {
+        "name": "uk_pl_direction",
+        "print_name": "Anglia -> Polska"
+    }
+}
