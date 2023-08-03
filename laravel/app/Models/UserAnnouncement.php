@@ -36,4 +36,7 @@ class UserAnnouncement extends Model
         return $this->hasMany( AnimalAnnouncement::class, 'announcement_id' );
     }
 
+    public function otherAnnouncement() {
+        return $this->hasMany( OtherAnnouncement::class, 'announcement_id' );
+    }
 }
