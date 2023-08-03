@@ -32,5 +32,8 @@ class UserAnnouncement extends Model
         return $this->hasMany( PalletAnnouncement::class, 'announcement_id' );
     }
 
+    public function animalAnnouncement() {
+        return $this->hasMany( AnimalAnnouncement::class, 'announcement_id' );
+    }
 
 }
