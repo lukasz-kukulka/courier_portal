@@ -5,17 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserCompany extends Model
+class CourierAnnouncement extends Model
 {
     use HasFactory;
-    protected $table = 'company';
+    protected $table = 'courier_announcement';
     protected $fillable = [
-        'author', 'company_name', 'company_address', 'company_post_code', 'company_city',
-        'company_country', 'company_phone_number', 'company_register_link', 'confirmed'
+        'author', 'description'
     ];
-
     public function authorUser() {
         return $this->belongsTo( User::class, 'author' );
     }
-
 }
