@@ -24,5 +24,9 @@ class UserAnnouncement extends Model
         return $this->hasMany( ParcelAnnouncement::class, 'announcement_id' );
     }
 
+    public function humanAnnouncement() {
+        return $this->hasMany( HumanAnnouncement::class, 'announcement_id' );
+    }
+
 
 }
