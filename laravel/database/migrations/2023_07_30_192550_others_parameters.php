@@ -10,13 +10,10 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('parcels_parameters', function (Blueprint $table) {
+        Schema::create('others_parameters', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('announcement_id'); // klucz obcy
-            $table->unsignedInteger('weight');
-            $table->unsignedInteger('length');
-            $table->unsignedInteger('width');
-            $table->unsignedInteger('height');
+            $table->longText( 'description' );
             $table->timestamps();
         });
     }
@@ -25,7 +22,7 @@ return new class extends Migration
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists( 'parcels_parameters' );
+        Schema::dropIfExists( 'others_parameters' );
     }
 
 };

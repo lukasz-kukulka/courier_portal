@@ -27,9 +27,10 @@
                                 @foreach ($cargoData[ 'cargo_types' ] as $cargo_type )
                                     @php
                                         if ( $_POST[ $cargo_type[ 'id' ] ] > 0 ) {
-                                            array_push( $items_quantity, [ $cargo_type[ 'id' ] => $_POST[ $cargo_type[ 'id' ] ] ] );
+                                            $quantity_element = [ 'id' => $cargo_type[ 'id' ], 'value' => $_POST[ $cargo_type[ 'id' ] ] ];
+                                            array_push( $items_quantity, $quantity_element );
                                             for ( $i = 0; $i < $_POST[ $cargo_type[ 'id' ] ]; $i++ ) {
-                                                array_push( $params_data, [  $cargo_type ] );
+                                                array_push( $params_data,  $cargo_type );
                                             }
                                         }
                                     @endphp
@@ -39,6 +40,8 @@
                                 @endforeach
                                 <input type="hidden" name="quantity" value="{{ json_encode( $items_quantity ) }}">
                                 <input type="hidden" name="json_data" value="{{ json_encode( $params_data ) }}">
+                                <input type="hidden" name="announcement_data" value="{{ json_encode( $announcement_data ) }}">
+
                                 <div class="row mb-0">
                                     <div class="col text-end">
                                         <button type="submit" class="btn btn-primary">

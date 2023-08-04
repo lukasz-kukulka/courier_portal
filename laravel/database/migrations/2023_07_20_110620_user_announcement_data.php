@@ -20,6 +20,11 @@ return new class extends Migration
             $table->string('title');
             $table->longText( 'order_description_short' );
             $table->longText( 'order_description_long' );
+            $table->unsignedInteger('parcels_quantity')->nullable();
+            $table->unsignedInteger('humans_quantity')->nullable();
+            $table->unsignedInteger('pallets_quantity')->nullable();
+            $table->unsignedInteger('animals_quantity')->nullable();
+            $table->unsignedInteger('others_quantity')->nullable();
             $table->timestamps();
         });
     }

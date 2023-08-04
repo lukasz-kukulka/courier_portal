@@ -42,6 +42,9 @@
       "include/barcodes/datamatrix.php",
       "include/barcodes/pdf417.php",
       "include/barcodes/qrcode.php"
+    ],
+    "files": [
+      "app/Helpers/translate_helpers.php"
     ]
   }
 }

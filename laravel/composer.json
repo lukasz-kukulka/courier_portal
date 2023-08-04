@@ -54,7 +54,10 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "TCPDF\\": "vendor/tecnickcom/tcpdf/"
-        }
+        },
+        "files": [
+            "app/Helpers/translate_helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
