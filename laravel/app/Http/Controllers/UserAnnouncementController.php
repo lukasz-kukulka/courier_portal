@@ -5,6 +5,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 // use App\Helpers\translate_helpers;
 use App\Models\UserAnnouncement;
+use App\Models\AnimalAnnouncement;
+use App\Models\HumanAnnouncement;
+use App\Models\OtherAnnouncement;
+use App\Models\PalletAnnouncement;
+use App\Models\ParcelAnnouncement;
+
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 class UserAnnouncementController extends Controller
@@ -17,40 +23,12 @@ class UserAnnouncementController extends Controller
 
     }
 
-    // protected function validator(array $data)
-    // {
-    //     // $validate_result = Validator::make($data, [
-    //     //     'name' => ['required', 'string', 'max:55'],
-    //     //     'surname' => ['required', 'string', 'max:55'],
-    //     //     'phone_number' => ['required', 'numeric', 'digits_between:9,14'],
-    //     //     'd_o_b' => ['required', 'date', 'before:2010-01-01'],
-    //     // ]);
-
-    //     // if ( $data['name'] == 'account_type' ) {
-    //     //     $company_validate_result = Validator::make($data, [
-    //     //         'company_name' => ['required', 'string', 'max:99'],
-    //     //         'company_address' => ['required', 'string', 'max:55'],
-    //     //         'company_phone_number' => ['required', 'numeric', 'min:9', 'max:14'],
-    //     //         'company_post_code' => ['required', 'string', 'max:9'],
-    //     //         'company_city' => ['required', 'string', 'max:44'],
-    //     //         'company_country' => ['required', 'string', 'max:44'],
-    //     //     ]);
-
-    //     //     $validate_result->merge( $company_validate_result );
-    //     // }
-    // }
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view( 'announcement_create_form' );
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request) {
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
@@ -74,7 +52,11 @@ class UserAnnouncementController extends Controller
         $userId = auth()->id();
         $announcement->authorUser()->associate( $userId );
         $announcement->save();
-        //dd( $request->all() );
+        //$announcement->id;
+    }
+
+    private function storeCargoTypes( $cargo_data ) {
+
     }
 
     protected function validator(array $data) {
@@ -82,12 +64,12 @@ class UserAnnouncementController extends Controller
         $experience_max_date = $today->modify('+30 days');
         $experience_max_date_string = $experience_max_date->format('Y-m-d');
         $validator = Validator::make($data, [
-            'post_code_sending' => [ 'required', 'string', 'max:10' ],
-            'post_code_receiving' => [ 'required', 'string', 'max:10' ],
-            'phone_number' => [ 'required', 'numeric', 'Min Digits:9', 'Max Digits:15' ],
-            'email' => [ 'required', 'email', 'max:255' ],
-            'expect_sending_date' => [ 'required', 'max:255', 'after:' . date('Y-m-d') ],
-            'experience_date' => [ 'required', 'max:255', 'before:' . $experience_max_date_string ],
+            'post_code_sending' =>      [ 'required', 'string', 'max:10' ],
+            'post_code_receiving' =>    [ 'required', 'string', 'max:10' ],
+            'phone_number' =>           [ 'required', 'numeric', 'Min Digits:9', 'Max Digits:15' ],
+            'email' =>                  [ 'required', 'email', 'max:255' ],
+            'expect_sending_date' =>    [ 'required', 'max:255', 'after:' . date('Y-m-d') ],
+            'experience_date' =>        [ 'required', 'max:255', 'before:' . $experience_max_date_string ],
         ]);
 
         return $validator;
@@ -128,8 +110,6 @@ class UserAnnouncementController extends Controller
         $serialized_data[ 'title' ] = $this->generateTitleAnnouncement( $data[ 'quantity' ] );
         $serialized_data[ 'short_announcement' ] = $this->generateShortAnnouncement( $data[ 'announcement_data' ] );
         $serialized_data[ 'announcement_details' ] = $this->generateAnnouncementDetails( $serialized_data );
-        //dd( $data );
-        //dd( $serialized_data );
         return $serialized_data;
     }
 
