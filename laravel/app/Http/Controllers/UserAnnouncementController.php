@@ -30,6 +30,7 @@ class UserAnnouncementController extends Controller
     }
 
     public function store(Request $request) {
+        //dodac validator do danych
         dd($request->all());
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
@@ -54,9 +55,10 @@ class UserAnnouncementController extends Controller
         $announcement->authorUser()->associate( $userId );
         $announcement->save();
         //$announcement->id;
+        $this->storeCargoTypes( json_decode( $data['cargo_data'] ), $announcement->id );
     }
 
-    private function storeCargoTypes( $cargo_data ) {
+    private function storeCargoTypes( $cargo_data, $announcement_id ) {
         foreach( $cargo_data as $cargo ) {
             switch ($cargo_data->id) {
                 case 'parcel':
@@ -88,6 +90,18 @@ class UserAnnouncementController extends Controller
         //     'animal_type' =>                      $data[ 'direction' ],
 
         // ] );
+    }
+
+    private function storeHumanData ( $data, $announcement_id ) {
+    }
+
+    private function storeOtherData ( $data, $announcement_id ) {
+    }
+
+    private function storePalletData ( $data, $announcement_id ) {
+    }
+
+    private function storeParcelData ( $data, $announcement_id ) {
     }
 
     protected function validator(array $data) {
