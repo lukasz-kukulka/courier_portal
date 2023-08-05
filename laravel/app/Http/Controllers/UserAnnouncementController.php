@@ -30,6 +30,7 @@ class UserAnnouncementController extends Controller
     }
 
     public function store(Request $request) {
+        dd($request->all());
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
         $announcement = new UserAnnouncement ( [
@@ -56,7 +57,37 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeCargoTypes( $cargo_data ) {
+        foreach( $cargo_data as $cargo ) {
+            switch ($cargo_data->id) {
+                case 'parcel':
+                    # code...
+                    break;
+                case 'human':
+                    # code...
+                    break;
+                case 'pallet':
+                    # code...
+                    break;
+                case 'animal':
+                    # code...
+                    break;
+                case 'other':
+                    # code...
+                    break;
+                default:
+                    # code...
+                    break;
+            }
+        }
+    }
 
+    private function storeAnimalData ( $data, $announcement_id ) {
+        //$data = json_decode( $animal_data, true);
+        // $announcement = new UserAnnouncement ( [
+        //     'announcement_id' =>                      $announcement_id,
+        //     'animal_type' =>                      $data[ 'direction' ],
+
+        // ] );
     }
 
     protected function validator(array $data) {
