@@ -97,9 +97,6 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeHumanData ( $data, $announcement_id ) {
-        // use App\Models\OtherAnnouncement;
-        // use App\Models\PalletAnnouncement;
-        // use App\Models\ParcelAnnouncement;
         $human = new HumanAnnouncement ( [
             'announcement_id' =>                      $announcement_id,
             'adult' =>                      $data->{0}->value,
@@ -110,8 +107,6 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeOtherData ( $data, $announcement_id ) {
-        // use App\Models\PalletAnnouncement;
-        // use App\Models\ParcelAnnouncement;
         $other = new OtherAnnouncement ( [
             'announcement_id' =>                      $announcement_id,
             'description' =>                      $data->{0}->value,
@@ -121,6 +116,16 @@ class UserAnnouncementController extends Controller
     }
 
     private function storePalletData ( $data, $announcement_id ) {
+        // use App\Models\ParcelAnnouncement;
+        $pallet = new PalletAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'weight' =>                      $data->{0}->value,
+            'length' =>                      $data->{1}->value,
+            'width' =>                      $data->{2}->value,
+            'height' =>                      $data->{3}->value,
+        ] );
+        $pallet->announcementId()->associate( $announcement_id  );
+        $pallet->save();
     }
 
     private function storeParcelData ( $data, $announcement_id ) {
