@@ -86,21 +86,27 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeAnimalData ( $data, $announcement_id ) {
-        // use App\Models\HumanAnnouncement;
-        // use App\Models\OtherAnnouncement;
-        // use App\Models\PalletAnnouncement;
-        // use App\Models\ParcelAnnouncement;
-        $announcement = new AnimalAnnouncement ( [
+        $animal = new AnimalAnnouncement ( [
             'announcement_id' =>                      $announcement_id,
             'animal_type' =>                      $data->{0}->value,
             'weight' => $data->{1}->value,
             'animal_description' => $data->{2}->value,
         ] );
-        $announcement->announcementId()->associate( $announcement_id  );
-        $announcement->save();
+        $animal->announcementId()->associate( $announcement_id  );
+        $animal->save();
     }
 
     private function storeHumanData ( $data, $announcement_id ) {
+        // use App\Models\OtherAnnouncement;
+        // use App\Models\PalletAnnouncement;
+        // use App\Models\ParcelAnnouncement;
+        $human = new HumanAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'adult' =>                      $data->{0}->value,
+            'kids' => $data->{1}->value,
+        ] );
+        $human->announcementId()->associate( $announcement_id  );
+        $human->save();
     }
 
     private function storeOtherData ( $data, $announcement_id ) {
