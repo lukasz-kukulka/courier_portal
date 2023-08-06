@@ -31,7 +31,7 @@ class UserAnnouncementController extends Controller
 
     public function store(Request $request) {
         //dodac validator do danych
-        dd($request->all());
+        //dd($request->all());
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
         $announcement = new UserAnnouncement ( [
@@ -55,41 +55,49 @@ class UserAnnouncementController extends Controller
         $announcement->authorUser()->associate( $userId );
         $announcement->save();
         //$announcement->id;
+        //dd( json_decode( $data['cargo_data'] ) );
         $this->storeCargoTypes( json_decode( $data['cargo_data'] ), $announcement->id );
     }
 
     private function storeCargoTypes( $cargo_data, $announcement_id ) {
         foreach( $cargo_data as $cargo ) {
-            switch ($cargo_data->id) {
+            //dd( $cargo );
+            switch ($cargo->id) {
                 case 'parcel':
-                    # code...
+                    $this->storeAnimalData( $cargo, $announcement_id );
                     break;
                 case 'human':
-                    # code...
+                    $this->storeAnimalData( $cargo, $announcement_id );
                     break;
                 case 'pallet':
-                    # code...
+                    $this->storeAnimalData( $cargo, $announcement_id );
                     break;
                 case 'animal':
-                    # code...
+                    $this->storeAnimalData( $cargo, $announcement_id );
                     break;
                 case 'other':
-                    # code...
+                    $this->storeAnimalData( $cargo, $announcement_id );
                     break;
                 default:
-                    # code...
+                    echo ( "ERROR CARGO TYPE CONTROLLER" );
                     break;
             }
         }
     }
 
     private function storeAnimalData ( $data, $announcement_id ) {
-        //$data = json_decode( $animal_data, true);
-        // $announcement = new UserAnnouncement ( [
-        //     'announcement_id' =>                      $announcement_id,
-        //     'animal_type' =>                      $data[ 'direction' ],
-
-        // ] );
+        // use App\Models\HumanAnnouncement;
+        // use App\Models\OtherAnnouncement;
+        // use App\Models\PalletAnnouncement;
+        // use App\Models\ParcelAnnouncement;
+        $announcement = new AnimalAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'animal_type' =>                      $data->{0}->value,
+            'weight' => $data->{1}->value,
+            'animal_description' => $data->{2}->value,
+        ] );
+        $announcement->announcementId()->associate( $announcement_id  );
+        $announcement->save();
     }
 
     private function storeHumanData ( $data, $announcement_id ) {
