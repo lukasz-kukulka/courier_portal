@@ -67,16 +67,16 @@ class UserAnnouncementController extends Controller
                     $this->storeAnimalData( $cargo, $announcement_id );
                     break;
                 case 'human':
-                    $this->storeAnimalData( $cargo, $announcement_id );
+                    $this->storeHumanData( $cargo, $announcement_id );
                     break;
                 case 'pallet':
-                    $this->storeAnimalData( $cargo, $announcement_id );
+                    $this->storeOtherData( $cargo, $announcement_id );
                     break;
                 case 'animal':
-                    $this->storeAnimalData( $cargo, $announcement_id );
+                    $this->storePalletData( $cargo, $announcement_id );
                     break;
                 case 'other':
-                    $this->storeAnimalData( $cargo, $announcement_id );
+                    $this->storeParcelData( $cargo, $announcement_id );
                     break;
                 default:
                     echo ( "ERROR CARGO TYPE CONTROLLER" );
