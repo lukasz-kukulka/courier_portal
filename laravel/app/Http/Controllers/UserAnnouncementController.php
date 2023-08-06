@@ -129,6 +129,15 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeParcelData ( $data, $announcement_id ) {
+            $parcel = new ParcelAnnouncement ( [
+                'announcement_id' =>                      $announcement_id,
+                'weight' =>                      $data->{0}->value,
+                'length' =>                      $data->{1}->value,
+                'width' =>                      $data->{2}->value,
+                'height' =>                      $data->{3}->value,
+            ] );
+            $parcel->announcementId()->associate( $announcement_id  );
+            $parcel->save();
     }
 
     protected function validator(array $data) {
