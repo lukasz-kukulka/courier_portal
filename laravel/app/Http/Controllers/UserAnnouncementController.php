@@ -5,6 +5,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 // use App\Helpers\translate_helpers;
 use App\Models\UserAnnouncement;
+use App\Models\AnimalAnnouncement;
+use App\Models\HumanAnnouncement;
+use App\Models\OtherAnnouncement;
+use App\Models\PalletAnnouncement;
+use App\Models\ParcelAnnouncement;
+
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 class UserAnnouncementController extends Controller
@@ -17,41 +23,15 @@ class UserAnnouncementController extends Controller
 
     }
 
-    // protected function validator(array $data)
-    // {
-    //     // $validate_result = Validator::make($data, [
-    //     //     'name' => ['required', 'string', 'max:55'],
-    //     //     'surname' => ['required', 'string', 'max:55'],
-    //     //     'phone_number' => ['required', 'numeric', 'digits_between:9,14'],
-    //     //     'd_o_b' => ['required', 'date', 'before:2010-01-01'],
-    //     // ]);
-
-    //     // if ( $data['name'] == 'account_type' ) {
-    //     //     $company_validate_result = Validator::make($data, [
-    //     //         'company_name' => ['required', 'string', 'max:99'],
-    //     //         'company_address' => ['required', 'string', 'max:55'],
-    //     //         'company_phone_number' => ['required', 'numeric', 'min:9', 'max:14'],
-    //     //         'company_post_code' => ['required', 'string', 'max:9'],
-    //     //         'company_city' => ['required', 'string', 'max:44'],
-    //     //         'company_country' => ['required', 'string', 'max:44'],
-    //     //     ]);
-
-    //     //     $validate_result->merge( $company_validate_result );
-    //     // }
-    // }
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view( 'announcement_create_form' );
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request) {
+        //dodac validator do danych
+        //dd($request->all());
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
         $announcement = new UserAnnouncement ( [
@@ -74,7 +54,90 @@ class UserAnnouncementController extends Controller
         $userId = auth()->id();
         $announcement->authorUser()->associate( $userId );
         $announcement->save();
-        //dd( $request->all() );
+        //$announcement->id;
+        //dd( json_decode( $data['cargo_data'] ) );
+        $this->storeCargoTypes( json_decode( $data['cargo_data'] ), $announcement->id );
+    }
+
+    private function storeCargoTypes( $cargo_data, $announcement_id ) {
+        foreach( $cargo_data as $cargo ) {
+            //dd( $cargo );
+            switch ($cargo->id) {
+                case 'parcel':
+                    $this->storeAnimalData( $cargo, $announcement_id );
+                    break;
+                case 'human':
+                    $this->storeHumanData( $cargo, $announcement_id );
+                    break;
+                case 'pallet':
+                    $this->storeOtherData( $cargo, $announcement_id );
+                    break;
+                case 'animal':
+                    $this->storePalletData( $cargo, $announcement_id );
+                    break;
+                case 'other':
+                    $this->storeParcelData( $cargo, $announcement_id );
+                    break;
+                default:
+                    echo ( "ERROR CARGO TYPE CONTROLLER" );
+                    break;
+            }
+        }
+    }
+
+    private function storeAnimalData ( $data, $announcement_id ) {
+        $animal = new AnimalAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'animal_type' =>                      $data->{0}->value,
+            'weight' => $data->{1}->value,
+            'animal_description' => $data->{2}->value,
+        ] );
+        $animal->announcementId()->associate( $announcement_id  );
+        $animal->save();
+    }
+
+    private function storeHumanData ( $data, $announcement_id ) {
+        $human = new HumanAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'adult' =>                      $data->{0}->value,
+            'kids' => $data->{1}->value,
+        ] );
+        $human->announcementId()->associate( $announcement_id  );
+        $human->save();
+    }
+
+    private function storeOtherData ( $data, $announcement_id ) {
+        $other = new OtherAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'description' =>                      $data->{0}->value,
+        ] );
+        $other->announcementId()->associate( $announcement_id  );
+        $other->save();
+    }
+
+    private function storePalletData ( $data, $announcement_id ) {
+        // use App\Models\ParcelAnnouncement;
+        $pallet = new PalletAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'weight' =>                      $data->{0}->value,
+            'length' =>                      $data->{1}->value,
+            'width' =>                      $data->{2}->value,
+            'height' =>                      $data->{3}->value,
+        ] );
+        $pallet->announcementId()->associate( $announcement_id  );
+        $pallet->save();
+    }
+
+    private function storeParcelData ( $data, $announcement_id ) {
+            $parcel = new ParcelAnnouncement ( [
+                'announcement_id' =>                      $announcement_id,
+                'weight' =>                      $data->{0}->value,
+                'length' =>                      $data->{1}->value,
+                'width' =>                      $data->{2}->value,
+                'height' =>                      $data->{3}->value,
+            ] );
+            $parcel->announcementId()->associate( $announcement_id  );
+            $parcel->save();
     }
 
     protected function validator(array $data) {
@@ -82,12 +145,12 @@ class UserAnnouncementController extends Controller
         $experience_max_date = $today->modify('+30 days');
         $experience_max_date_string = $experience_max_date->format('Y-m-d');
         $validator = Validator::make($data, [
-            'post_code_sending' => [ 'required', 'string', 'max:10' ],
-            'post_code_receiving' => [ 'required', 'string', 'max:10' ],
-            'phone_number' => [ 'required', 'numeric', 'Min Digits:9', 'Max Digits:15' ],
-            'email' => [ 'required', 'email', 'max:255' ],
-            'expect_sending_date' => [ 'required', 'max:255', 'after:' . date('Y-m-d') ],
-            'experience_date' => [ 'required', 'max:255', 'before:' . $experience_max_date_string ],
+            'post_code_sending' =>      [ 'required', 'string', 'max:10' ],
+            'post_code_receiving' =>    [ 'required', 'string', 'max:10' ],
+            'phone_number' =>           [ 'required', 'numeric', 'Min Digits:9', 'Max Digits:15' ],
+            'email' =>                  [ 'required', 'email', 'max:255' ],
+            'expect_sending_date' =>    [ 'required', 'max:255', 'after:' . date('Y-m-d') ],
+            'experience_date' =>        [ 'required', 'max:255', 'before:' . $experience_max_date_string ],
         ]);
 
         return $validator;
@@ -128,8 +191,6 @@ class UserAnnouncementController extends Controller
         $serialized_data[ 'title' ] = $this->generateTitleAnnouncement( $data[ 'quantity' ] );
         $serialized_data[ 'short_announcement' ] = $this->generateShortAnnouncement( $data[ 'announcement_data' ] );
         $serialized_data[ 'announcement_details' ] = $this->generateAnnouncementDetails( $serialized_data );
-        //dd( $data );
-        //dd( $serialized_data );
         return $serialized_data;
     }
 
