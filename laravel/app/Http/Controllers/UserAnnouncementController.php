@@ -110,6 +110,14 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeOtherData ( $data, $announcement_id ) {
+        // use App\Models\PalletAnnouncement;
+        // use App\Models\ParcelAnnouncement;
+        $other = new OtherAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'description' =>                      $data->{0}->value,
+        ] );
+        $other->announcementId()->associate( $announcement_id  );
+        $other->save();
     }
 
     private function storePalletData ( $data, $announcement_id ) {
