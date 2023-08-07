@@ -15,23 +15,23 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 class UserAnnouncementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-
+    public function index() {
+        return $this->showAllAnnouncement();
     }
 
-    public function create()
-    {
+    private function showAllAnnouncement() {
+        return view('announcement_list', [
+            'announcement' => UserAnnouncement::all(),
+        ]);
+    }
+
+    public function create() {
         return view( 'announcement_create_form' );
 
     }
 
     public function store(Request $request) {
         //dodac validator do danych
-        //dd($request->all());
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
         $announcement = new UserAnnouncement ( [
@@ -54,29 +54,26 @@ class UserAnnouncementController extends Controller
         $userId = auth()->id();
         $announcement->authorUser()->associate( $userId );
         $announcement->save();
-        //$announcement->id;
-        //dd( json_decode( $data['cargo_data'] ) );
         $this->storeCargoTypes( json_decode( $data['cargo_data'] ), $announcement->id );
     }
 
     private function storeCargoTypes( $cargo_data, $announcement_id ) {
         foreach( $cargo_data as $cargo ) {
-            //dd( $cargo );
             switch ($cargo->id) {
                 case 'parcel':
-                    $this->storeAnimalData( $cargo, $announcement_id );
+                    $this->storeParcelData( $cargo, $announcement_id );
                     break;
                 case 'human':
                     $this->storeHumanData( $cargo, $announcement_id );
                     break;
                 case 'pallet':
-                    $this->storeOtherData( $cargo, $announcement_id );
-                    break;
-                case 'animal':
                     $this->storePalletData( $cargo, $announcement_id );
                     break;
+                case 'animal':
+                    $this->storeAnimalData( $cargo, $announcement_id );
+                    break;
                 case 'other':
-                    $this->storeParcelData( $cargo, $announcement_id );
+                    $this->storeOtherData( $cargo, $announcement_id );
                     break;
                 default:
                     echo ( "ERROR CARGO TYPE CONTROLLER" );
@@ -116,7 +113,6 @@ class UserAnnouncementController extends Controller
     }
 
     private function storePalletData ( $data, $announcement_id ) {
-        // use App\Models\ParcelAnnouncement;
         $pallet = new PalletAnnouncement ( [
             'announcement_id' =>                      $announcement_id,
             'weight' =>                      $data->{0}->value,
@@ -129,15 +125,15 @@ class UserAnnouncementController extends Controller
     }
 
     private function storeParcelData ( $data, $announcement_id ) {
-            $parcel = new ParcelAnnouncement ( [
-                'announcement_id' =>                      $announcement_id,
-                'weight' =>                      $data->{0}->value,
-                'length' =>                      $data->{1}->value,
-                'width' =>                      $data->{2}->value,
-                'height' =>                      $data->{3}->value,
-            ] );
-            $parcel->announcementId()->associate( $announcement_id  );
-            $parcel->save();
+        $parcel = new ParcelAnnouncement ( [
+            'announcement_id' =>                      $announcement_id,
+            'weight' =>                      $data->{0}->value,
+            'length' =>                      $data->{1}->value,
+            'width' =>                      $data->{2}->value,
+            'height' =>                      $data->{3}->value,
+        ] );
+        $parcel->announcementId()->associate( $announcement_id  );
+        $parcel->save();
     }
 
     protected function validator(array $data) {
@@ -156,17 +152,14 @@ class UserAnnouncementController extends Controller
         return $validator;
     }
 
-    public function show(string $id)
-    {
+    public function show(string $id) {
         //
     }
 
-    public function cargoDataGenerator(Request $request)
-    {
+    public function cargoDataGenerator(Request $request) {
         //
         $validator = $this->validator( $request->all() );
         if ($validator->fails()) {
-            //dd($validator );
             return redirect()->back()->withErrors($validator)->withInput();
         } else {
             $data = $request->all();
@@ -244,9 +237,7 @@ class UserAnnouncementController extends Controller
 
         return $title;
     }
-    public function edit(string $id)
-    {
-        //
+    public function edit(string $id) {
     }
 
     private function serializeCargoData( $data ) {
@@ -272,16 +263,8 @@ class UserAnnouncementController extends Controller
         }
         return $serialize_table;
     }
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, string $id) {
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+    public function destroy(string $id) {
     }
 }
