@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('humans_parameters', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('announcement_id'); // klucz obcy
-            $table->unsignedInteger('kinds')->nullable();
+            $table->unsignedInteger('kids')->nullable();
             $table->unsignedInteger('adult')->nullable();
             $table->timestamps();
         });

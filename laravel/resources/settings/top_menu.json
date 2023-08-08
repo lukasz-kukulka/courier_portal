@@ -9,11 +9,6 @@
         "route_name" : "account_register",
         "type" : "standard"
     },
-    "user_announcement" : {
-        "name" : "Dodaj ogłoszenie",
-        "route_name" : "user_announcement.create",
-        "type" : "standard"
-    },
     "declaration" : {
         "name" : "Deklaracje",
         "link" : "",
@@ -28,6 +23,33 @@
                 "name" : "Deklaracja CN23",
                 "link" : "cn23",
                 "route_name" : "cn23"
+            }
+        }
+    },
+    "announcement" : {
+        "name" : "Ogłoszenia",
+        "link" : "",
+        "type" : "dropdown",
+        "dropdown_elements" : {
+            "ele1" : {
+                "name" : "Dodaj ogłoszenie( szukam transportu )",
+                "link" : "user_announcement.create",
+                "route_name" : "user_announcement.create"
+            },
+            "ele2" : {
+                "name" : "Dodaj ogłoszenie( oferuje transport )",
+                "link" : "user_announcement.create",
+                "route_name" : "user_announcement.create"
+            },
+            "ele3" : {
+                "name" : "Znajdz paczkę",
+                "link" : "user_announcement.index",
+                "route_name" : "user_announcement.index"
+            },
+            "ele4" : {
+                "name" : "Znajdz kuriera",
+                "link" : "user_announcement.create",
+                "route_name" : "user_announcement.create"
             }
         }
     }
