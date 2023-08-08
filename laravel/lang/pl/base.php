@@ -334,4 +334,11 @@ return [
 
     "other_locative_plural" => "niestandardowych przesyłkach",
     "other_locative_plural_capital" => "Niestandardowych przesyłkach",
+
+    "announcement_look_for_transport" => "Ogłoszenia - szukam kuriera",
+    "date_look_for_announcement" => "Dodano: ",
+    "details_announcement_button" => "Szczegóły",
+    "edit_announcement_button" => "Edytuj",
+    "delete_announcement_button" => "Usuń",
+    "upgrade_announcement_button" => "Promuj",
 ];

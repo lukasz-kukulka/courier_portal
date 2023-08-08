@@ -67,7 +67,3 @@ Route::get('/accounts/confirmed_account_last', function () {
 Route::resource('user_announcement', UserAnnouncementController::class)->middleware(['auth', 'verified']);
 Route::post('cargo_generator', [UserAnnouncementController::class, 'cargoDataGenerator'])->middleware(['auth', 'verified'])->name('user_announcement.cargoDataGenerator');
 Route::post('user_announcement_summary', [UserAnnouncementController::class, 'summary'])->middleware(['auth', 'verified'])->name('user_announcement.summary');
-
-// Route::get('/announcement_list', function () {
-//     return view('announcement_list');
-// })->name('announcement_list')->middleware( ['auth', 'verified'] );

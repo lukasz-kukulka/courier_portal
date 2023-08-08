@@ -10,6 +10,7 @@ return new class extends Migration
         Schema::create('user_announcement_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
+            $table->unsignedInteger('priority')->nullable();
             $table->string('direction');
             $table->string('post_code_sending');
             $table->string('post_code_receiving');

@@ -21,7 +21,13 @@ class UserAnnouncementController extends Controller
 
     private function showAllAnnouncement() {
         return view('announcement_list', [
-            'announcement' => UserAnnouncement::all(),
+            'announcements' => UserAnnouncement::with( [
+                'parcelAnnouncement',
+                'humanAnnouncement',
+                'palletAnnouncement',
+                'animalAnnouncement',
+                'otherAnnouncement',
+            ] )->paginate( 4 ),
         ]);
     }
 
