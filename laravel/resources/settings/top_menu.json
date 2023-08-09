@@ -6,25 +6,25 @@
         "permission": "all"
     },
     "accounts" : {
-        "name" : "Wybierz typ konta",
+        "name" : "nav_menu_account_type",
         "route_name" : "account_register",
         "type" : "standard",
         "permission": "login"
     },
     "declaration" : {
-        "name" : "Deklaracje",
+        "name" : "nav_menu_declaration",
         "link" : "",
         "type" : "dropdown",
         "permission": "login",
         "dropdown_elements" : {
             "ele1" : {
-                "name" : "Deklaracja CN22",
+                "name" : "nav_menu_declaration_cn22",
                 "link" : "cn22",
                 "route_name" : "cn22",
                 "permission": "login"
             },
             "ele2" : {
-                "name" : "Deklaracja CN23",
+                "name" : "nav_menu_declaration_cn23",
                 "link" : "cn23",
                 "route_name" : "cn23",
                 "permission": "login"
@@ -32,31 +32,31 @@
         }
     },
     "announcement" : {
-        "name" : "Ogłoszenia",
+        "name" : "nav_menu_announcement",
         "link" : "",
         "type" : "dropdown",
         "permission": "login",
         "dropdown_elements" : {
             "ele1" : {
-                "name" : "Dodaj ogłoszenie( szukam transportu )",
+                "name" : "nav_menu_add_announcement_cargo",
                 "link" : "user_announcement.create",
                 "route_name" : "user_announcement.create",
                 "permission": "all"
             },
             "ele2" : {
-                "name" : "Dodaj ogłoszenie( oferuje transport ) - NIE DZIAŁA",
+                "name" : "nav_menu_add_announcement_courier",
                 "link" : "user_announcement.create",
                 "route_name" : "user_announcement.create",
                 "permission": "login"
             },
             "ele3" : {
-                "name" : "Znajdz paczkę",
+                "name" : "nav_menu_announcement_find_parcel",
                 "link" : "user_announcement.index",
                 "route_name" : "user_announcement.index",
                 "permission": "login"
             },
             "ele4" : {
-                "name" : "Znajdz kuriera - NIE DZIAŁA",
+                "name" : "nav_menu_announcement_find_courier",
                 "link" : "user_announcement.create",
                 "route_name" : "user_announcement.create",
                 "permission": "login"
