@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 class UserAnnouncementController extends Controller
 {
+    public function __construct() {
+        $this->announcement_json = app(\App\Http\Controllers\JsonParserController::class)->searchAnnouncementAction();
+
+    }
     public function index() {
         return $this->showAllAnnouncement();
     }
@@ -27,7 +31,7 @@ class UserAnnouncementController extends Controller
                 'palletAnnouncement',
                 'animalAnnouncement',
                 'otherAnnouncement',
-            ] )->paginate( 4 ),
+            ] )->paginate( $this->announcement_json[ 'number_of_search_announcement_in_one_page' ] ),
         ]);
     }
 
@@ -273,4 +277,6 @@ class UserAnnouncementController extends Controller
     }
     public function destroy(string $id) {
     }
+
+    private $announcement_json;
 }

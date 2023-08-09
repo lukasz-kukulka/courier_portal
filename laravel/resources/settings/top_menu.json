@@ -1,28 +1,33 @@
 {
     "home" : {
-        "name" : "Strona główna",
+        "name" : "nav_menu_home",
         "route_name" : "home",
-        "type" : "standard"
+        "type" : "standard",
+        "permission": "all"
     },
     "accounts" : {
         "name" : "Wybierz typ konta",
         "route_name" : "account_register",
-        "type" : "standard"
+        "type" : "standard",
+        "permission": "login"
     },
     "declaration" : {
         "name" : "Deklaracje",
         "link" : "",
         "type" : "dropdown",
+        "permission": "login",
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "Deklaracja CN22",
                 "link" : "cn22",
-                "route_name" : "cn22"
+                "route_name" : "cn22",
+                "permission": "login"
             },
             "ele2" : {
                 "name" : "Deklaracja CN23",
                 "link" : "cn23",
-                "route_name" : "cn23"
+                "route_name" : "cn23",
+                "permission": "login"
             }
         }
     },
@@ -30,26 +35,31 @@
         "name" : "Ogłoszenia",
         "link" : "",
         "type" : "dropdown",
+        "permission": "login",
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "Dodaj ogłoszenie( szukam transportu )",
                 "link" : "user_announcement.create",
-                "route_name" : "user_announcement.create"
+                "route_name" : "user_announcement.create",
+                "permission": "all"
             },
             "ele2" : {
-                "name" : "Dodaj ogłoszenie( oferuje transport )",
+                "name" : "Dodaj ogłoszenie( oferuje transport ) - NIE DZIAŁA",
                 "link" : "user_announcement.create",
-                "route_name" : "user_announcement.create"
+                "route_name" : "user_announcement.create",
+                "permission": "login"
             },
             "ele3" : {
                 "name" : "Znajdz paczkę",
                 "link" : "user_announcement.index",
-                "route_name" : "user_announcement.index"
+                "route_name" : "user_announcement.index",
+                "permission": "login"
             },
             "ele4" : {
-                "name" : "Znajdz kuriera",
+                "name" : "Znajdz kuriera - NIE DZIAŁA",
                 "link" : "user_announcement.create",
-                "route_name" : "user_announcement.create"
+                "route_name" : "user_announcement.create",
+                "permission": "login"
             }
         }
     }
