@@ -341,4 +341,17 @@ return [
     "edit_announcement_button" => "Edytuj",
     "delete_announcement_button" => "Usuń",
     "upgrade_announcement_button" => "Promuj",
+
+    ######################## TOP MENU ####################
+
+    "nav_menu_home" => "Strona główna",
+    "nav_menu_account_type" => "Wybierz typ konta",
+    "nav_menu_declaration" => "Deklaracje",
+    "nav_menu_declaration_cn22" => "Deklaracja CN22",
+    "nav_menu_declaration_cn23" => "Deklaracja CN23",
+    "nav_menu_announcement" => "Ogłoszenia",
+    "nav_menu_add_announcement_cargo" => "Dodaj ogłoszenie( szukam transportu )",
+    "nav_menu_add_announcement_courier" => "Dodaj ogłoszenie( oferuje transport ) - NIE DZIAŁA",
+    "nav_menu_announcement_find_parcel" => "Znajdz paczkę",
+    "nav_menu_announcement_find_courier" => "Znajdz kuriera - NIE DZIAŁA",
 ];
