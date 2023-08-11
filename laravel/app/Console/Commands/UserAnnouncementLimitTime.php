@@ -9,6 +9,7 @@ use App\Models\HumanAnnouncement;
 use App\Models\OtherAnnouncement;
 use App\Models\PalletAnnouncement;
 use App\Models\ParcelAnnouncement;
+
 class UserAnnouncementLimitTime extends Command
 {
     /**
