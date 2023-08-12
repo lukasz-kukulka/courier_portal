@@ -15,4 +15,8 @@ class CourierAnnouncement extends Model
     public function authorUser() {
         return $this->belongsTo( User::class, 'author' );
     }
+
+    public function parcelAnnouncement() {
+        return $this->hasMany( CargoTypes::class, 'courier_announcement_id' );
+    }
 }
