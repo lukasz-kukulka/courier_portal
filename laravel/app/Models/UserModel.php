@@ -17,4 +17,8 @@ class UserModel extends Model
     public function userAnnouncement() {
         return $this->hasMany( UserAnnouncement::class, 'author' );
     }
+
+    public function company() {
+        return $this->hasOne( CompanyModel::class, 'author' );
+    }
 }
