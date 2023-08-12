@@ -16,7 +16,11 @@ class CourierAnnouncement extends Model
         return $this->belongsTo( User::class, 'author' );
     }
 
-    public function parcelAnnouncement() {
+    public function cargoTypeAnnouncement() {
         return $this->hasMany( CargoTypes::class, 'courier_announcement_id' );
+    }
+
+    public function imageAnnouncement() {
+        return $this->hasMany( CompanyAnnouncementImages::class, 'courier_announcement_id' );
     }
 }
