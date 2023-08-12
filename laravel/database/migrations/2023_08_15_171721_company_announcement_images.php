@@ -10,9 +10,9 @@ return new class extends Migration
         Schema::create('company_announcement_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
-            $table->string('images_name');
-            $table->string('images_link');
-            $table->string('images_description');
+            $table->string('image_name');
+            $table->string('image_link');
+            $table->string('image_description');
             $table->timestamps();
         });
     }
