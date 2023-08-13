@@ -21,22 +21,22 @@ class UserAnnouncement extends Model
     }
 
     public function parcelAnnouncement() {
-        return $this->hasMany( ParcelAnnouncement::class, 'announcement_id' );
+        return $this->hasMany( ParcelAnnouncement::class, 'announcement_id' )->cascadeDeletes();
     }
 
     public function humanAnnouncement() {
-        return $this->hasMany( HumanAnnouncement::class, 'announcement_id' );
+        return $this->hasMany( HumanAnnouncement::class, 'announcement_id' )->cascadeDeletes();
     }
 
     public function palletAnnouncement() {
-        return $this->hasMany( PalletAnnouncement::class, 'announcement_id' );
+        return $this->hasMany( PalletAnnouncement::class, 'announcement_id' )->cascadeDeletes();
     }
 
     public function animalAnnouncement() {
-        return $this->hasMany( AnimalAnnouncement::class, 'announcement_id' );
+        return $this->hasMany( AnimalAnnouncement::class, 'announcement_id' )->cascadeDeletes();
     }
 
     public function otherAnnouncement() {
-        return $this->hasMany( OtherAnnouncement::class, 'announcement_id' );
+        return $this->hasMany( OtherAnnouncement::class, 'announcement_id' )->cascadeDeletes();
     }
 }
