@@ -39,4 +39,13 @@ class UserAnnouncementArchive extends Model
     public function otherAnnouncement() {
         return $this->hasMany( OtherAnnouncementArchive::class, 'announcement_id' );
     }
+
+    public function delete() {
+        $this->parcelAnnouncement()->delete();
+        $this->humanAnnouncement()->delete();
+        $this->palletAnnouncement()->delete();
+        $this->animalAnnouncement()->delete();
+        $this->otherAnnouncement()->delete();
+        return parent::delete();
+    }
 }
