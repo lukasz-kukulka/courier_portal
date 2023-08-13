@@ -21,22 +21,31 @@ class UserAnnouncement extends Model
     }
 
     public function parcelAnnouncement() {
-        return $this->hasMany( ParcelAnnouncement::class, 'announcement_id' )->cascadeDeletes();
+        return $this->hasMany( ParcelAnnouncement::class, 'announcement_id' );
     }
 
     public function humanAnnouncement() {
-        return $this->hasMany( HumanAnnouncement::class, 'announcement_id' )->cascadeDeletes();
+        return $this->hasMany( HumanAnnouncement::class, 'announcement_id' );
     }
 
     public function palletAnnouncement() {
-        return $this->hasMany( PalletAnnouncement::class, 'announcement_id' )->cascadeDeletes();
+        return $this->hasMany( PalletAnnouncement::class, 'announcement_id' );
     }
 
     public function animalAnnouncement() {
-        return $this->hasMany( AnimalAnnouncement::class, 'announcement_id' )->cascadeDeletes();
+        return $this->hasMany( AnimalAnnouncement::class, 'announcement_id' );
     }
 
     public function otherAnnouncement() {
-        return $this->hasMany( OtherAnnouncement::class, 'announcement_id' )->cascadeDeletes();
+        return $this->hasMany( OtherAnnouncement::class, 'announcement_id' );
+    }
+
+    public function delete() {
+        $this->parcelAnnouncement()->delete();
+        $this->humanAnnouncement()->delete();
+        $this->palletAnnouncement()->delete();
+        $this->animalAnnouncement()->delete();
+        $this->otherAnnouncement()->delete();
+        return parent::delete();
     }
 }
