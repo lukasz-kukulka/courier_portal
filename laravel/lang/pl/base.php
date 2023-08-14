@@ -337,6 +337,7 @@ return [
 
     "announcement_look_for_transport" => "Ogłoszenia - szukam kuriera",
     "date_look_for_announcement" => "Dodano: ",
+    "date_look_for_announcement_experience" => "Wygasa: ",
     "details_announcement_button" => "Szczegóły",
     "edit_announcement_button" => "Edytuj",
     "delete_announcement_button" => "Usuń",
@@ -354,4 +355,6 @@ return [
     "nav_menu_add_announcement_courier" => "Dodaj ogłoszenie( oferuje transport ) - NIE DZIAŁA",
     "nav_menu_announcement_find_parcel" => "Znajdz paczkę",
     "nav_menu_announcement_find_courier" => "Znajdz kuriera - NIE DZIAŁA",
+
+    ######################## COURIER FORM ####################
 ];

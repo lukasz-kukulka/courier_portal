@@ -43,7 +43,7 @@
 
                                         @endif
                                     </div>
-                                    <div class="small text-end ms-auto">{{ __( 'base.date_look_for_announcement' ) . $announcement->created_at }}</div>
+                                    <div class="small text-end ms-auto">{{ __( 'base.date_look_for_announcement' ) . $announcement->created_at . " | " . __( 'base.date_look_for_announcement_experience' ) . $announcement->experience_date }}</div>
                                 </td>
 
                               </tr>
