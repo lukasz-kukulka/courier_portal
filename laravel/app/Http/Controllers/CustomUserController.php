@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\User;
+use App\Models\UserCompany;
 class CustomUserController extends Controller
 {
 
@@ -91,33 +91,41 @@ class CustomUserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update( Request $request )
-    {
+    public function update( Request $request ) {
         $user = auth()->user();
-        //dd( $user, $request->all()  );
         $user->name = $request->input('name');
         $user->surname = $request->input('surname');
         $user->phone_number = $request->input('phone_number');
         $user->d_o_b = $request->input('d_o_b');
         $user->group = $request->input('account_type');
         $user->account_type = $request->input('account_type');
-
-
-        if( $request->input('account_type') === 'courier_pro' ) {
-            // $user->company_name = $request->input('company_name');
-            // $user->company_address = $request->input('company_address');
-            // $user->company_phone_number = $request->input('company_phone_number');
-            // $user->company_post_code = $request->input('company_post_code');
-            // $user->company_city = $request->input('company_city');
-            // $user->company_country = $request->input('company_country');
-        }
         $user->save();
+        $this->storeCompany( $request );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    private function storeCompany( $request ) {
+        if( $request->input('account_type') === 'courier_pro' ) {
+            $company = new UserCompany ( [
+                'company_name' => $request->input('company_name'),
+                'company_address' => $request->input('company_address'),
+                'company_post_code' => $request->input('company_post_code'),
+                'company_city' => $request->input('company_city'),
+                'company_country' => $request->input('company_country'),
+                'company_phone_number' => $request->input('company_phone_number'),
+                'company_register_link' => $request->input('company_register_link'),
+                'confirmed' => $request->input('confirmed'),
+                'company_name' => $request->input('company_name'),
+            ] );
+            $userId = auth()->id();
+            $company->authorUser()->associate( $userId );
+            $company->save();
+        }
+    }
+
+     public function destroy(string $id)
     {
         //
     }
