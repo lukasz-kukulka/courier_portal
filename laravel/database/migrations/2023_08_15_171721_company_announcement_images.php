@@ -7,17 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void {
-        Schema::create('cargo_types', function (Blueprint $table) {
+        Schema::create('company_announcement_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
-            $table->string('cargo_name');
-            $table->unsignedInteger('cargo_price');
-            $table->string('cargo_description');
+            $table->string('images_name');
+            $table->string('images_link');
+            $table->string('images_description');
             $table->timestamps();
         });
     }
 
     public function down(): void {
-        Schema::dropIfExists('cargo_types');
+        Schema::dropIfExists('company_announcement_images');
     }
 };
