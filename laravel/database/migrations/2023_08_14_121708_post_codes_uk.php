@@ -6,19 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        //
+    public function up(): void {
+        Schema::create('post_codes_uk', function (Blueprint $table) {
+            $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
+
+            $table->id();
+            $table->unsignedBigInteger('author'); // klucz obcy
+            foreach( $json as $post_code ) {
+                $table->boolean( $post_code )->default( false );
+            }
+        });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        //
+    public function down(): void {
+        Schema::dropIfExists( 'post_codes_uk' );
     }
 };
