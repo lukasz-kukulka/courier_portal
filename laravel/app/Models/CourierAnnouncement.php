@@ -23,4 +23,8 @@ class CourierAnnouncement extends Model
     public function imageAnnouncement() {
         return $this->hasMany( CompanyAnnouncementImages::class, 'courier_announcement_id' );
     }
+
+    public function travelAnnouncement() {
+        return $this->hasMany( CourierTravelDate::class, 'courier_announcement_id' );
+    }
 }
