@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
             foreach( $json as $post_code ) {
-                $table->boolean( $post_code )->default( true );
+                $table->boolean( $post_code )->default( false );
             }
         });
     }

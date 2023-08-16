@@ -18,7 +18,4 @@ class UserCompany extends Model
         return $this->belongsTo( User::class, 'author' );
     }
 
-    // public function parcelAnnouncement() {
-    //     return $this->hasMany( ParcelAnnouncement::class, 'announcement_id' );
-    // }
 }
