@@ -12,7 +12,7 @@ class TravelDates extends Command
      *
      * @var string
      */
-    protected $signature = 'app:travel-dates';
+    protected $signature = 'app:courier-travel-dates';
 
     /**
      * The console command description.
