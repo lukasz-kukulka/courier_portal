@@ -28,7 +28,11 @@ class CourierAnnouncement extends Model
         return $this->hasMany( CourierTravelDate::class, 'courier_announcement_id' );
     }
 
-    public function postCodesPLAnnouncement() {
+    public function postCodesPlAnnouncement() {
         return $this->hasMany( PostCodePl::class, 'courier_announcement_id' );
+    }
+
+    public function postCodesUkAnnouncement() {
+        return $this->hasMany( PostCodeUk::class, 'courier_announcement_id' );
     }
 }
