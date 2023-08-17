@@ -41,7 +41,7 @@ class UserAnnouncementLimitTime extends Command
             'palletAnnouncement',
             'animalAnnouncement',
             'otherAnnouncement'
-        )->where('experience_date', '>', now())->get();
+        )->where('experience_date', '<', now())->get();
         foreach ($expiredPosts as $post) {
             $newArchivePost = new UserAnnouncementArchive ( [
                 'direction' =>                      $post[ 'direction' ],
