@@ -11,6 +11,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
             $table->unsignedBigInteger('description');
+            $table->date('experience_date')->nullable();
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@ class CourierAnnouncement extends Model
     use HasFactory;
     protected $table = 'courier_announcement';
     protected $fillable = [
-        'author', 'description'
+        'author', 'description', 'experience_date'
     ];
     public function authorUser() {
         return $this->belongsTo( User::class, 'author' );
@@ -25,6 +25,18 @@ class CourierAnnouncement extends Model
     }
 
     public function travelAnnouncement() {
+        return $this->hasMany( CourierTravelDate::class, 'courier_announcement_id' );
+    }
+
+    public function postCodesPlAnnouncement() {
+        return $this->hasMany( PostCodePl::class, 'courier_announcement_id' );
+    }
+
+    public function postCodesUkAnnouncement() {
+        return $this->hasMany( PostCodeUk::class, 'courier_announcement_id' );
+    }
+
+    public function dateAnnouncement() {
         return $this->hasMany( CourierTravelDate::class, 'courier_announcement_id' );
     }
 }
