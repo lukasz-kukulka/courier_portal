@@ -31,6 +31,7 @@ class CourierAnnouncementLimitTime extends Command
             'travelAnnouncement',
             'postCodesPlAnnouncement',
             'postCodesUkAnnouncement',
+            'dateAnnouncement',
         )->whereNotNull( 'experience_date' )->where( 'experience_date', '<', now() )->get();
         foreach ($expiredPosts as $post) {
             $post->delete();
