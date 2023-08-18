@@ -10,7 +10,7 @@ class CourierAnnouncement extends Model
     use HasFactory;
     protected $table = 'courier_announcement';
     protected $fillable = [
-        'author', 'description'
+        'author', 'description', 'experience_date'
     ];
     public function authorUser() {
         return $this->belongsTo( User::class, 'author' );
