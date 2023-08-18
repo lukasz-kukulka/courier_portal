@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\CourierAnnouncement;
 
 class CourierAnnouncementLimitTime extends Command
 {
@@ -24,7 +25,13 @@ class CourierAnnouncementLimitTime extends Command
      * Execute the console command.
      */
     public function handle() {
-        $expiredPosts = CourierTravelDate::where('experience_date', '<', now())->get();
+        $expiredPosts = CourierAnnouncement::with(
+            'cargoTypeAnnouncement',
+            'imageAnnouncement',
+            'travelAnnouncement',
+            'postCodesPlAnnouncement',
+            'postCodesUkAnnouncement',
+        )->whereNotNull( 'experience_date' )->where( 'experience_date', '<', now() )->get();
         foreach ($expiredPosts as $post) {
             $post->delete();
         }
