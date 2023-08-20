@@ -16,27 +16,27 @@ class CourierAnnouncementArchive extends Model
         return $this->belongsTo( User::class, 'author' );
     }
 
-    // public function cargoTypeAnnouncement() {
-    //     return $this->hasMany( CargoTypes::class, 'courier_announcement_id' );
-    // }
+    public function cargoTypeAnnouncement() {
+        return $this->hasMany( CargoTypesArchive::class, 'courier_announcement_id' );
+    }
 
-    // public function imageAnnouncement() {
-    //     return $this->hasMany( CompanyAnnouncementImages::class, 'courier_announcement_id' );
-    // }
+    public function imageAnnouncement() {
+        return $this->hasMany( CompanyAnnouncementImagesArchive::class, 'courier_announcement_id' );
+    }
 
-    // public function travelAnnouncement() {
-    //     return $this->hasMany( CourierTravelDate::class, 'courier_announcement_id' );
-    // }
+    public function travelAnnouncement() {
+        return $this->hasMany( CourierTravelDateArchive::class, 'courier_announcement_id' );
+    }
 
-    // public function postCodesPlAnnouncement() {
-    //     return $this->hasMany( PostCodePl::class, 'courier_announcement_id' );
-    // }
+    public function postCodesPlAnnouncement() {
+        return $this->hasMany( PostCodePlArchive::class, 'courier_announcement_id' );
+    }
 
-    // public function postCodesUkAnnouncement() {
-    //     return $this->hasMany( PostCodeUk::class, 'courier_announcement_id' );
-    // }
+    public function postCodesUkAnnouncement() {
+        return $this->hasMany( PostCodeUkArchive::class, 'courier_announcement_id' );
+    }
 
-    // public function dateAnnouncement() {
-    //     return $this->hasMany( CourierTravelDate::class, 'courier_announcement_id' );
-    // }
+    public function dateAnnouncement() {
+        return $this->hasMany( CourierTravelDateArchive::class, 'courier_announcement_id' );
+    }
 }
