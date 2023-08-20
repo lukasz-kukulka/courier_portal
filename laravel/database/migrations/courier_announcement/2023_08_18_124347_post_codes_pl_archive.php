@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void {
-        Schema::create('post_codes_uk', function (Blueprint $table) {
-            $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
+        Schema::create('post_codes_pl_archive', function (Blueprint $table) {
+            $json = app(\App\Http\Controllers\JsonParserController::class)->plPostCodeAction();
 
             $table->id();
             $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
@@ -19,6 +19,6 @@ return new class extends Migration
     }
 
     public function down(): void {
-        Schema::dropIfExists( 'post_codes_uk' );
+        Schema::dropIfExists( 'post_codes_pl_archive' );
     }
 };

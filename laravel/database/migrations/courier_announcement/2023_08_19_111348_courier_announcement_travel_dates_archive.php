@@ -7,18 +7,17 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void {
-        Schema::create('post_codes_uk', function (Blueprint $table) {
-            $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
-
+        Schema::create('courier_announcement_travel_dates_archive', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
-            foreach( $json as $post_code ) {
-                $table->boolean( $post_code )->default( false );
-            }
+            $table->string('direction');
+            $table->date('date');
+            $table->string('description')->nullable();
+            $table->timestamps();
         });
     }
 
     public function down(): void {
-        Schema::dropIfExists( 'post_codes_uk' );
+        Schema::dropIfExists('courier_announcement_travel_dates_archive');
     }
 };

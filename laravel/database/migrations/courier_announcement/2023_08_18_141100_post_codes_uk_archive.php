@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void {
-        Schema::create('post_codes_uk', function (Blueprint $table) {
+        Schema::create('post_codes_uk_archive', function (Blueprint $table) {
             $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
 
             $table->id();
@@ -19,6 +19,6 @@ return new class extends Migration
     }
 
     public function down(): void {
-        Schema::dropIfExists( 'post_codes_uk' );
+        Schema::dropIfExists( 'post_codes_uk_archive' );
     }
 };

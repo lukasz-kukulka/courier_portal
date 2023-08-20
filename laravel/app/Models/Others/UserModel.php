@@ -19,6 +19,6 @@ class UserModel extends Model
     }
 
     public function company() {
-        return $this->hasOne( CompanyModel::class, 'author' );
+        return $this->hasOne( UserCompany::class, 'author' );
     }
 }

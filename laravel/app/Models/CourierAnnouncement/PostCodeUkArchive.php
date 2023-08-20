@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PostCodeUk extends Model
+class PostCodeUkArchive extends Model
 {
     use HasFactory;
-    protected $table = 'post_codes_uk';
+    protected $table = 'post_codes_uk_archive';
 
     public function __construct(array $attributes = []) {
         parent::__construct($attributes);
@@ -17,7 +17,7 @@ class PostCodeUk extends Model
 
     public function addColumnsFromJson() {
         $this->fillable = [
-            'author'
+            'courier_announcement_id'
         ];
         $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
         $all_postcodes = json_decode($json, true);
@@ -25,6 +25,6 @@ class PostCodeUk extends Model
     }
 
     public function authorUser() {
-        return $this->belongsTo( User::class, 'author' );
+        return $this->belongsTo( CourierAnnouncementArchive::class, 'courier_announcement_id' );
     }
 }
