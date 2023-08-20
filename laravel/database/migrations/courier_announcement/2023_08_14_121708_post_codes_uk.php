@@ -11,7 +11,7 @@ return new class extends Migration
             $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
 
             $table->id();
-            $table->unsignedBigInteger('author'); // klucz obcy
+            $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
             foreach( $json as $post_code ) {
                 $table->boolean( $post_code )->default( false );
             }

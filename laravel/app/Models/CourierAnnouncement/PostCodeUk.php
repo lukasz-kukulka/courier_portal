@@ -17,7 +17,7 @@ class PostCodeUk extends Model
 
     public function addColumnsFromJson() {
         $this->fillable = [
-            'author'
+            'courier_announcement_id'
         ];
         $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
         $all_postcodes = json_decode($json, true);
@@ -25,6 +25,6 @@ class PostCodeUk extends Model
     }
 
     public function authorUser() {
-        return $this->belongsTo( User::class, 'author' );
+        return $this->belongsTo( CourierAnnouncement::class, 'courier_announcement_id' );
     }
 }
