@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
 use App\Http\Controllers\UserAnnouncementController;
+use App\Http\Controllers\CourierAnnouncementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,3 +68,6 @@ Route::get('/accounts/confirmed_account_last', function () {
 Route::resource('user_announcement', UserAnnouncementController::class)->middleware(['auth', 'verified']);
 Route::post('cargo_generator', [UserAnnouncementController::class, 'cargoDataGenerator'])->middleware(['auth', 'verified'])->name('user_announcement.cargoDataGenerator');
 Route::post('user_announcement_summary', [UserAnnouncementController::class, 'summary'])->middleware(['auth', 'verified'])->name('user_announcement.summary');
+
+Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified']);
+Route::post('courier_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])->middleware(['auth', 'verified'])->name('courier_announcement.generateCourierAnnouncement');
