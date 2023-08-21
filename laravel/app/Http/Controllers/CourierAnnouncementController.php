@@ -6,20 +6,18 @@ use Illuminate\Http\Request;
 
 class CourierAnnouncementController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function generateCourierAnnouncement() {
+
+    }
+    public function index() {
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view( 'courier_announcement_create_form' );
     }
 
     /**

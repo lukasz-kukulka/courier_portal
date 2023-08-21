@@ -46,7 +46,7 @@
             "ele2" : {
                 "name" : "nav_menu_add_announcement_courier",
                 "link" : "user_announcement.create",
-                "route_name" : "user_announcement.create",
+                "route_name" : "courier_announcement.create",
                 "permission": "login"
             },
             "ele3" : {
