@@ -21,20 +21,20 @@
                         <div class="card-body">
                             <form action="{{ route('courier_announcement.generateCourierAnnouncement') }}" method="POST" id="courier_announcement_form">
                                 @csrf
-                                <x-input_form_component name="courier_announcement_cargo_type_description" type="textarea" options="fsdfsdf" size="dasdadad" />
-                                {{-- <x-input_form_component name="courier_announcement_name" type="text" /> --}}
 
-                                <div class="col-md-14 border-bottom"></div>
-                                <p class="h3 text-center">{{ __('base.courier_announcement_type_cargo_title')}}</p>
+                                <x-input_form_component name="courier_announcement_name" type="text" />
+                                <div class="bg-light p-2 border border-dark"><p class="h3 text-center">{{ __('base.courier_announcement_type_cargo_title')}}</p></div>
                                 <div class="cargo_type_container">
-                                    {{-- <x-input_form_component name="courier_announcement_cargo_type_name" type="text" />
-                                    <x-input_form_component name="courier_announcement_cargo_type_price" type="text" />
+                                    <div class="col-md-14 mb-1 border-bottom"></div>
+                                    <x-input_form_component name="courier_announcement_cargo_type_name" type="text" />
+                                    <x-input_form_component name="courier_announcement_cargo_type_description" type="textarea" options="" size="1" />
+                                    <x-input_form_component name="courier_announcement_cargo_type_price" type="number" />
                                     <button class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
                                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                         </svg> Dodaj
-                                    </button> --}}
+                                    </button>
 
 
                                 </div>
