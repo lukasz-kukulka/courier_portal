@@ -360,10 +360,13 @@ return [
 
     "courier_announcement_create_form_title" => "Kreator ogłoszenia dla kurierów",
     "courier_announcement_name" => "Nazwa ogłoszenia",
+    "courier_announcement_name_info" => "Nazwa widoczna tylko dla Ciebie",
     "courier_announcement_type_cargo_title" => "Rodzaje przesyłek jakie zabierasz( np: paczka, paleta, etc )",
     "courier_announcement_cargo_type_name" => "Nazwa przesyłki",
     "courier_announcement_cargo_type_description" => "Opis przesyłki",
     "courier_announcement_cargo_type_price" => "Cena przesyłki",
+    "courier_announcement_cargo_type_id" => "Nr.",
     "courier_announcement_" => "Rodzaje przesyłek jakie zabierasz",
+    "courier_announcement_cargo_type_actions" => "Akcje",
 
 ];

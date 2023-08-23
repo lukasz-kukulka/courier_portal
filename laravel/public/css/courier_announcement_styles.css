@@ -1,0 +1,10 @@
+.add_cargo_button {
+    cursor: not-allowed;
+    background-color: #ccc;
+    color: #999;
+    border: 1px solid #999;
+}
+
+.add_new_cargo_type_button {
+    margin-top: -15px;
+}

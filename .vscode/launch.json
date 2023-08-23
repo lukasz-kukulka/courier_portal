@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Programing/Kurier_portal_NEW/laravel/resources/views",
-      "program": "d:/Programing/Kurier_portal_NEW/laravel/resources/views/build/Debug/outDebug",
+      "cwd": "d:/Programing/Kurier_portal_NEW/laravel/public/css",
+      "program": "d:/Programing/Kurier_portal_NEW/laravel/public/css/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
