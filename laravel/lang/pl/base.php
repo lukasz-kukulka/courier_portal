@@ -373,5 +373,6 @@ return [
     "courier_announcement_cargo_type_add_info" => "Po uzupełnieniu wszystkich danych pojawi się możliwość dodania nowego rodzaju przesyłki",
     "courier_announcement_cargo_type_min_one_type" => "Minimum jeden rodzaj wysyłki",
     "courier_announcement_cargo_required_message" => "Minimum 3 znaki, dozwolone tylko litery i cyfry",
+    "courier_announcement_cargo_maximum_cargo_btn" => "Osiągnięto maksymalna dozwoloną liczbę rodzajów przesyłek",
 
 ];
