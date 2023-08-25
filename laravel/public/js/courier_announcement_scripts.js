@@ -5,8 +5,7 @@ var cargo = {
     defaultCargoButtonText: null
 };
 
-function addNewCargoType( ) {
-
+function addNewCargoTypeButton( ) {
     var button = document.querySelector(".add_cargo_component_btn");
     button.addEventListener("click", function( event ) {
         if ( cargo.currentCargoIndex < cargo.maxCargoIndex ) {
@@ -27,5 +26,5 @@ function addNewCargoType( ) {
 document.addEventListener('DOMContentLoaded', function() {
     var addCargoButton = document.querySelector(".add_cargo_component_btn");
     cargo.defaultCargoButtonText = addCargoButton.innerHTML;
-    addNewCargoType();
+    addNewCargoTypeButton();
 });
