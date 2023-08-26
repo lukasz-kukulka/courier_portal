@@ -6,7 +6,7 @@
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $directionsData = $JsonParserController->directionsAction();
-        $cargoData = $JsonParserController->cargoAction();
+        $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
     @endphp
 @endsection
 
@@ -40,27 +40,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{ $id = 1 }}
-                                            <div class="component_container">
-                                                <x-input_form_component id="{{ $id }}" />
-                                                {{-- <tr class="align-middle h-100">
-                                                    <th scope="row" class="h3">{{ $id }}</th>
-                                                    <td>
-                                                        <input id="cargo_name_{{ $id }}" type="text" class="form-control" name="cargo_name_{{ $id }}" required autocomplete="cargo_name_{{ $id }}">
-                                                        <small id="courier_announcement_name_info" class="cargo_name_message_{{ $id }}">{{ __( 'base.courier_announcement_cargo_required_message' ) }}</small>
-                                                    </td>
-                                                    <td>
-
-                                                    </td>
-                                                    <td>
-
-                                                    </td>
-                                                    <td>
-
-                                                    </td>
-
-                                                </tr> --}}
-                                            </div>
+                                            {{ $elementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ]}}
+                                            @for ( $i = 1; $i <= $elementNumber; $i++ )
+                                                <x-cargo_type_component id="{{ $i }}" />
+                                            @endfor
                                             <div>
                                                 <table>
                                                     <tr>

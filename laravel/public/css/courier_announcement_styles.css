@@ -26,7 +26,6 @@
     font-size: 0.7em;
 }
 
-[class^="cargo_name_message_"] {
-    color: #ff0000;
+[class^="cargo_component_"]:not( .cargo_component_1 ) {
     display: none;
 }

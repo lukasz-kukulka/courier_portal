@@ -1,6 +1,6 @@
 
 
-<tr class="align-middle h-100">
+<tr class="cargo_component_{{ $id }} align-middle h-100">
     <th scope="row" class="h3">{{ $id }}</th>
     <td>
         <input id="cargo_name_{{ $id }}" type="text" class="form-control @error( "cargo_name_" . $id ) is-invalid @enderror" name="cargo_name_{{ $id }}" required autocomplete="cargo_name_{{ $id }}">
