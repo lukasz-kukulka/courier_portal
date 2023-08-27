@@ -368,5 +368,10 @@ return [
     "courier_announcement_cargo_type_id" => "Nr.",
     "courier_announcement_" => "Rodzaje przesyłek jakie zabierasz",
     "courier_announcement_cargo_type_actions" => "Akcje",
+    "courier_announcement_cargo_type_action_delete_info" => "Usuń przesyłkę",
+    "courier_announcement_cargo_type_button_add" => "Dodaj kolejny rodzj przesyłki",
+    "courier_announcement_cargo_type_add_info" => "Po uzupełnieniu wszystkich danych pojawi się możliwość dodania nowego rodzaju przesyłki",
+    "courier_announcement_cargo_type_min_one_type" => "Minimum jeden rodzaj wysyłki",
+    "courier_announcement_cargo_required_message" => "Minimum 3 znaki, dozwolone tylko litery i cyfry",
 
 ];
