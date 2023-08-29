@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 class JsonParserController extends Controller
 {
     public function __construct() {
-        $this->menu_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'top_menu.json');
-        $this->account_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'accounts.json');
-        $this->directions_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'directions.json');
-        $this->cargo_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'cargo.json');
-        $this->search_announcement_json_file  = resource_path('settings'. DIRECTORY_SEPARATOR . 'announcement.json');
-        $this->post_codes_pl  = resource_path('settings'. DIRECTORY_SEPARATOR . 'post_codes_pl.json');
-        $this->post_codes_uk  = resource_path('settings'. DIRECTORY_SEPARATOR . 'post_codes_uk.json');
+        $settingsDir = 'settings'. DIRECTORY_SEPARATOR;
+        $this->menu_json_file  = resource_path( $settingsDir . 'top_menu.json');
+        $this->account_json_file  = resource_path( $settingsDir . 'accounts.json');
+        $this->directions_json_file  = resource_path( $settingsDir . 'directions.json');
+        $this->cargo_json_file  = resource_path( $settingsDir . 'cargo.json');
+        $this->search_announcement_json_file  = resource_path( $settingsDir . 'announcement.json');
+        $this->post_codes_pl  = resource_path( $settingsDir . 'post_codes_pl.json');
+        $this->post_codes_uk  = resource_path( $settingsDir . 'post_codes_uk.json');
+        $this->courier_announcement_json_file = resource_path( $settingsDir . 'courier_announcement.json');
     }
 
     public function menuAction() {
@@ -57,6 +59,12 @@ class JsonParserController extends Controller
         return $json;
     }
 
+    public function courierAnnouncementAction() {
+        $jsonData = file_get_contents( $this->courier_announcement_json_file );
+        $json = json_decode( $jsonData, true );
+        return $json;
+    }
+
     private $menu_json_file;
     private $account_json_file;
     private $directions_json_file;
@@ -64,4 +72,5 @@ class JsonParserController extends Controller
     private $search_announcement_json_file;
     private $post_codes_pl;
     private $post_codes_uk;
+    private $courier_announcement_json_file;
 }

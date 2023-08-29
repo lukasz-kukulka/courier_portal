@@ -6,7 +6,7 @@
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $directionsData = $JsonParserController->directionsAction();
-        $cargoData = $JsonParserController->cargoAction();
+        $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
     @endphp
 @endsection
 
@@ -40,22 +40,34 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <div class="component_container">
-                                                <x-cargo_type_component id="1"/>
-                                                <x-cargo_type_component id="2"/><x-cargo_type_component id="3"/>
+                                            {{ $elementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ]}}
+                                            @for ( $i = 1; $i <= $elementNumber; $i++ )
+                                                <x-cargo_type_component id="{{ $i }}" />
+                                            @endfor
+                                            <div>
+                                                <table>
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <div class="d-flex align-items-center justify-content-between cargo_type_button_container">
+                                                                <div class="add_new_cargo_type_button">
+                                                                    <button class="btn btn-primary add_cargo_component_btn" type="button">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                                                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                                                        </svg> {{ __( 'base.courier_announcement_cargo_type_button_add' ) }}
+                                                                    </button>
+                                                                </div>
+                                                                <div class="warning_text">
+                                                                    <p>{{ __( 'base.courier_announcement_cargo_type_add_info' ) }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                             </div>
+
                                         </tbody>
                                     </table>
-
-
-                                    <button class="btn btn-primary add_new_cargo_type_button" type="button">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
-                                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                        </svg> Dodaj
-                                    </button>
-
-
                                 </div>
                                 {{-- <div class="col-md-14 border-bottom"></div>
 

@@ -1,10 +1,31 @@
-.add_cargo_button {
-    cursor: not-allowed;
-    background-color: #ccc;
-    color: #999;
-    border: 1px solid #999;
+    /* .cargo_type_button_container {
+        display: flex;
+        align-items: center;
+
+    } */
+
+.cargo_type_button_container {
+    margin-top: -15px;
+}
+
+.warning_text {
+    margin-left: 20px;
+    display: inline;
+    align-items: flex-end;
+    justify-content: flex-end;
+    color: #ff0000;
 }
 
 .add_new_cargo_type_button {
-    margin-top: -15px;
+    white-space: nowrap;
+    margin-bottom: 10px;
+
+}
+
+.first_action_info {
+    font-size: 0.7em;
+}
+
+[class^="cargo_component_"]:not( .cargo_component_1 ) {
+    display: none;
 }
