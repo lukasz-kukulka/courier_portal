@@ -1,13 +1,20 @@
 @extends('layouts.app')
 
 @section('add_header')
-    <script src="{{ asset('js/courier_announcement_scripts.js') }}"></script>
+
     <link rel="stylesheet" href="{{ asset('css/courier_announcement_styles.css') }}">
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $directionsData = $JsonParserController->directionsAction();
         $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
+        $elementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ]
+        //dodac do js ilosc cargo
     @endphp
+    <script src="{{
+        asset('js/courier_announcement_scripts.js') }}"
+        maxCargoNumber="<?php echo $elementNumber; ?>"
+        maxButtonText="<?php echo __( 'base.courier_announcement_cargo_maximum_cargo_btn' ); ?>"
+    ></script>
 @endsection
 
 @section('content')
@@ -23,7 +30,6 @@
                                 @csrf
 
                                 <x-input_form_component name="courier_announcement_name" type="text" />
-                                <small id="courier_announcement_name_info" class="form-text text-muted">{{ __( 'base.courier_announcement_name_info' ) }}</small>
                                 <div class="cargo_type_container">
                                     <div class="col-md-14"></div>
                                     <table class="table border border-1">
@@ -40,7 +46,6 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{ $elementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ]}}
                                             @for ( $i = 1; $i <= $elementNumber; $i++ )
                                                 <x-cargo_type_component id="{{ $i }}" />
                                             @endfor
@@ -56,9 +61,6 @@
                                                                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                                                         </svg> {{ __( 'base.courier_announcement_cargo_type_button_add' ) }}
                                                                     </button>
-                                                                </div>
-                                                                <div class="warning_text">
-                                                                    <p>{{ __( 'base.courier_announcement_cargo_type_add_info' ) }}</p>
                                                                 </div>
                                                             </div>
                                                         </td>
