@@ -8,7 +8,7 @@
         $directionsData = $JsonParserController->directionsAction();
         $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
         $elementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ]
-        //dodac do js ilosc cargo
+        //dodac do js ilosc cargo weryfikacja #sema_update
     @endphp
     <script src="{{
         asset('js/courier_announcement_scripts.js') }}"
