@@ -30,7 +30,6 @@ function deleteAnyCargoButton( ) {
         button.addEventListener("click", function( event ) {
             var buttonClass = button.className;
             var match = buttonClass.match(/cargo_type_delete_btn_(\d+)/);
-            console.log( cargo.maxCargoIndex, match[ 1 ] );
             if ( cargo.maxCargoIndex > parseInt( match[ 1 ] )  ) {
                 for ( var i = parseInt( match[ 1 ] ); i <= cargo.currentCargoIndex; i++ ) {
                     var cargoCurrentNameInput = document.querySelector('#cargo_name_' + ( i + 1 ).toString() ).value;
@@ -50,12 +49,51 @@ function deleteAnyCargoButton( ) {
 
 function accessForAddNextElementToCArgoType( ) {
 
+    const inputName = document.querySelector('#cargo_name_' + ( cargo.currentCargoIndex ).toString() );
+    const inputPrice = document.querySelector('#cargo_price_' + ( cargo.currentCargoIndex ).toString() );
+    const inputNameInfo = document.querySelector('#cargo_name_info_' + ( cargo.currentCargoIndex ).toString() );
+    const inputPriceInfo = document.querySelector('#cargo_price_info_' + ( cargo.currentCargoIndex ).toString() );
+    var nameInfoIsVisible = true;
+    var priceInfoIsVisible = true;
+    inputName.addEventListener('input', function() {
+        if ( inputName.value.length >= 3 ) {
+            inputNameInfo.style.display = 'none';
+            nameInfoIsVisible = false;
+        } else {
+            inputNameInfo.style.display = 'flex';
+            nameInfoIsVisible = true;
+        }
+        setAddNewCargoTypeButtonVisible( nameInfoIsVisible, priceInfoIsVisible );
+    });
+
+    inputPrice.addEventListener('input', function() {
+        if ( parseFloat( inputPrice.value ) > 0 ) {
+            inputPriceInfo.style.display = 'none';
+            priceInfoIsVisible = false;
+        } else {
+            inputPriceInfo.style.display = 'flex';
+            priceInfoIsVisible = true;
+        }
+        setAddNewCargoTypeButtonVisible( nameInfoIsVisible, priceInfoIsVisible );
+    });
+}
+
+function setAddNewCargoTypeButtonVisible( inputName, inputPrice ) {
+    var addButton = document.querySelector(".add_cargo_component_btn");
+    if ( inputName == false && inputPrice == false ) {
+        addButton.style.opacity = 1.0;
+        addButton.style.pointerEvents = 'auto';
+    } else {
+        addButton.style.opacity = 0.5;
+        addButton.style.pointerEvents = 'none';
+    }
 }
 
 
 document.addEventListener('DOMContentLoaded', function() {
     var addCargoButton = document.querySelector(".add_cargo_component_btn");
     cargo.defaultCargoButtonText = addCargoButton.innerHTML;
+    setAddNewCargoTypeButtonVisible( true, true );
     addNewCargoTypeButton();
     deleteAnyCargoButton();
     accessForAddNextElementToCArgoType();

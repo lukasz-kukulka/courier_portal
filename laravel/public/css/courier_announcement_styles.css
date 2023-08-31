@@ -2,18 +2,11 @@
     margin-top: -15px;
 }
 
-/* .warning_text {
-    margin-left: 20px;
-    display: inline;
-    align-items: flex-end;
-    justify-content: flex-end;
-    color: #ff0000;
-} */
-
 .add_new_cargo_type_button {
     white-space: nowrap;
     margin-bottom: 10px;
-
+    /* opacity: 0.5;
+    pointer-events: none; */
 }
 
 .first_action_info {

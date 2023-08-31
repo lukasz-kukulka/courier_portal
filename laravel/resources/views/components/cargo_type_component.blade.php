@@ -3,29 +3,21 @@
 <tr class="cargo_component_{{ $id }} align-middle h-100">
     <th scope="row" class="h3">{{ $id }}</th>
     <td>
-
         <input id="cargo_name_{{ $id }}" type="text" class="form-control @error( "cargo_name_" . $id ) is-invalid @enderror" name="cargo_name_{{ $id }}" required autocomplete="cargo_name_{{ $id }}">
-        {{-- <small id="courier_announcement_name_info" class="form-text text-muted">{{ __( 'base.courier_announcement_name_info' ) }}</small> --}}
+        <small id="cargo_name_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_name_info' ) }}</small>
     </td>
     <td><textarea id="cargo_description_{{ $id }}" class="form-control @error( "cargo_description_" . $id ) is-invalid @enderror" name="cargo_description_{{ $id }}" required autocomplete="cargo_description_{{ $id }}" rows="2">{{ old( "cargo_description_" . $id  ) }}</textarea></td>
     <td >
         <div class="price_container">
-            <input id="cargo_price_{{ $id }}" type="number" class=" form-control @error( "cargo_price_" . $id ) is-invalid @enderror" name="cargo_price_{{ $id }}" value="0" required autocomplete="cargo_price_{{ $id }}" min="0">
-            {{-- <input id="cargo_currency_{{ $id }}" type="number" class=" form-control @error( "cargo_currency_" . $id ) is-invalid @enderror" name="cargo_currency_{{ $id }}" value="0" required autocomplete="cargo_currency_{{ $id }}" min="0"> --}}
-            {{-- <select id="cars" name="cars" class=" form-control">
-                <option value="volvo">V</option>
-                <option value="saab">S</option>
-                <option value="fiat">F</option>
-                <option value="audi">A</option>
-              </select> --}}
-            {{-- {{ $currency_options = json_decode( $currencies )}} --}}
-            <select id="cars" name="cars" class=" form-control">
+            <input id="cargo_price_{{ $id }}" type="number" class=" form-group form-control @error( "cargo_price_" . $id ) is-invalid @enderror" name="cargo_price_{{ $id }}" value="0" required autocomplete="cargo_price_{{ $id }}" min="0">
+            <select id="cars" name="cars" class="form-control">
             {{ $iterator = 1 }}
             @foreach (json_decode( $currencies ) as $currency_option )
-
                 <option value="option_{{ $iterator++ }}">{{ $currency_option }}</option>
             @endforeach
+            </select>
         </div>
+        <small id="cargo_price_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_price_info' ) }}</small>
     </td>
     <td>
         @if ( $id > 1 )
