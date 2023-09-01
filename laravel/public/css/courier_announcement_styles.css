@@ -27,3 +27,10 @@
 [class^="cargo_type_delete_btn_"] {
     background-color: red !important;
 }
+
+.price_container {
+    display: flex !important;
+    border: none;
+    align-items: center !important;
+    justify-content: center !important;
+}

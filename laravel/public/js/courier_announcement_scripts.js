@@ -48,10 +48,15 @@ function deleteAnyCargoButton( ) {
     });
 }
 
+function accessForAddNextElementToCArgoType( ) {
+
+}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     var addCargoButton = document.querySelector(".add_cargo_component_btn");
     cargo.defaultCargoButtonText = addCargoButton.innerHTML;
     addNewCargoTypeButton();
     deleteAnyCargoButton();
+    accessForAddNextElementToCArgoType();
 });
