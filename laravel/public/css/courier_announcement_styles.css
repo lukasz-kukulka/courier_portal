@@ -2,13 +2,13 @@
     margin-top: -15px;
 }
 
-.warning_text {
+/* .warning_text {
     margin-left: 20px;
     display: inline;
     align-items: flex-end;
     justify-content: flex-end;
     color: #ff0000;
-}
+} */
 
 .add_new_cargo_type_button {
     white-space: nowrap;
@@ -22,4 +22,8 @@
 
 [class^="cargo_component_"]:not( .cargo_component_1 ) {
     display: none;
+}
+
+[class^="cargo_type_delete_btn_"] {
+    background-color: red !important;
 }
