@@ -9,7 +9,8 @@ use Illuminate\View\Component;
 class CargoTypeComponent extends Component
 {
     public function __construct( $id ) {
-        // $this->name = $name;
+        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
+        $this->currencies_options = $JsonParserController->courierAnnouncementAction()['cargo_currencies'];
         $this->id = $id;
     }
 
@@ -17,10 +18,12 @@ class CargoTypeComponent extends Component
         return view('components.cargo_type_component', [
             // 'name' => $this->name,
             'id' => $this->id,
+            'currencies' => json_encode( $this->currencies_options ),
         ] );
     }
 
     // private $name;
     private $id;
+    private $currencies_options;
 
 }
