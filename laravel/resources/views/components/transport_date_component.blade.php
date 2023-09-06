@@ -1,7 +1,7 @@
 <div>
     <tr class="date_component_{{ $id }} align-middle h-100">
         <th scope="row" class="h3">{{ $id }}</th>
-        <td >
+        <td>
             <div class="directions_container">
                 <select id="cars" name="cars" class="form-control">
                     <option value="default_direction" disabled selected>{{ __('base.default_date_direction_option')}}</option>
