@@ -12,11 +12,11 @@
 .first_action_info {
     font-size: 0.7em;
 }
-
+/*
 [class^="cargo_price_info_"] {
     font-size: 0.7em;
     line-height: 4.5;
-}
+} */
 
 [class^="cargo_component_"]:not( .cargo_component_1 ) {
     display: none;
