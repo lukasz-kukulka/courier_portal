@@ -8,7 +8,7 @@
     </td>
     <td><textarea id="cargo_description_{{ $id }}" class="form-control @error( "cargo_description_" . $id ) is-invalid @enderror" name="cargo_description_{{ $id }}" required autocomplete="cargo_description_{{ $id }}" rows="2">{{ old( "cargo_description_" . $id  ) }}</textarea></td>
     <td >
-        <div class="price_container">
+        <div class="price_container d-flex d-flex flex-column flex-sm-row">
             <input id="cargo_price_{{ $id }}" type="number" class=" form-group form-control @error( "cargo_price_" . $id ) is-invalid @enderror" name="cargo_price_{{ $id }}" value="0" required autocomplete="cargo_price_{{ $id }}" min="0">
             <select id="select_currency" name="select_currency" class="form-control">
                 {{ $iterator = 1 }}
