@@ -2,7 +2,7 @@
 
 <tr class="cargo_component_{{ $id }} align-middle h-100">
     <th scope="row" class="h3">{{ $id }}</th>
-    <td class="">
+    <td>
         <input id="cargo_name_{{ $id }}" type="text" class="form-control @error( "cargo_name_" . $id ) is-invalid @enderror" name="cargo_name_{{ $id }}" required autocomplete="cargo_name_{{ $id }}">
         <small id="cargo_name_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_name_info' ) }}</small>
     </td>
