@@ -116,7 +116,6 @@ class CustomUserController extends Controller
                 'company_country' => $request->input('company_country'),
                 'company_phone_number' => $request->input('company_phone_number'),
                 'company_register_link' => $request->input('company_register_link'),
-                'confirmed' => $request->input('confirmed'),
                 'company_name' => $request->input('company_name'),
             ] );
             $userId = auth()->id();

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('company_phone_number', 15 );
             $table->string('company_register_link')->nullable();
             $table->boolean('confirmed')->default( false );
+            $table->timestamps();
         });
     }
 

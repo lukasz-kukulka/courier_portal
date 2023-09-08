@@ -70,6 +70,27 @@
 
                                         </tbody>
                                     </table>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="5" class="text-center border-1"><p class="h3 text-center">{{ __('base.cargo_date_main_title')}}</p></th>
+                                            </tr>
+                                            <tr class="text-center">
+                                              <th class="col-md-1" scope="col">{{ __( 'base.cargo_date_direction_id' ) }}</th>
+                                              <th class="col-md-2" scope="col">{{ __( 'base.cargo_date_direction_title' ) }}</th>
+                                              <th class="col-md-2" scope="col">{{ __( 'base.cargo_date_date_title' ) }}</th>
+                                              <th scope="col">{{ __( 'base.cargo_date_description_title' ) }}</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr>
+                                              <th scope="row">1</th>
+                                              <td>Mark</td>
+                                              <td>Otto</td>
+                                              <td>@mdo</td>
+                                            </tr>
+                                          </tbody>
+                                    </table>
                                 </div>
                                 {{-- <div class="col-md-14 border-bottom"></div>
 
