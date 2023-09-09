@@ -376,5 +376,10 @@ return [
     "courier_announcement_cargo_maximum_cargo_btn" => "Osiągnięto maksymalna dozwoloną liczbę rodzajów przesyłek",
     "cargo_name_info" => "Min. 3 znaki",
     "cargo_price_info" => "Wybierz walutę, wartośc min. 1",
+    "cargo_date_main_title" => "Daty przejazdów",
+    "cargo_date_direction_id" => "Nr.",
+    "cargo_date_direction_title" => "Kierunek",
+    "cargo_date_date_title" => "Data wyjazdu",
+    "cargo_date_description_title" => "Opis",
 
 ];

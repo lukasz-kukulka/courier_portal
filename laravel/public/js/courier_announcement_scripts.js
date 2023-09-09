@@ -8,6 +8,7 @@ var cargo = {
 function addNewCargoTypeButton( ) {
     var button = document.querySelector(".add_cargo_component_btn");
     button.addEventListener("click", function( event ) {
+        setAddNewCargoTypeButtonVisible( true, true );
         if ( cargo.currentCargoIndex < cargo.maxCargoIndex ) {
             cargo.currentCargoIndex++;
             const cargoComponent = document.querySelector( '.cargo_component_' + cargo.currentCargoIndex );
@@ -25,7 +26,6 @@ function addNewCargoTypeButton( ) {
 
 function deleteAnyCargoButton( ) {
     var deleteButtons = document.querySelectorAll('[class^="cargo_type_delete_btn_"]');
-
     deleteButtons.forEach( function( button ) {
         button.addEventListener("click", function( event ) {
             var buttonClass = button.className;
@@ -43,39 +43,42 @@ function deleteAnyCargoButton( ) {
             const cargoComponent = document.querySelector( '.cargo_component_' + cargo.currentCargoIndex );
             cargoComponent.style.display = 'none';
             cargo.currentCargoIndex--;
+            checkLastCargoItem();
         });
     });
 }
 
 function accessForAddNextElementToCArgoType( ) {
+    for ( let index = 1; index < cargo.maxCargoIndex; index++ ) {
+        const inputName = document.querySelector('#cargo_name_' + ( index ).toString() );
+        const inputPrice = document.querySelector('#cargo_price_' + ( index ).toString() );
+        const inputNameInfo = document.querySelector('#cargo_name_info_' + ( index ).toString() );
+        const inputPriceInfo = document.querySelector('#cargo_price_info_' + ( index ).toString() );
+        var nameInfoIsVisible = true;
+        var priceInfoIsVisible = true;
+        inputName.addEventListener('input', function() {
+            if ( inputName.value.length >= 3 ) {
+                inputNameInfo.style.display = 'none';
+                nameInfoIsVisible = false;
+            } else {
+                inputNameInfo.style.display = 'flex';
+                nameInfoIsVisible = true;
+            }
+            setAddNewCargoTypeButtonVisible( nameInfoIsVisible, priceInfoIsVisible );
+        });
 
-    const inputName = document.querySelector('#cargo_name_' + ( cargo.currentCargoIndex ).toString() );
-    const inputPrice = document.querySelector('#cargo_price_' + ( cargo.currentCargoIndex ).toString() );
-    const inputNameInfo = document.querySelector('#cargo_name_info_' + ( cargo.currentCargoIndex ).toString() );
-    const inputPriceInfo = document.querySelector('#cargo_price_info_' + ( cargo.currentCargoIndex ).toString() );
-    var nameInfoIsVisible = true;
-    var priceInfoIsVisible = true;
-    inputName.addEventListener('input', function() {
-        if ( inputName.value.length >= 3 ) {
-            inputNameInfo.style.display = 'none';
-            nameInfoIsVisible = false;
-        } else {
-            inputNameInfo.style.display = 'flex';
-            nameInfoIsVisible = true;
-        }
-        setAddNewCargoTypeButtonVisible( nameInfoIsVisible, priceInfoIsVisible );
-    });
+        inputPrice.addEventListener('input', function() {
+            if ( parseFloat( inputPrice.value ) > 0 ) {
+                inputPriceInfo.style.display = 'none';
+                priceInfoIsVisible = false;
+            } else {
+                inputPriceInfo.style.display = 'flex';
+                priceInfoIsVisible = true;
+            }
+            setAddNewCargoTypeButtonVisible( nameInfoIsVisible, priceInfoIsVisible );
+        });
+    }
 
-    inputPrice.addEventListener('input', function() {
-        if ( parseFloat( inputPrice.value ) > 0 ) {
-            inputPriceInfo.style.display = 'none';
-            priceInfoIsVisible = false;
-        } else {
-            inputPriceInfo.style.display = 'flex';
-            priceInfoIsVisible = true;
-        }
-        setAddNewCargoTypeButtonVisible( nameInfoIsVisible, priceInfoIsVisible );
-    });
 }
 
 function setAddNewCargoTypeButtonVisible( inputName, inputPrice ) {
@@ -89,6 +92,16 @@ function setAddNewCargoTypeButtonVisible( inputName, inputPrice ) {
     }
 }
 
+function checkLastCargoItem() {
+    const inputName = document.querySelector('#cargo_name_' + ( cargo.currentCargoIndex ).toString() );
+    const inputPrice = document.querySelector('#cargo_price_' + ( cargo.currentCargoIndex ).toString() );
+    if ( inputName.value.length >= 3 && parseFloat( inputPrice.value ) > 0 ) {
+        setAddNewCargoTypeButtonVisible( false, false );
+    } else {
+        setAddNewCargoTypeButtonVisible( true, true );
+    }
+
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     var addCargoButton = document.querySelector(".add_cargo_component_btn");
