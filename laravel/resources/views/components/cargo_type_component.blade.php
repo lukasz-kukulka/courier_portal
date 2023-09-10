@@ -10,11 +10,12 @@
     <td >
         <div class="price_container">
             <input id="cargo_price_{{ $id }}" type="number" class=" form-group form-control @error( "cargo_price_" . $id ) is-invalid @enderror" name="cargo_price_{{ $id }}" value="0" required autocomplete="cargo_price_{{ $id }}" min="0">
-            <select id="cars" name="cars" class="form-control">
-            {{ $iterator = 1 }}
-            @foreach (json_decode( $currencies ) as $currency_option )
-                <option value="option_{{ $iterator++ }}">{{ $currency_option }}</option>
-            @endforeach
+            <select id="select_currency" name="select_currency" class="form-control">
+                {{ $iterator = 1 }}
+                <option value="option_{{ $iterator++ }}" disabled selected>{{ __('base.default_currency_option')}}</option>
+                @foreach (json_decode( $currencies ) as $currency_option )
+                    <option value="option_{{ $iterator++ }}">{{ $currency_option }}</option>
+                @endforeach
             </select>
         </div>
         <small id="cargo_price_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_price_info' ) }}</small>

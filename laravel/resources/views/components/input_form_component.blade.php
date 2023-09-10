@@ -11,10 +11,10 @@
                 @php $default_data = Auth::user()->email; @endphp
             @endif
             @if ( $type === 'textarea' )
-                <textarea id="{{ $name }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" required autocomplete="{{ $name }}" rows="3">{{ old( $name ) }}</textarea>
+                <textarea id="{{ $name }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" required autocomplete="{{ $name }}" rows="1">{{ old( $name ) }}</textarea>
             @elseif ( $type === 'select' )
                 <select id="{{ $name }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" required autocomplete="{{ $name }}">
-                    <option value="" disabled selected>Wybierz trasę</option>
+                    <option value="" disabled selected>{{ __('base.default_direction_option')}}</option>
                     @foreach ( $options as $direction )
                         <option value="{{ $direction[ 'name' ] }}">{{ $direction[ 'print_name' ] }}</option>
                     @endforeach

@@ -30,9 +30,9 @@
                                 @csrf
 
                                 <x-input_form_component name="courier_announcement_name" type="text" />
-                                <div class="cargo_type_container">
-                                    <div class="col-md-14"></div>
-                                    <table class="table border border-1">
+                                <div class="cargo_type_container table-responsive-xl">
+
+                                    <table class="table border border-1 ">
                                         <thead>
                                             <tr>
                                                 <th colspan="5" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_type_cargo_title')}}</p></th>
@@ -41,8 +41,8 @@
                                                 <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_cargo_type_id' ) }}</th>
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_name' ) }}</th>
                                                 <th scope="col">{{ __( 'base.courier_announcement_cargo_type_description' ) }}</th>
-                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_price' ) }}</th>
-                                                <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_cargo_type_actions' ) }}</th>
+                                                <th class="col-md-3" scope="col">{{ __( 'base.courier_announcement_cargo_type_price' ) }}</th>
+                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_actions' ) }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -70,22 +70,24 @@
 
                                         </tbody>
                                     </table>
-                                    <table class="table border border-1">
+                                </div>
+                                <div class="date_travel_container table-responsive-xl">
+                                    <table class="table border border-1 ">
                                         <thead>
                                             <tr>
-                                                <th colspan="5" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_type_cargo_title')}}</p></th>
+                                                <th colspan="5" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_date_title')}}</p></th>
                                             </tr>
                                             <tr class="text-center">
-                                                <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_cargo_type_id' ) }}</th>
-                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_name' ) }}</th>
-                                                <th scope="col">{{ __( 'base.courier_announcement_cargo_type_description' ) }}</th>
-                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_price' ) }}</th>
-                                                <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_cargo_type_actions' ) }}</th>
+                                                <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_date_id' ) }}</th>
+                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_direction_name' ) }}</th>
+                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_start_date_name' ) }}</th>
+                                                <th scope="col">{{ __( 'base.courier_announcement_date_description_name' ) }}</th>
+                                                <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_date_actions' ) }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @for ( $i = 1; $i <= $elementNumber; $i++ )
-                                                <x-cargo_type_component id="{{ $i }}" />
+                                                <x-transport_date_component id="{{ $i }}" />
                                             @endfor
                                             <div>
                                                 <table>
