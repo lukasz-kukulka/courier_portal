@@ -143,6 +143,7 @@ return [
     "announcement_title" => "Szukam transportu dla: ",
     "pl_uk_direction" => "Na trasie Polska -> Anglia.\n",
     "uk_pl_direction" => "Na trasie Anglia -> Polska.\n",
+    "default_direction_option" => "Wybierz trasę",
     "announcement_date" => "Najbardziej pasującym dniem na transport w/w jest: ",
     "elastic_date" => "Jestem również otwarty/a na inne dni do transportu.\n",
     "post_code_send" => "Kod pocztowy wysyłki: ",
@@ -381,5 +382,15 @@ return [
     "cargo_date_direction_title" => "Kierunek",
     "cargo_date_date_title" => "Data wyjazdu",
     "cargo_date_description_title" => "Opis",
+    "courier_announcement_date_title" => "Daty transportów",
+    "default_currency_option" => "Waluta",
+    "default_date_direction_option" => "Wybierz trase",
+    "courier_announcement_date_id" => "Nr.",
+    "courier_announcement_date_direction_name" => "Kierunek",
+    "courier_announcement_date_start_date_name" => "Data wyjazdu",
+    "courier_announcement_date_description_name" => "Opis (opcjonalnie)",
+    "courier_announcement_date_actions" => "Akcje",
+    "courier_announcement_date_min_one_type" => "Wymagana min. jedna data w ogłoszeniu",
+
 
 ];

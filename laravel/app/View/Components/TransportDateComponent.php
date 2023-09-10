@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class CargoTypeComponent extends Component
+class TransportDateComponent extends Component
 {
     public function __construct( $id ) {
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
@@ -15,13 +15,12 @@ class CargoTypeComponent extends Component
     }
 
     public function render(): View|Closure|string {
-        return view('components.cargo_type_component', [
+        return view('components.transport_date_component', [
             'id' => $this->id,
-            'direction' => json_encode( $this->directions ),
+            'directions' => json_decode( $this->directions, true ) ,
         ] );
     }
 
-    // private $name;
     private $id;
     private $directions;
 
