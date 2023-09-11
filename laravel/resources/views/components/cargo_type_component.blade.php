@@ -2,13 +2,13 @@
 
 <tr class="cargo_component_{{ $id }} align-middle h-100">
     <th scope="row" class="h3">{{ $id }}</th>
-    <td>
+    <td class="">
         <input id="cargo_name_{{ $id }}" type="text" class="form-control @error( "cargo_name_" . $id ) is-invalid @enderror" name="cargo_name_{{ $id }}" required autocomplete="cargo_name_{{ $id }}">
         <small id="cargo_name_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_name_info' ) }}</small>
     </td>
     <td><textarea id="cargo_description_{{ $id }}" class="form-control @error( "cargo_description_" . $id ) is-invalid @enderror" name="cargo_description_{{ $id }}" required autocomplete="cargo_description_{{ $id }}" rows="2">{{ old( "cargo_description_" . $id  ) }}</textarea></td>
     <td >
-        <div class="price_container">
+        <div class="price_container d-flex d-flex flex-column flex-sm-row">
             <input id="cargo_price_{{ $id }}" type="number" class=" form-group form-control @error( "cargo_price_" . $id ) is-invalid @enderror" name="cargo_price_{{ $id }}" value="0" required autocomplete="cargo_price_{{ $id }}" min="0">
             <select id="select_currency" name="select_currency" class="form-control">
                 {{ $iterator = 1 }}

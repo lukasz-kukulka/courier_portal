@@ -30,7 +30,7 @@
                                 @csrf
 
                                 <x-input_form_component name="courier_announcement_name" type="text" />
-                                <div class="cargo_type_container table-responsive-xl">
+                                <div class="cargo_type_container table-responsive">
 
                                     <table class="table border border-1 ">
                                         <thead>
@@ -40,7 +40,7 @@
                                             <tr class="text-center">
                                                 <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_cargo_type_id' ) }}</th>
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_name' ) }}</th>
-                                                <th scope="col">{{ __( 'base.courier_announcement_cargo_type_description' ) }}</th>
+                                                <th class="col-md-4" scope="col">{{ __( 'base.courier_announcement_cargo_type_description' ) }}</th>
                                                 <th class="col-md-3" scope="col">{{ __( 'base.courier_announcement_cargo_type_price' ) }}</th>
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_actions' ) }}</th>
                                             </tr>
@@ -49,7 +49,6 @@
                                             @for ( $i = 1; $i <= $elementNumber; $i++ )
                                                 <x-cargo_type_component id="{{ $i }}" />
                                             @endfor
-                                            <div>
                                                 <table>
                                                     <tr>
                                                         <td colspan="5">
@@ -66,12 +65,10 @@
                                                         </td>
                                                     </tr>
                                                 </table>
-                                            </div>
-
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="date_travel_container table-responsive-xl">
+                                <div class="date_travel_container table-responsive">
                                     <table class="table border border-1 ">
                                         <thead>
                                             <tr>
@@ -81,7 +78,7 @@
                                                 <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_date_id' ) }}</th>
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_direction_name' ) }}</th>
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_start_date_name' ) }}</th>
-                                                <th scope="col">{{ __( 'base.courier_announcement_date_description_name' ) }}</th>
+                                                <th class="col-md-6"scope="col">{{ __( 'base.courier_announcement_date_description_name' ) }}</th>
                                                 <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_date_actions' ) }}</th>
                                             </tr>
                                         </thead>
@@ -129,6 +126,7 @@
                                         </button>
                                     </div>
                                 </div> --}}
+                                <button type="submit" class="btn btn-primary">Submit</button>
 
                             </form>
                         </div>

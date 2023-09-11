@@ -18,6 +18,10 @@
     line-height: 4.5;
 } */
 
+.table-responsive {
+    overflow-x: auto;
+}
+
 [class^="cargo_component_"]:not( .cargo_component_1 ) {
     display: none;
 }
