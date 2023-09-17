@@ -391,6 +391,7 @@ return [
     "courier_announcement_date_description_name" => "Opis (opcjonalnie)",
     "courier_announcement_date_actions" => "Akcje",
     "courier_announcement_date_min_one_type" => "Wymagana min. jedna data w ogłoszeniu",
-
+    "courier_announcement_cargo_maximum_date_btn" => "Osiągnięto maksymalną liczbę dat",
+    "courier_announcement_date_button_add" => "Dodaj kolejną datę wyjazdu",
 
 ];

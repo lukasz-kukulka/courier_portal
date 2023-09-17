@@ -1,5 +1,7 @@
 {
     "premium_number_of_type_cargo" : 100,
     "standard_number_of_type_cargo" : 5,
+    "premium_number_of_type_date" : 100,
+    "standard_number_of_type_date" : 5,
     "cargo_currencies": [ "£", "zł", "€" ]
 }
