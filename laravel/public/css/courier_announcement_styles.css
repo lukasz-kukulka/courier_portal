@@ -5,25 +5,30 @@
 .add_new_cargo_type_button {
     white-space: nowrap;
     margin-bottom: 10px;
-    /* opacity: 0.5;
-    pointer-events: none; */
 }
 
-.first_action_info {
+.action_cargo_container_info, .action_date_container_info {
     font-size: 0.7em;
 }
-/*
-[class^="cargo_price_info_"] {
-    font-size: 0.7em;
-    line-height: 4.5;
-} */
 
 [class^="cargo_component_"]:not( .cargo_component_1 ) {
     display: none;
 }
 
+[class^="date_component_"]:not( .date_component_1 ) {
+    display: none;
+}
+
 [class^="cargo_type_delete_btn_"] {
     background-color: red !important;
+}
+
+[class^="date_delete_btn_"] {
+    background-color: red !important;
+}
+
+.action_date_container_button_1, .action_cargo_container_button_1 {
+    display: none;
 }
 
 .price_container {

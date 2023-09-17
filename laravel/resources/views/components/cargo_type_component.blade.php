@@ -3,7 +3,6 @@
 <tr class="cargo_component_{{ $id }} align-middle h-100">
     <th scope="row" class="h3">{{ $id }}</th>
     <td>
-        {{-- test --}}
         <input id="cargo_name_{{ $id }}" type="text" class="form-control @error( "cargo_name_" . $id ) is-invalid @enderror" name="cargo_name_{{ $id }}" required autocomplete="cargo_name_{{ $id }}">
         <small id="cargo_name_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_name_info' ) }}</small>
     </td>
@@ -11,18 +10,18 @@
     <td >
         <div class="price_container d-flex d-flex flex-column flex-sm-row">
             <input id="cargo_price_{{ $id }}" type="number" class=" form-group form-control @error( "cargo_price_" . $id ) is-invalid @enderror" name="cargo_price_{{ $id }}" value="0" required autocomplete="cargo_price_{{ $id }}" min="0">
-            <select id="select_currency" name="select_currency" class="form-control">
+            <select id="select_currency_{{ $id }}" name="select_currency_{{ $id }}" class="form-control">
                 {{ $iterator = 1 }}
-                <option value="option_{{ $iterator++ }}" disabled selected>{{ __('base.default_currency_option')}}</option>
+                <option value="option_default" disabled selected>{{ __('base.default_currency_option')}}</option>
                 @foreach (json_decode( $currencies ) as $currency_option )
-                    <option value="option_{{ $iterator++ }}">{{ $currency_option }}</option>
+                    <option value="option_{{ $id }}_{{ $iterator++ }}">{{ $currency_option }}</option>
                 @endforeach
             </select>
         </div>
         <small id="cargo_price_info_{{ $id }}" class="form-text text-muted">{{ __( 'base.cargo_price_info' ) }}</small>
     </td>
     <td>
-        @if ( $id > 1 )
+        <div class="action_cargo_container_button_{{ $id }}">
             <a href="#" data-toggle="tooltip" title="{{ __( 'base.courier_announcement_cargo_type_action_delete_info' ) }}">
                 <button class="cargo_type_delete_btn_{{ $id }} btn" type="button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="white" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -30,9 +29,11 @@
                     </svg>
                 </button>
             </a>
-        @else
-            <p class="first_action_info">{{ __( 'base.courier_announcement_cargo_type_min_one_type' ) }}</p>
+        </div>
+        @if ( $id == 1 )
+            <div class="action_cargo_container_info">
+                <p>{{ __( 'base.courier_announcement_cargo_type_min_one_type' ) }}</p>
+            </div>
         @endif
-
     </td>
 </tr>
