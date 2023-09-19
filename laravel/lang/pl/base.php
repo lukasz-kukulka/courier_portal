@@ -393,5 +393,12 @@ return [
     "courier_announcement_date_min_one_type" => "Wymagana min. jedna data w ogłoszeniu",
     "courier_announcement_cargo_maximum_date_btn" => "Osiągnięto maksymalną liczbę dat",
     "courier_announcement_date_button_add" => "Dodaj kolejną datę wyjazdu",
-
+    "courier_announcement_date_action_delete_info" => "Usuń date wyjazdu",
+    "post_codes_all_title" => "Kody pocztowe w jakich wykonujesz przejazdy",
+    "post_codes_pl_title" => "Kody pocztowe w Polsce",
+    "post_codes_uk_title" => "Kody pocztowe w UK",
+    "selecet_all_post_codes_pl" => "Zaznacz wszystkie w Polsce",
+    "clear_all_post_codes_pl" => "Wyczyść wszystkie w Polsce",
+    "selecet_all_post_codes_uk" => "Zaznacz wszystkie w UK",
+    "clear_all_post_codes_uk" => "Wyczyść wszystkie w UK",
 ];

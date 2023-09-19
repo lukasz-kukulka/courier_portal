@@ -9,6 +9,8 @@
         $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
         $cargoElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ];
         $dateElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_date' ];
+        $postCodesPL = $JsonParserController->plPostCodeAction();
+        $postCodesUK = $JsonParserController->ukPostCodeAction();
         //dodac do js ilosc cargo i daty weryfikacja #sema_update
     @endphp
     <script src="{{
@@ -21,6 +23,7 @@
         maxDateNumber="<?php echo $dateElementNumber; ?>"
         maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
     ></script>
+    <script src="{{ asset('js/courier_announcement_post_codes_scripts.js') }}"></script>
 @endsection
 
 @section('content')
@@ -114,9 +117,65 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <div class="all_post_codes_container table-responsive">
+                                    <table class="table border border-1 ">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="1" class="text-center border-1"><p class="h3 text-center">{{ __('base.post_codes_all_title')}}</p></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-center">
+                                                <td scope="col">{{ __( 'base.post_codes_pl_title' ) }}</td>
+                                            </tr>
+                                            <tr class="align-middle h-100">
+                                                <td>
+                                                    <div class="pl_post_codes_container text-center">
+                                                        @foreach ( $postCodesPL as $code )
+                                                            <div class="container_post_code_button_pl_{{ $code }}">
+                                                                <button class="btn btn-secondary btn-sm post_code_button_pl_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="post_code_checkbox_pl_{{ $code }}">
+                                                                    <label class="form-check-label" for="post_code_checkbox_pl_{{ $code }}">
+                                                                        {{ $code }}
+                                                                    </label>
+                                                                </button>
+                                                            </div>
+
+                                                        @endforeach
+                                                        <button type="button" class="btn btn-sm btn-success select_all_post_code_pl">{{ __( 'base.selecet_all_post_codes_pl' ) }}</button>
+                                                        <button type="button" class="btn btn-sm btn-danger clear_all_post_code_pl">{{ __( 'base.clear_all_post_codes_pl' ) }}</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td scope="col">{{ __( 'base.post_codes_uk_title' ) }}</td>
+                                            </tr>
+                                            <tr class="align-middle h-100">
+                                                <td>
+                                                    <div class="uk_post_codes_container text-justify">
+                                                        @foreach ( $postCodesUK as $code )
+                                                            <div class="container_post_code_button_uk_{{ $code }}">
+                                                                <button class="btn btn-secondary btn-sm post_code_button_uk_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
+                                                                    <input class="form-check-input" type="checkbox" value="" id="post_code_checkbox_uk_{{ $code }}">
+                                                                    <label class="form-check-label" for="post_code_checkbox_uk_{{ $code }}">
+                                                                        {{ $code }}
+                                                                    </label>
+                                                                </button>
+                                                            </div>
+                                                        @endforeach
+                                                        <button type="button" class="btn btn-sm btn-success select_all_post_code_uk">{{ __( 'base.selecet_all_post_codes_uk' ) }}</button>
+                                                        <button type="button" class="btn btn-sm btn-danger clear_all_post_code_uk">{{ __( 'base.clear_all_post_codes_uk' ) }}</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
 
                             </form>
+
                         </div>
                     </div>
                 </div>
