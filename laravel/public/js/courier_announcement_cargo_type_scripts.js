@@ -154,7 +154,6 @@ function checkLastCargoItem() {
 function setDeleteActionOnFirstElementOnCargo() {
     var deleteButton = document.querySelector(".action_cargo_container_button_1");
     var cargoActionInfo = document.querySelector(".action_cargo_container_info");
-    console.log( cargo.currentCargoIndex );
     if ( cargo.currentCargoIndex > 1 ) {
         deleteButton.style.display = 'flex';
         cargoActionInfo.style.display = 'none';

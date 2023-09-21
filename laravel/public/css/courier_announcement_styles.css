@@ -37,3 +37,13 @@
     align-items: center !important;
     justify-content: center !important;
 }
+
+[class^="container_post_code_button_"], .select_all_post_code_pl, .select_all_post_code_uk, .clear_all_post_code_uk, .clear_all_post_code_pl {
+    margin-bottom: 3px;
+    display: inline-block;
+}
+
+.select_all_post_code_pl, .select_all_post_code_uk, .clear_all_post_code_uk, .clear_all_post_code_pl {
+    margin-left: 10px;
+    margin-right: 10px;
+}
