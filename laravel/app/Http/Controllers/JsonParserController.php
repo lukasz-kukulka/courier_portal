@@ -16,6 +16,7 @@ class JsonParserController extends Controller
         $this->post_codes_pl  = resource_path( $settingsDir . 'post_codes_pl.json');
         $this->post_codes_uk  = resource_path( $settingsDir . 'post_codes_uk.json');
         $this->courier_announcement_json_file = resource_path( $settingsDir . 'courier_announcement.json');
+        $this->element_access = resource_path( $settingsDir . 'accounts_access_for_elements.json');
     }
 
     public function menuAction() {
@@ -65,6 +66,12 @@ class JsonParserController extends Controller
         return $json;
     }
 
+    public function courierAnnouncementAccessElementsAction() {
+        $jsonData = file_get_contents( $this->element_access );
+        $json = json_decode( $jsonData, true );
+        return $json;
+    }
+
     private $menu_json_file;
     private $account_json_file;
     private $directions_json_file;
@@ -73,4 +80,5 @@ class JsonParserController extends Controller
     private $post_codes_pl;
     private $post_codes_uk;
     private $courier_announcement_json_file;
+    private $element_access;
 }

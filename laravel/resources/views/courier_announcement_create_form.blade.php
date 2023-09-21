@@ -11,6 +11,8 @@
         $dateElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_date' ];
         $postCodesPL = $JsonParserController->plPostCodeAction();
         $postCodesUK = $JsonParserController->ukPostCodeAction();
+        $permDate = $JsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
+        $login_user = auth()->user();
         //dodac do js ilosc cargo i daty weryfikacja #sema_update
     @endphp
     <script src="{{
@@ -169,6 +171,74 @@
                                                 </td>
                                             </tr>
 
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="experience_date_container table-responsive">
+                                    <table class="table border border-1 ">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="2" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_date_experience_title')}}</p></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="align-middle h-100">
+                                                <td>
+                                                    <div class="input_experience_date_container text-center">
+                                                        <input type="date" class="form-control" id="experience_announcement_date_input" name="experience_announcement_date_input">
+                                                    </div>
+                                                </td>
+                                                @if ( in_array( $login_user->account_type, $permDate[ 'access_accounts' ] ) )
+                                                    <td>
+                                                        <div class="container_experience_for_premium">
+                                                            <input class="form-check-input" type="checkbox" value="" id="experience_for_premium_date">
+                                                            <label class="form-check-label" for="experience_for_premium_date">
+                                                                {{ __( 'base.perm_experience_announcement_date_info' ) }}
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                @endif
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="courier_announcement_additional_description_container table-responsive">
+                                    <table class="table border border-1 ">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="1" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_additional_description_title')}}</p></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="align-middle h-100">
+                                                <td>
+                                                    <div class="input_additional_description_container text-center">
+                                                        <textarea id="additional_description_input" class="form-control @error( "additional_description_input" ) is-invalid @enderror" name="additional_description_input" required autocomplete="additional_description_input" rows="3">{{ old( "additional_description_input" ) }}</textarea>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="courier_announcement_pictures_container table-responsive">
+                                    <table class="table border border-1 ">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="1" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_picrures_title')}}</p></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="align-middle h-100">
+                                                <td>
+                                                    <div class="form-group input_courier_announcement_picture">
+                                                        <label for="zdjecie">Zdjęcie</label>
+                                                        <input type="file" class="form-control-file" id="input_courier_announcement_picture" name="input_courier_announcement_pictures">
+                                                    </div>
+                                                </td>
+
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
