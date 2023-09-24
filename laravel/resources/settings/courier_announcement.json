@@ -3,5 +3,7 @@
     "standard_number_of_type_cargo" : 5,
     "premium_number_of_type_date" : 100,
     "standard_number_of_type_date" : 5,
-    "cargo_currencies": [ "£", "zł", "€" ]
+    "cargo_currencies": [ "£", "zł", "€" ],
+    "picture_file_input_limit_standard": 1,
+    "picture_file_input_limit_premium": 10
 }

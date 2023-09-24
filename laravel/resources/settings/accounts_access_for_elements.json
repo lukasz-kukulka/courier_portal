@@ -1,0 +1,7 @@
+{
+	"perm_experience_date_for_premium": {
+		"name": "perm_experience_date_for_premium",
+		"access_accounts": [ "courier_pro", "nazwa_konta2" ],
+		"no_access_accounts": [ "nazawa_konta33", "nazwa_konta_22" ]
+	}
+}

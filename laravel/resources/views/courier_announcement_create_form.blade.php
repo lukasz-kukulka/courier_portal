@@ -9,6 +9,7 @@
         $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
         $cargoElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ];
         $dateElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_date' ];
+        $maxFilesPictuteElement = $courierAnnouncenetData[ 'picture_file_input_limit_premium' ];
         $postCodesPL = $JsonParserController->plPostCodeAction();
         $postCodesUK = $JsonParserController->ukPostCodeAction();
         $permDate = $JsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
@@ -26,6 +27,7 @@
         maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
     ></script>
     <script src="{{ asset('js/courier_announcement_post_codes_scripts.js') }}"></script>
+    <script src="js/courier_announcement_pictures_script.js"></script>
 @endsection
 
 @section('content')
@@ -230,15 +232,16 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="align-middle h-100">
-                                                <td>
-                                                    <div class="form-group input_courier_announcement_picture">
-                                                        <label for="zdjecie">Zdjęcie</label>
-                                                        <input type="file" class="form-control-file" id="input_courier_announcement_picture" name="input_courier_announcement_pictures">
-                                                    </div>
-                                                </td>
-
-                                            </tr>
+                                            @for ( $i = 1; $i <= $maxFilesPictuteElement; $i++ )
+                                                <tr class="input_courier_announcement_picture_{{ $i }} align-middle h-100">
+                                                    <td>
+                                                        <div class="form-group ">
+                                                            <label for="courier_announcement_picture_input_{{ $i }}">{{ __( 'base.courier_announcement_picrures_name' )}}</label>
+                                                            <input type="file" class="form-control-file" id="courier_announcement_picture_input_{{ $i }}" name="courier_announcement_picture_input_{{ $i }}">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endfor
                                         </tbody>
                                     </table>
                                 </div>

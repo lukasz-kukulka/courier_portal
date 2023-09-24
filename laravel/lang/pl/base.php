@@ -405,4 +405,5 @@ return [
     "perm_experience_announcement_date_info" => "Brak daty wygaśnięcia ogłoszenia, do momentu posiadania premium + jeden miesiąc",
     "courier_announcement_additional_description_title" => "Dodatkowy opis do ogłoszenia( opcjonalnie )",
     "courier_announcement_picrures_title" => "Dodaj zdjęcia do ogłoszenia( opcjonalnie )",
+    "courier_announcement_picrures_name" => "Zdjęcie",
 ];
