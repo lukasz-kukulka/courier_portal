@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
 use App\Http\Controllers\UserAnnouncementController;
 use App\Http\Controllers\CourierAnnouncementController;
+use App\Http\Controllers\UploadFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +72,4 @@ Route::post('user_announcement_summary', [UserAnnouncementController::class, 'su
 
 Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified']);
 Route::post('courier_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])->middleware(['auth', 'verified'])->name('courier_announcement.generateCourierAnnouncement');
+Route::post('upload', [UploadFileController::class, 'store'] );

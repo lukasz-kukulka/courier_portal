@@ -3,20 +3,23 @@
     <th scope="row" class="h3">{{ $id }}</th>
     <td>
         <div class="directions_container">
-            <select id="date_directions_select_{{ $id }}" name="date_directions_select_{{ $id }}" class="form-control">
-                <option value="default_direction" disabled selected>{{ __('base.default_date_direction_option')}}</option>
+            <input type="hidden" name="date_directions_select_{{ $id }}" value="{{ old("date_directions_select_" . $id) !== null ? old("date_directions_select_" . $id) : "default_direction" }}" value="{{ old( "date_directions_select_" . $id  ) }}">
+            <select id="date_directions_select_{{ $id }}" name="date_directions_select_{{ $id }}" class="form-group form-control @error( "date_directions_select_" . $id ) is-invalid @enderror">
+                {{-- <option value="default_direction" disabled selected>{{ __('base.default_date_direction_option')}}</option> --}}
+                <option value="{{ old("date_directions_select_" . $id) != "default_direction" ? old("date_directions_select_" . $id) : "default_direction" }}" disabled selected>{{ old("date_directions_select_" . $id) != "default_direction" && old("date_directions_select_" . $id) != null && old("date_directions_select_" . $id) != "" ? old("date_directions_select_" . $id) : __('base.default_date_direction_option') }}</option>
+
                 @foreach ( $directions as $direction )
-                    <option value="{{ $direction[ 'name' ] }}">{{ $direction['print_name'] }}</option>
+                    <option value="{{ $direction[ 'print_name' ] }}">{{ $direction['print_name'] }}</option>
                 @endforeach
             </select>
         </div>
     </td>
     <td>
-        <input type="date" class="form-control" id="date_input_{{ $id }}" name="date_input_{{ $id }}">
+        <input type="date" class="form-control @error( "date_input_" . $id ) is-invalid @enderror" id="date_input_{{ $id }}" name="date_input_{{ $id }}" value="{{ old( "date_input_" . $id  ) }}">
     </td>
 
     <td>
-        <textarea id="date_description_{{ $id }}" class="form-control @error( "date_description_" . $id ) is-invalid @enderror" name="date_description_{{ $id }}" required autocomplete="date_description_{{ $id }}" rows="1">{{ old( "date_description_" . $id ) }}</textarea>
+        <textarea id="date_description_{{ $id }}" class="form-control" name="date_description_{{ $id }}" autocomplete="date_description_{{ $id }}" rows="1">{{ old( "date_description_" . $id ) }}</textarea>
 
     </td>
 

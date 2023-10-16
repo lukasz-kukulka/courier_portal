@@ -406,4 +406,9 @@ return [
     "courier_announcement_additional_description_title" => "Dodatkowy opis do ogłoszenia( opcjonalnie )",
     "courier_announcement_picrures_title" => "Dodaj zdjęcia do ogłoszenia( opcjonalnie )",
     "courier_announcement_picrures_name" => "Zdjęcie",
+    "courier_announcement_date_title_info" => "Data wyjazdu: min. jeden dzień po aktualnej dacie",
+    "courier_announcement_experience_date_info" => "Nie dłuższa niż 30 dni",
+    "courier_announcement_submit_button_text" => "Przejdź do podsumowania",
+    "courier_announcement_picture_limit_info" => "Limit ilości zdjęć dla Twojego konta to ",
+    "courier_announcement_picture_delete_button_text" => "Usuń",
 ];

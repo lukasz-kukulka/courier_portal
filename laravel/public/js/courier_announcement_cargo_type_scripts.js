@@ -11,6 +11,7 @@ var cargo = {
 function addNewCargoTypeButton( ) {
     var button = document.querySelector(".add_cargo_component_btn");
     button.addEventListener("click", function( event ) {
+
         setAddNewCargoTypeButtonVisible( true, true, true );
         if ( cargo.currentCargoIndex < cargo.maxCargoIndex ) {
             cargo.currentCargoIndex++;
@@ -18,8 +19,7 @@ function addNewCargoTypeButton( ) {
             cargoComponent.style.display = 'table-row';
         }
         if ( cargo.currentCargoIndex >= cargo.maxCargoIndex ) {
-            const addCargoButton = document.querySelector( '.add_new_cargo_type_button' );
-            alert( cargo.maxCargoButtonText );
+            const addCargoButton = document.querySelector( '.add_new_cargo_type_button' );//////////////////////////
             button.classList.add('disabled');
             button.classList.add('btn-secondary');
             button.innerHTML = cargo.maxCargoButtonText;
@@ -118,8 +118,9 @@ function accessForAddNextElementToCArgoType( ) {
     }
 }
 
-function setCurrencyAndPriceInfoVisible( priceValue, currencyValue ) {
-    const inputPriceAndCurrencyInfo = document.querySelector('#cargo_price_info_' + ( cargo.currentCargoIndex ).toString() );
+function setCurrencyAndPriceInfoVisible( priceValue, currencyValue, currentIndex = 0 ) {
+    let index = currentIndex != 0 ? currentIndex : cargo.currentCargoIndex;
+    const inputPriceAndCurrencyInfo = document.querySelector('#cargo_price_info_' + ( index ).toString() );
     if ( priceValue == false && currencyValue == false ) {
         inputPriceAndCurrencyInfo.style.display = 'none';
     } else {
@@ -142,13 +143,11 @@ function checkLastCargoItem() {
     const inputName = document.querySelector('#cargo_name_' + ( cargo.currentCargoIndex ).toString() );
     const inputPrice = document.querySelector('#cargo_price_' + ( cargo.currentCargoIndex ).toString() );
     const inputCurrency = document.querySelector('#select_currency_' + ( cargo.currentCargoIndex ).toString() );
-
     if ( inputName.value.length >= 3 && parseFloat( inputPrice.value ) > 0 && inputCurrency.value != "option_default" ) {
         setAddNewCargoTypeButtonVisible( false, false, false );
     } else {
         setAddNewCargoTypeButtonVisible( true, true, true );
     }
-
 }
 
 function setDeleteActionOnFirstElementOnCargo() {
@@ -163,12 +162,62 @@ function setDeleteActionOnFirstElementOnCargo() {
     }
 }
 
+function editCargoVisibleNumberBeforeFormSend() {
+    var form = document.getElementById('courier_announcement_form');
+    var cargo_visible_number = document.getElementById('cargo_number_visible');
+    cargo.currentCargoIndex = parseInt( cargo_visible_number.value );
+    document.getElementById('courier_announcement_submit_button').addEventListener('click', function(event) {
+        event.preventDefault();
+        cargo_visible_number.value = cargo.currentCargoIndex
+        form.submit();
+    });
+}
+
+function setVisibleCargoComponents() {
+    for( let i = 1; i <= cargo.currentCargoIndex; i++ ) {
+        var element = document.querySelector('.cargo_component_' +  i );
+        setCargoDataAfterValidation( i );
+        element.style.display = 'table-row';
+    }
+}
+
+function setCargoDataAfterValidation( index ) {
+    const inputName = document.querySelector('#cargo_name_' + ( index ).toString() );
+    const inputPrice = document.querySelector('#cargo_price_' + ( index ).toString() );
+    const inputCurrency = document.querySelector('#select_currency_' + ( index ).toString() );
+    const inputNameInfo = document.querySelector('#cargo_name_info_' + ( index ).toString() );
+
+    if( inputName.value.length >= 3 ) {
+        cargo.nameInfoIsVisible = false;
+        inputNameInfo.style.display = 'none';
+    } else {
+        cargo.nameInfoIsVisible = true;
+    }
+
+    if( parseFloat( inputPrice.value ) > 0 ) {
+        cargo.priceInfoIsVisible = false;
+    } else {
+        cargo.priceInfoIsVisible = true;
+    }
+
+    if( inputCurrency.value != "option_default" && inputCurrency.value != "" && inputCurrency.value != null ) {
+        cargo.currencyInfoIsVisible = false;
+    } else {
+        cargo.currencyInfoIsVisible = true;
+    }
+
+    setCurrencyAndPriceInfoVisible( cargo.priceInfoIsVisible, cargo.currencyInfoIsVisible, index );
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var addCargoButton = document.querySelector(".add_cargo_component_btn");
     cargo.defaultCargoButtonText = addCargoButton.innerHTML;
+    editCargoVisibleNumberBeforeFormSend();
     setAddNewCargoTypeButtonVisible( true, true, true );
     addNewCargoTypeButton();
     deleteAnyCargoButton();
     accessForAddNextElementToCArgoType();
     setDeleteActionOnFirstElementOnCargo();
+    setVisibleCargoComponents();
+    checkLastCargoItem();
 });

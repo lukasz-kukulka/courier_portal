@@ -52,3 +52,49 @@
     display: none !important;
     margin-right: 100px;
 }
+
+.thumbnail img {
+    max-width: 100%;
+    height: auto;
+    max-height: 150px;
+    display: inline-block;
+}
+
+.thumbnail {
+    display: inline-flex;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 10px;
+}
+
+.thumbnailsContainer {
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.thumbnail .fileNameOverlay {
+    position: absolute;
+    bottom: 5;
+    left: 5;
+    right: 5;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.date_title_info {
+    font-size: 10px;
+    margin: 0px;
+    margin-top: -10px;
+    color: rgb(187, 0, 0);
+}
+
+.experience_date_info .experience_for_premium_date {
+    margin: 0px;
+}
+
+.picture_limit_info {
+    display: none;
+    color: red;
+}
