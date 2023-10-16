@@ -12,7 +12,7 @@ return new class extends Migration
             $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
             $table->string('image_name');
             $table->string('image_link');
-            $table->string('image_description');
+            $table->string('image_description')->nullable();
             $table->timestamps();
         });
     }

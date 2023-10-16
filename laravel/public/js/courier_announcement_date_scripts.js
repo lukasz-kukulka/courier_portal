@@ -25,6 +25,8 @@ function addNewDateButton( ) {
             button.innerHTML = date.maxDateButtonText;
         }
         setDeleteActionOnFirstElementOnDate();
+        date.dateIsSet = false;
+        date.directionIsSet = false;
   } );
 }
 
@@ -80,16 +82,34 @@ function accessForAddNextElementToDate( ) {
                 date.dateIsSet = false;
                 for ( let visible_item_index = date.currentDateIndex - 1; visible_item_index >= 1; visible_item_index-- ) {
                     const dateInputTemp = document.querySelector('#date_input_' + ( visible_item_index ).toString() );
-                    if ( dateInputTemp.value != "" ) {
+                    if ( dateInputTemp.value != "" && validateConditionsDate( dateInputTemp.value ) ) {
                         nameInfoIsVisible = true;
                         break;
                     }
                 }
             } else {
-                date.dateIsSet = true;
+                if ( validateConditionsDate( this.value ) ) {
+                    date.dateIsSet = true;
+                } else {
+                    date.dateIsSet = false;
+                }
             }
             setAddNewDateButtonVisible( date.directionIsSet, date.dateIsSet );
         });
+    }
+}
+
+function validateConditionsDate( formDate ) {
+    const currentDate = new Date();
+    currentDate.setDate( currentDate.getDate() + 1 );
+    const userDate = new Date( formDate );
+    const oneDayMillisecond = ( 1000 * 60 * 60 * 24 );
+
+    var diffDays = parseInt( ( userDate  - currentDate ) / oneDayMillisecond );
+    if( diffDays < 0 ){
+        return false;
+    } else {
+        return true;
     }
 }
 
@@ -107,8 +127,7 @@ function setAddNewDateButtonVisible( inputDirection, inputDate ) {
 function checkLastDateItem() {
     var dateDirection = document.querySelector('#date_directions_select_' + ( date.currentDateIndex ).toString() );
     var dateInput = document.querySelector('#date_input_' + ( date.currentDateIndex ).toString() );
-
-    if ( dateInput.value == "" && dateDirection.value == 'default_direction' ) {
+    if ( dateInput.value == "" && ( dateDirection.value == 'default_direction' || dateDirection.value == '' || dateDirection.value == null ) ) {
         setAddNewDateButtonVisible( false, false );
     } else {
         setAddNewDateButtonVisible( true, true );
@@ -118,7 +137,6 @@ function checkLastDateItem() {
 function setDeleteActionOnFirstElementOnDate() {
     var deleteButton = document.querySelector(".action_date_container_button_1");
     var dateActionInfo = document.querySelector(".action_date_container_info");
-    console.log( date.currentDateIndex );
     if ( date.currentDateIndex > 1 ) {
         deleteButton.style.display = 'flex';
         dateActionInfo.style.display = 'none';
@@ -128,12 +146,56 @@ function setDeleteActionOnFirstElementOnDate() {
     }
 }
 
+function editDateVisibleNumberBeforeFormSend() {
+    var form = document.getElementById('courier_announcement_form');
+    var date_visible_number = document.getElementById('date_number_visible');
+    date.currentDateIndex = parseInt( date_visible_number.value );
+
+    document.getElementById('courier_announcement_submit_button').addEventListener('click', function(event) {
+        event.preventDefault();
+        date_visible_number.value = date.currentDateIndex
+        form.submit();
+    });
+}
+
+function setVisibleDateComponents() {
+    for( let i = 1; i <= date.currentDateIndex; i++ ) {
+        var element = document.querySelector('.date_component_' +  i );
+        setDateDataAfterValidation( i );
+        element.style.display = 'table-row';
+    }
+}
+
+function setDateDataAfterValidation( index ) {
+    var dateDirection = document.querySelector('#date_directions_select_' + ( index ).toString() );
+    var dateInput = document.querySelector('#date_input_' + ( index ).toString() );
+
+    if ( dateInput.value != null && dateInput.value != "" && validateConditionsDate( dateInput.value ) ) {
+        date.dateIsSet = true;
+    } else {
+        date.dateIsSet = false;
+    }
+
+    if( dateDirection.value != "default_direction" && dateDirection.value != "" && dateDirection.value != null ) {
+        date.dateDirection = true;
+    } else {
+        date.dateDirection = false;
+    }
+
+    setAddNewDateButtonVisible( date.dateDirection, date.dateIsSet );
+
+    // setCurrencyAndPriceInfoVisible( cargo.priceInfoIsVisible, cargo.currencyInfoIsVisible, index );
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     var addDateButton = document.querySelector(".add_date_component_btn");
     date.defaultDateButtonText = addDateButton.innerHTML;
+    editDateVisibleNumberBeforeFormSend();
     setAddNewDateButtonVisible( false, false );
     addNewDateButton();
     deleteAnyDateButton();
     accessForAddNextElementToDate();
     setDeleteActionOnFirstElementOnDate();
+    setVisibleDateComponents();
+    checkLastDateItem();
 });
