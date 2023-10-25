@@ -360,7 +360,7 @@ return [
     ######################## COURIER FORM ####################
 
     "courier_announcement_create_form_title" => "Kreator ogłoszenia dla kurierów",
-    "courier_announcement_name" => "Nazwa ogłoszenia",
+    "courier_announcement_name" => "Nazwa ogłoszenia (niewidoczna dla innych) ",
     "courier_announcement_name_info" => "Nazwa widoczna tylko dla Ciebie",
     "courier_announcement_type_cargo_title" => "Rodzaje przesyłek jakie zabierasz( np: paczka, paleta, etc )",
     "courier_announcement_cargo_type_name" => "Nazwa przesyłki",
@@ -411,4 +411,15 @@ return [
     "courier_announcement_submit_button_text" => "Przejdź do podsumowania",
     "courier_announcement_picture_limit_info" => "Limit ilości zdjęć dla Twojego konta to ",
     "courier_announcement_picture_delete_button_text" => "Usuń",
+    "courier_announcement_summary_title" => "Podsumowanie ogłoszenia",
+    "courier_announcement_cargo_type_title_summary" => "Cennik",
+    "courier_announcement_date_title_summary" => "Daty i kierunki wyjazdów",
+    "courier_announcement_show_info_summary" => "Tak będzie wyglądało twoje ogłoszenie",
+    "courier_announcement_full_title_summary_front" => "Firma ",
+    "courier_announcement_full_title_summary_mid" => " zaprasza, oferujemy transport: ",
+    "courier_announcement_full_title_summary_end" => ", oraz wiele więcej",
+    "courier_announcement_post_codes_pl_title_summary" => "Kody pocztowe w Polsce pod jakie jeździmy",
+    "courier_announcement_post_codes_uk_title_summary" => "Kody pocztowe pod jakie jeździmy",
+    "courier_announcement_poland_delivery_direction_summary" => "Kody pocztowe pod jakie jeździmy w Polsce",
+    "courier_announcement_united_kingdom_delivery_direction_summary" => "Kody pocztowe pod jakie jeździmy w UK",
 ];

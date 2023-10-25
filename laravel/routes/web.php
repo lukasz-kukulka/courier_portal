@@ -72,4 +72,6 @@ Route::post('user_announcement_summary', [UserAnnouncementController::class, 'su
 
 Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified']);
 Route::post('courier_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])->middleware(['auth', 'verified'])->name('courier_announcement.generateCourierAnnouncement');
+Route::post('courier_announcement_summary', [CourierAnnouncementController::class, 'summary'])->middleware(['auth', 'verified'])->name('courier_announcement.summary');
+
 Route::post('upload', [UploadFileController::class, 'store'] );

@@ -4,7 +4,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <link rel="stylesheet" href="{{ asset('css/courier_announcement_styles.css') }}">
-    <link href="https://unpkg.com/filepond@^4/dist/filepond.css" rel="stylesheet" />
 
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
@@ -23,24 +22,6 @@
         //dodac do js ilosc cargo i daty ilosci zdjec weryfikacja #sema_update
     @endphp
 
-    <script src="{{
-        asset('js/courier_announcement_cargo_type_scripts.js') }}"
-        maxCargoNumber="<?php echo $cargoElementNumber; ?>"
-        maxButtonText="<?php echo __( 'base.courier_announcement_cargo_maximum_cargo_btn' ); ?>"
-    ></script>
-    <script
-        src="{{ asset('js/courier_announcement_date_scripts.js') }}"
-        maxDateNumber="<?php echo $dateElementNumber; ?>"
-        maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
-    ></script>
-    <script src="{{ asset('js/courier_announcement_post_codes_scripts.js') }}"></script>
-    <script
-        src="{{ asset('js/courier_announcement_pictures_script.js') }}"
-        deletePictureButtonText="<?php echo __( 'base.courier_announcement_picture_delete_button_text' ); ?>"
-        maxPictureNumber="<?php echo $picturesNumber; ?>"
-    ></script>
-    <script src="{{ asset('js/courier_announcement_main_script.js') }}"></script>
-    <script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 @endsection
 
 @section('content')
@@ -54,8 +35,12 @@
                         <div class="card-body">
                             <form action="{{ route('courier_announcement.generateCourierAnnouncement') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
-
-                                <x-input_form_component name="courier_announcement_name" type="text" />
+                                <div class="row mb-3">
+                                    <label for="courier_announcement_name" class="col-md-4 col-form-label text-md-end">{{ __('base.courier_announcement_name' ) }}</label>
+                                    <div class="col-md-6">
+                                        <input id="courier_announcement_name" type="text" class="form-control @error( 'courier_announcement_name' ) is-invalid @enderror" name="courier_announcement_name" value="{{ old( 'courier_announcement_name' ) }}" autocomplete="courier_announcement_name">
+                                    </div>
+                                </div>
                                 <div class="cargo_type_container table-responsive">
 
                                     <table class="table border border-1 ">
@@ -154,9 +139,9 @@
                                                         @foreach ( $postCodesPL as $code )
                                                             <div class="container_post_code_button_pl_{{ $code }}">
                                                                 <button class="btn btn-secondary btn-sm post_code_button_pl_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
-                                                                    <input type="hidden" name="name_post_code_checkbox_pl_{{ $code }}" value="0">
-                                                                    <input class="form-check-input @error( "name_post_code_checkbox_pl_" . $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old("name_post_code_checkbox_pl_" . $code) ? 'checked' : '' }} name="name_post_code_checkbox_pl_{{ $code }}" id="post_code_checkbox_pl_{{ $code }}">
-                                                                    <label class="form-check-label" for="post_code_checkbox_pl_{{ $code }}">
+                                                                    <input type="hidden" name="{{ $code }}" value="0">
+                                                                    <input class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}" id="{{ $code }}">
+                                                                    <label class="form-check-label" for="{{ $code }}">
                                                                         {{ $code }}
                                                                     </label>
                                                                 </button>
@@ -177,9 +162,9 @@
                                                         @foreach ( $postCodesUK as $code )
                                                             <div class="container_post_code_button_uk_{{ $code }}">
                                                                 <button class="btn btn-secondary btn-sm post_code_button_uk_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
-                                                                    <input type="hidden" name="name_post_code_checkbox_uk_{{ $code }}" value="0">
-                                                                    <input class="form-check-input @error( "name_post_code_checkbox_uk_" . $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old("name_post_code_checkbox_uk_" . $code) ? 'checked' : '' }} name="name_post_code_checkbox_uk_{{ $code }}" id="post_code_checkbox_uk_{{ $code }}">
-                                                                    <label class="form-check-label" for="post_code_checkbox_uk_{{ $code }}">
+                                                                    <input type="hidden" name="{{ $code }}" value="0">
+                                                                    <input class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}" id="{{ $code }}">
+                                                                    <label class="form-check-label" for="{{ $code }}">
                                                                         {{ $code }}
                                                                     </label>
                                                                 </button>
@@ -205,13 +190,14 @@
                                             <tr class="align-middle h-100">
                                                 <td>
                                                     <div class="input_experience_date_container text-center">
-                                                        <input type="date" class="form-control" id="experience_announcement_date_input" name="experience_announcement_date_input">
+                                                        <input type="date" class="form-control @error( "experience_announcement_date_input" ) is-invalid @enderror" autocomplete="experience_announcement_date_input" id="experience_announcement_date_input" name="experience_announcement_date_input" value="{{ old( "experience_announcement_date_input" ) }}">
+                                                        {{-- <input type="date" class="form-control @error( "date_input_" . $id ) is-invalid @enderror" id="date_input_{{ $id }}" name="date_input_{{ $id }}" value="{{ old( "date_input_" . $id  ) }}"> --}}
                                                     </div>
                                                 </td>
                                                 @if ( in_array( $login_user->account_type, $permDate[ 'access_accounts' ] ) )
                                                     <td>
                                                         <div class="container_experience_for_premium form-check">
-                                                            <input class="form-check-input" type="checkbox" value="" id="experience_for_premium_date">
+                                                            <input class="form-check-input" type="checkbox" value="1" id="experience_for_premium_date" name="experience_for_premium_date">
                                                             <label class="form-check-label" for="experience_for_premium_date">
                                                                 {{ __( 'base.perm_experience_announcement_date_info' ) }}
                                                             </label>
@@ -276,9 +262,16 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <input type="hidden" name="cargo_number_visible" id="cargo_number_visible" value="{{ old( "cargo_number_visible" ) > 1 ? old( "cargo_number_visible" ) : "1" }} ">
+                                {{-- @if(request()->isMethod('post'))
+                                    <pre>{{ print_r(request()->all(), true) }}</pre>
+                                @endif
+                                @foreach(session()->all() as $key => $value)
+                                    <p>{{ $key }}: {{ print_r($value, true) }}</p>
+                                @endforeach --}}
+                                <input type="hidden" name="cargo_number_visible" id="cargo_number_visible" value="{{ old( "cargo_number_visible", 1 ) }}">
                                 <input type="hidden" name="date_number_visible" id="date_number_visible" value="{{ old( "date_number_visible" ) > 1 ? old( "date_number_visible" ) : "1" }} ">
                                 <button id="courier_announcement_submit_button" type="submit" class="btn btn-primary">{{ __( 'base.courier_announcement_submit_button_text' ) }}</button>
+
 
                             </form>
 
@@ -290,4 +283,19 @@
 
     </div>
 </div>
+<script src="{{
+    asset('js/courier_announcement_global_variables.js') }}"
+    maxCargoNumber="<?php echo $cargoElementNumber; ?>"
+    maxButtonText="<?php echo __( 'base.courier_announcement_cargo_maximum_cargo_btn' ); ?>"
+    maxDateNumber="<?php echo $dateElementNumber; ?>"
+    maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
+    deletePictureButtonText="<?php echo __( 'base.courier_announcement_picture_delete_button_text' ); ?>"
+    maxPictureNumber="<?php echo $picturesNumber; ?>"
+></script>
+<script src="{{ asset('js/courier_announcement_cargo_type_scripts.js') }}"></script>
+<script src="{{ asset('js/courier_announcement_date_scripts.js') }}" ></script>
+<script src="{{ asset('js/courier_announcement_post_codes_scripts.js') }}"></script>
+<script src="{{ asset('js/courier_announcement_pictures_script.js') }}" ></script>
+<script src="{{ asset('js/courier_announcement_main_script.js') }}"></script>
+<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 @endsection

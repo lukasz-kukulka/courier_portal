@@ -5,20 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UserModel;
 
 use App\Http\Controllers\JsonParserController;
 
 class CourierAnnouncementController extends Controller
 {
+    public function __construct() {
+        $this->json = new JsonParserController;
+    }
     public function generateCourierAnnouncement( Request $request ) {
+
+        // UserModel::with('company')->find( auth()->user()->id );
+        // dd( auth()->user() );
         //dd( $request );
-        $this->validateAllRequestData( $request );
-        $this->createOrCheckFolder();
+        //$this->validateAllRequestData( $request );
+        return $this->summary( $request );
+
         //dd( $request->all() );
     }
 
     public function index() {
 
+    }
+
+    public function summary( Request $request ) {
+        //dd( $request->input() );
+        //$request->session()->flashInput( $request->input() ); // zamiana post na sesje
+        //$request->flash();
+        // // session(['cargo_number_visible_xx' => $request->input('cargo_number_visible')]);
+        // dd( $request );
+        // return view( 'courier_announcement_create_form' );
+        // $this->validateAllRequestData( $request );
+        // $this->createOrCheckFolder();
+
+        //dd($request);
+        $countryData = $this->generateDataForDeliveryCountryToSession();
+        $company = UserModel::with('company')->find( auth()->user()->id );
+        $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
+        return view( 'courier_announcement_summary' )
+                        ->with( 'title', $summaryTitle )
+                        ->with( 'countryPostCodesData', $countryData)
+                        ->with( 'userAndCompany', $company );
     }
 
     /**
@@ -31,24 +59,22 @@ class CourierAnnouncementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        $this->createOrCheckFolder();
+        dd(  $request );
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
+    public function show(string $id) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
+    public function edit(string $id) {
         //
     }
 
@@ -86,15 +112,15 @@ class CourierAnnouncementController extends Controller
 
     private function generateAllCargoRules( $request ) {
         $rules = [];
-        $json = new JsonParserController;
 
         $nameRules[ "courier_announcement_name" ] = 'required';
         $cargoRules = $this->generateCargoValidationRules( $request );
         $dateRules = $this->generateDateValidationRules( $request );
-        $postCodesUKRules = $this->generatePostCodeUKValidationRules( $request, $json->ukPostCodeAction() );
-        $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $json->plPostCodeAction() );
+        $postCodesUKRules = $this->generatePostCodeUKValidationRules( $request, $this->json->ukPostCodeAction() );
+        $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $this->json->plPostCodeAction() );
+        $experienceDate = $this->generateExperienceDateRules( $request );
         $imagesRules = $this->generateImagesValidationRules( $request );
-        $rules = array_merge( $nameRules, $cargoRules, $dateRules, $postCodesUKRules, $postCodesPLRules, $imagesRules );
+        $rules = array_merge( $nameRules, $cargoRules, $dateRules, $postCodesUKRules, $postCodesPLRules, $experienceDate, $imagesRules );
 
         return $rules;
     }
@@ -113,7 +139,10 @@ class CourierAnnouncementController extends Controller
             $cargoPrice = $request->input(  'cargo_price_' . $i );
             $selectCurrency = $request->input(  'select_currency_' . $i );
 
-            if( $cargoName === null && $cargoDescription === null && $cargoPrice === "0" && $selectCurrency == "option_default" ) {
+            if( $cargoName === null &&
+                $cargoDescription === null &&
+                ( $cargoPrice === "0" || $cargoPrice === null ) &&
+                ( $selectCurrency == "option_default" || $selectCurrency == null ) ) {
                 break;
             } else {
                 $rules[ "cargo_name_" . $i ] = 'required';
@@ -134,7 +163,6 @@ class CourierAnnouncementController extends Controller
         for( $i = 2; $i < 10000; $i++ ) {
             $dateDirection = $request->input(  'date_directions_select_' . $i );
             $date = $request->input(  'date_input_' . $i );
-
             if( ( $dateDirection === null || $dateDirection === "default_direction" ) && $date === null ) {
                 break;
             } else {
@@ -187,9 +215,56 @@ class CourierAnnouncementController extends Controller
         return [];
     }
 
+    private function generateExperienceDateRules( $request ) {
+        $rules = [];
+        if ( $request->input( 'experience_for_premium_date' ) !== 1 ) {
+            $rules[ 'experience_announcement_date_input' ] = 'required|date|after:today';
+        }
+        return $rules;
+    }
+
     private function generateImagesValidationRules( $request ) {
         $rules = [];
 
         return $rules;
     }
+
+    private function generateSummaryAnnouncementTitle( $request, $company ) {
+        $courierAnnouncement = $this->json->courierAnnouncementAction();
+        $maxCargoInTitle = $courierAnnouncement[ 'max_cargo_names_in_title' ] ;
+        $cargoNumber = $request->input('cargo_number_visible');
+        $titleFront = __( 'base.courier_announcement_full_title_summary_front' );
+        $titleMid = __( 'base.courier_announcement_full_title_summary_mid' );
+        $titleEnd = $cargoNumber > $maxCargoInTitle ? __( 'base.courier_announcement_full_title_summary_end' ) : "";
+        $cargoNames = "";
+        $companyName = $company->company->company_name;
+        for( $i = 1; $i <= min( $cargoNumber, $maxCargoInTitle ); $i++ ) {
+            if ( $i > 1 ) {
+                $cargoNames .= ", ";
+            } else {
+                $cargoNames .= " ";
+            }
+            $cargoNames .= $request->input('cargo_name_' . $i );
+        }
+        return ( $titleFront . $companyName . $titleMid . $cargoNames . $titleEnd );
+    }
+
+    private function generateDataForDeliveryCountryToSession() {
+
+        $fullCountryArray = [];
+
+        $courierAnnouncement = $this->json->courierAnnouncementAction();
+        $availableCountries = $courierAnnouncement['available_delivery_country'];
+
+        foreach( $availableCountries as $key => $value ) {
+            $singleCountry = [];
+            $singleCountry[ 'country_name' ] = $key;
+            $singleCountry[ 'translate_text' ] = $value;
+            $fullCountryArray[ $key ] = $singleCountry;
+        }
+
+        return $fullCountryArray;
+    }
+
+    private $json = null;
 }

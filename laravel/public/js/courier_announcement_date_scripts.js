@@ -1,12 +1,3 @@
-var date = {
-    currentDateIndex: 1,
-    maxDateIndex: document.currentScript.getAttribute('maxDateNumber'),
-    maxDateButtonText: document.currentScript.getAttribute('maxButtonDateText'),
-    defaultDateButtonText: null,
-    directionIsSet: false,
-    dateIsSet: false
-};
-
 function addNewDateButton( ) {
     var button = document.querySelector(".add_date_component_btn");
     button.addEventListener("click", function( event ) {

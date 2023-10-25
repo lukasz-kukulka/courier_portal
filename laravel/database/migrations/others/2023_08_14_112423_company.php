@@ -10,6 +10,7 @@ return new class extends Migration
         Schema::create('company', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
+            $table->foreign('author')->references('id')->on('users');
             $table->string('company_name');
             $table->string('company_address');
             $table->string('company_post_code');
@@ -23,6 +24,9 @@ return new class extends Migration
     }
 
     public function down(): void {
-        Schema::dropIfExists( 'company' );
+        Schema::table('company', function (Blueprint $table) {
+            $table->dropForeign(['author']);
+            $table->dropColumn('author');
+        });
     }
 };

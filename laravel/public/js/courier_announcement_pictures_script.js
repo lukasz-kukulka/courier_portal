@@ -1,8 +1,3 @@
-const deletePictureTextButton = document.currentScript.getAttribute('deletePictureButtonText');
-const maxPictureNumber = document.currentScript.getAttribute('maxPictureNumber');
-var uploadedFiles = [];
-var picturesQuantity = 0;
-
 function addListenerForAddPicturesFile() {
     const pictureInputs = document.querySelectorAll( '[id^="courier_announcement_picture_input_"]' );
     pictureInputs.forEach( function( pictureInput ) {
@@ -15,7 +10,6 @@ function addListenerForAddPicturesFile() {
 function updateInfoVisible() {
     let pictureInfo = document.querySelector( '.picture_limit_info');
     let inputPictures = document.querySelector( '.input_pictures' );
-    console.log( picturesQuantity );
     if ( picturesQuantity > maxPictureNumber ) {
         pictureInfo.style.display = 'block';
         inputPictures.style.display = 'none'
