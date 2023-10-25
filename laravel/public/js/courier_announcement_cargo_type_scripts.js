@@ -1,13 +1,3 @@
-var cargo = {
-    currentCargoIndex: 1,
-    maxCargoIndex: document.currentScript.getAttribute('maxCargoNumber'),
-    maxCargoButtonText: document.currentScript.getAttribute('maxButtonText'),
-    defaultCargoButtonText: null,
-    nameInfoIsVisible: true,
-    priceInfoIsVisible: true,
-    currencyInfoIsVisible: true,
-};
-
 function addNewCargoTypeButton( ) {
     var button = document.querySelector(".add_cargo_component_btn");
     button.addEventListener("click", function( event ) {
@@ -143,6 +133,7 @@ function checkLastCargoItem() {
     const inputName = document.querySelector('#cargo_name_' + ( cargo.currentCargoIndex ).toString() );
     const inputPrice = document.querySelector('#cargo_price_' + ( cargo.currentCargoIndex ).toString() );
     const inputCurrency = document.querySelector('#select_currency_' + ( cargo.currentCargoIndex ).toString() );
+    console.log( cargo.currentCargoIndex );
     if ( inputName.value.length >= 3 && parseFloat( inputPrice.value ) > 0 && inputCurrency.value != "option_default" ) {
         setAddNewCargoTypeButtonVisible( false, false, false );
     } else {
@@ -164,8 +155,10 @@ function setDeleteActionOnFirstElementOnCargo() {
 
 function editCargoVisibleNumberBeforeFormSend() {
     var form = document.getElementById('courier_announcement_form');
+    // console.log( form );
     var cargo_visible_number = document.getElementById('cargo_number_visible');
     cargo.currentCargoIndex = parseInt( cargo_visible_number.value );
+    console.log( "cargo_visible_number", cargo_visible_number.value );
     document.getElementById('courier_announcement_submit_button').addEventListener('click', function(event) {
         event.preventDefault();
         cargo_visible_number.value = cargo.currentCargoIndex
@@ -210,6 +203,10 @@ function setCargoDataAfterValidation( index ) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    var cargo_visible_number = document.getElementById('cargo_number_visible');
+    var form = document.getElementById('courier_announcement_form');
+    console.log( form );
+    console.log( "cargo_cargo: ", cargo_visible_number_xxx.value );
     var addCargoButton = document.querySelector(".add_cargo_component_btn");
     cargo.defaultCargoButtonText = addCargoButton.innerHTML;
     editCargoVisibleNumberBeforeFormSend();

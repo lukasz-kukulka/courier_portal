@@ -2,6 +2,13 @@
     margin-top: -15px;
 }
 
+#courier_announcement_name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
 .add_new_cargo_type_button {
     white-space: nowrap;
     margin-bottom: 10px;
@@ -97,4 +104,15 @@
 .picture_limit_info {
     display: none;
     color: red;
+}
+
+.title_summary_container {
+    padding-left: 10px !important;
+    font-size: 15px;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.full_summary_container, .postcodes_separate_data {
+    padding: 5px;
 }
