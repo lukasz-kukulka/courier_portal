@@ -5,21 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\UserModel;
 
 use App\Http\Controllers\JsonParserController;
+
+use App\Models\CourierAnnouncement;
+use App\Models\CargoTypes;
+use App\Models\CourierAnnouncementImages;
+use App\Models\CourierTravelDate;
+use App\Models\PostCodePl;
+use App\Models\PostCodeUk;
 
 class CourierAnnouncementController extends Controller
 {
     public function __construct() {
         $this->json = new JsonParserController;
+
     }
     public function generateCourierAnnouncement( Request $request ) {
 
         // UserModel::with('company')->find( auth()->user()->id );
         // dd( auth()->user() );
-        //dd( $request );
+        //$old_value = ini_set('max_input_vars', 2000);
+        //dd( $request->all() );
         //$this->validateAllRequestData( $request );
+
+        $tempFilePath = $this->generateImagesTempFilesPath();
+        // $this->createOrCheckFolder( $tempFilePath, true );
+        $this->saveImagesFilesInTempFolder( $request->file('files'), $tempFilePath );
+
         return $this->summary( $request );
 
         //dd( $request->all() );
@@ -30,39 +45,149 @@ class CourierAnnouncementController extends Controller
     }
 
     public function summary( Request $request ) {
-        //dd( $request->input() );
-        //$request->session()->flashInput( $request->input() ); // zamiana post na sesje
-        //$request->flash();
-        // // session(['cargo_number_visible_xx' => $request->input('cargo_number_visible')]);
-        // dd( $request );
-        // return view( 'courier_announcement_create_form' );
-        // $this->validateAllRequestData( $request );
+        $request->session()->flashInput( $request->input() ); // zamiana post na sesje
+        $request->flash();
+
+        //return $this->create( $request );
+        $this->validateAllRequestData( $request );
         // $this->createOrCheckFolder();
 
         //dd($request);
+        //return $this->editCreation( $request );
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
+        $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ) );
+        $request->files->replace();
         return view( 'courier_announcement_summary' )
                         ->with( 'title', $summaryTitle )
                         ->with( 'countryPostCodesData', $countryData)
-                        ->with( 'userAndCompany', $company );
+                        ->with( 'userAndCompany', $company )
+                        ->with( 'imagesLinks', $imagesLinks );
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {
-        return view( 'courier_announcement_create_form' );
+    public function create( Request $request ) {
+        // $x = ini_set('max_input_vars', 1200);
+        // phpinfo();
+        // dd( $x );
+        $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+
+        //dd( $request->all() );
+        return view( 'courier_announcement_create_form' )
+            ->with( 'extensions', $extensions );
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request) {
-        $this->createOrCheckFolder();
-        dd(  $request );
+        $data = $request->all();
+        $courierAnnouncement = new CourierAnnouncement( [
+            'name' =>                                   $data[ 'courier_announcement_name' ],
+            'description' =>                            $data[ 'additional_description_input' ],
+            'experience_date' =>                        $this->getExperienceAnnouncementDate(
+                                                            $data[ 'experience_announcement_date_input' ],
+                                                            $data[ 'experience_for_premium_date' ]
+                                                        ),
+        ] );
+        $userId = auth()->id();
+        $courierAnnouncement->authorUser()->associate( $userId );
+        $courierAnnouncement->save();
+        $this->storeImages( $courierAnnouncement->id);
+        $this->storeCargos( $request, $courierAnnouncement->id);
+        $this->storeDates( $request, $courierAnnouncement->id);
+        $this->storePostCodesPL( $request, $courierAnnouncement->id);
+        $this->storePostCodesUK( $request, $courierAnnouncement->id);
     }
+
+    private function getExperienceAnnouncementDate( $date, $checkboxDate ) {
+        if ( $checkboxDate !== null ) {
+            return null;
+        }
+        return $date;
+    }
+
+    private function storeImages( $announcementID ) {
+        $filePath = $this->generateImagesFilesPath();
+        $tempPath = $this->generateImagesTempFilesPath();
+        $folderPath = storage_path( 'app' . DIRECTORY_SEPARATOR . $tempPath );
+        $fileNames = collect(File::files($folderPath))->map->getRelativePathname();
+        $allNewFilePaths = [];
+        foreach( $fileNames as $file ) {
+            $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $file;
+            $newFilePath = $filePath . DIRECTORY_SEPARATOR . $file;
+            $isSuccessStoreFile = Storage::move( $oldFilePath, $newFilePath );
+            $allNewFilePaths[ $file ] = $newFilePath;
+            if( !$isSuccessStoreFile ) {
+                dd( 'ERROR storeImages() in CourierAnnouncementController' );
+            }
+        }
+
+        foreach( $allNewFilePaths as $fileKey => $fileLink ) {
+            $images = new CourierAnnouncementImages ( [
+                'image_name' =>                      $fileKey,
+                'image_link' =>                      $fileLink,
+            ] );
+            $images->announcementId()->associate( $announcementID );
+            $images->save();
+        }
+    }
+
+    private function storeCargos( Request $request, $announcementID ) {
+        for ( $i = 1; $i <= $request->input( 'cargo_number_visible' ); $i++ ) {
+            $cargo = new CargoTypes ( [
+                'cargo_name' =>                      $request->input( 'cargo_name_' . $i ),
+                'cargo_price' =>                     $request->input( 'cargo_price_' . $i ),
+                'cargo_description' =>               $request->input( 'cargo_description_' . $i ),
+                'currency' =>                        $request->input( 'select_currency_' . $i ),
+            ] );
+            $cargo->announcementId()->associate( $announcementID );
+            $cargo->save();
+        }
+    }
+    private function storeDates( Request $request, $announcementID ) {
+        for ( $i = 1; $i <= $request->input( 'cargo_number_visible' ); $i++ ) {
+            $date = new CourierTravelDate ( [
+                'direction' =>                      $request->input( 'date_directions_select_' . $i ),
+                'date' =>                           $request->input( 'date_input_' . $i ),
+                'description' =>                    $request->input( 'date_description_' . $i ),
+            ] );
+            $date->announcementId()->associate( $announcementID );
+            $date->save();
+        }
+    }
+    private function storePostCodesPL( Request $request, $announcementID ) {
+        $postCodesArray = [];
+        foreach ( $this->json->plPostCodeAction() as $postCode ) {
+            if ( $request->input( $postCode ) === $postCode ) {
+                $postCodesArray[ $postCode ] = 1;
+            } else {
+                $postCodesArray[ $postCode ] = 0;
+            }
+        }
+
+        $postCodesPL = new PostCodePl ( $postCodesArray );
+        $postCodesPL->announcementId()->associate( $announcementID );
+        $postCodesPL->save();
+    }
+
+    private function storePostCodesUK( Request $request, $announcementID ) {
+        $postCodesArray = [];
+        foreach ( $this->json->ukPostCodeAction() as $postCode ) {
+            if ( $request->input( $postCode ) === $postCode ) {
+                $postCodesArray[ $postCode ] = 1;
+            } else {
+                $postCodesArray[ $postCode ] = 0;
+            }
+        }
+        $postCodesUK = new PostCodeUk ( $postCodesArray );
+        $postCodesUK->announcementId()->associate( $announcementID );
+        $postCodesUK->save();
+    }
+
 
     /**
      * Display the specified resource.
@@ -75,38 +200,99 @@ class CourierAnnouncementController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(string $id) {
-        //
+
+    }
+
+    public function editCreation( Request $request ) {
+        $request->session()->flashInput( $request->input() ); // zamiana post na sesje
+        $request->flash();
+
+        $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+        dd( "EDIT CREATION: ", $request );
+        return view( 'courier_announcement_create_form' )
+            ->with( 'extensions', $extensions );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
+    public function update(Request $request, string $id) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
+    public function destroy(string $id) {
         //
     }
 
-    private function createOrCheckFolder() {
-        $user = Auth::user();
-        $folderName = 'personal_images' . DIRECTORY_SEPARATOR . $user->name  . "_" . $user->id . DIRECTORY_SEPARATOR . 'courier_announcement';
-        $folderPath = public_path( $folderName );
-
-        if (!File::exists( $folderPath )) {
-            File::makeDirectory( $folderPath, 0755, true, true);
+    private function generateAcceptedFileFormatForCreateBlade() {
+        $extensions = $this->json->courierAnnouncementAction()['accept_format_picture_file'];
+        $result = '';
+        for ( $i = 0; $i < count( $extensions ); $i++ ) {
+            if ( $i === count( $extensions ) - 1 ) {
+                $result .= '.' . $extensions[ $i ];
+            } else {
+                $result .= '.' . $extensions[ $i ] . ', ';
+            }
         }
+        return $result;
     }
+
+    private function generateAcceptedFileFormatForVerification() {
+        $extensions = $this->json->courierAnnouncementAction()['accept_format_picture_file'];
+        $result = '';
+        for ( $i = 0; $i < count( $extensions ); $i++ ) {
+            if ( $i === 0 ) {
+                $result .= $extensions[ $i ];
+            } else {
+                $result .= ',' . $extensions[ $i ];
+            }
+        }
+        return $result;
+    }
+
+    private function saveImagesFilesInTempFolder( $files, $savePatch ) {
+        if ( $files ) {
+            foreach( $files as $file ) {
+                // $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+                // dd( storage_path(public_path($savePatch ))  );
+                // // Zapisz plik w głównym folderze public
+                // dd($file->storeAs( public_path($savePatch )  ) );
+
+                Storage::put( $savePatch, $file );
+            }
+        }
+
+    }
+
+    private function generateImagesFilesPath() {
+        $user = Auth::user();
+
+        $folderName = 'personal_images' . DIRECTORY_SEPARATOR . $user->name  . "_" . $user->id . DIRECTORY_SEPARATOR . 'courier_announcement';
+        return $folderName;
+    }
+
+    private function generateImagesTempFilesPath( $separator = DIRECTORY_SEPARATOR ) {
+        $user = Auth::user();
+
+        $folderName =  'public' . $separator . 'temporary_user_images' . $separator . $user->name  . "_" . $user->id . '_temp_images';
+        return $folderName;
+
+    }
+
+    // private function createOrCheckFolder( $folderPath, $cleanBefore = false ) {
+    //     if( $cleanBefore === true ) {
+    //         Storage::deleteDirectory( $folderPath );
+    //     }
+    //     if ( !File::exists( $folderPath )) {
+    //         File::makeDirectory( $folderPath, 0755, true, true);
+    //     }
+    // }
 
     private function validateAllRequestData( $request ) {
         $rules = $this->generateAllCargoRules( $request );
-        //dd($rules);
         $request->validate( $rules );
     }
 
@@ -119,7 +305,7 @@ class CourierAnnouncementController extends Controller
         $postCodesUKRules = $this->generatePostCodeUKValidationRules( $request, $this->json->ukPostCodeAction() );
         $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $this->json->plPostCodeAction() );
         $experienceDate = $this->generateExperienceDateRules( $request );
-        $imagesRules = $this->generateImagesValidationRules( $request );
+        $imagesRules = $this->generateImagesValidationRules( $request->file('files') );
         $rules = array_merge( $nameRules, $cargoRules, $dateRules, $postCodesUKRules, $postCodesPLRules, $experienceDate, $imagesRules );
 
         return $rules;
@@ -177,8 +363,8 @@ class CourierAnnouncementController extends Controller
         $rules = [];
         $postCodePLRequired = true;
         foreach( $json as $postCode ) {
-            $postCodeName = "name_post_code_checkbox_pl_" . $postCode;
-            if( $request->input( $postCodeName ) !== "0" ) {
+            $postCodeName =  $postCode;
+            if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
                 $postCodePLRequired = false;
 
                 break;
@@ -198,8 +384,9 @@ class CourierAnnouncementController extends Controller
         $rules = [];
         $postCodeUKRequired = true;
         foreach( $json as $postCode ) {
-            $postCodeName = "name_post_code_checkbox_uk_" . $postCode;
-            if( $request->input( $postCodeName ) !== "0" ) {
+            $postCodeName =  $postCode;
+            if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
+
                 $postCodeUKRequired = false;
 
                 break;
@@ -217,21 +404,25 @@ class CourierAnnouncementController extends Controller
 
     private function generateExperienceDateRules( $request ) {
         $rules = [];
-        if ( $request->input( 'experience_for_premium_date' ) !== 1 ) {
+        // dd($request);
+        // dd( "|", $request->input( 'experience_for_premium_date' ), "|", );
+        if ( $request->input( 'experience_for_premium_date' ) !== 1 && $request->input( 'experience_for_premium_date' ) !== '1'  ) {
             $rules[ 'experience_announcement_date_input' ] = 'required|date|after:today';
         }
         return $rules;
     }
 
-    private function generateImagesValidationRules( $request ) {
+    private function generateImagesValidationRules( $files ) {
         $rules = [];
-
+        $extensions = $this->generateAcceptedFileFormatForVerification();
+        $maxFileSize = $this->generateMaxFileSize();
+        $rules[ 'images.*' ] = 'image|mimes:' . $extensions . '|max:' . $maxFileSize;
         return $rules;
     }
 
     private function generateSummaryAnnouncementTitle( $request, $company ) {
         $courierAnnouncement = $this->json->courierAnnouncementAction();
-        $maxCargoInTitle = $courierAnnouncement[ 'max_cargo_names_in_title' ] ;
+        $maxCargoInTitle = $courierAnnouncement[ 'max_cargo_names_in_title' ];
         $cargoNumber = $request->input('cargo_number_visible');
         $titleFront = __( 'base.courier_announcement_full_title_summary_front' );
         $titleMid = __( 'base.courier_announcement_full_title_summary_mid' );
@@ -250,9 +441,7 @@ class CourierAnnouncementController extends Controller
     }
 
     private function generateDataForDeliveryCountryToSession() {
-
         $fullCountryArray = [];
-
         $courierAnnouncement = $this->json->courierAnnouncementAction();
         $availableCountries = $courierAnnouncement['available_delivery_country'];
 
@@ -264,6 +453,38 @@ class CourierAnnouncementController extends Controller
         }
 
         return $fullCountryArray;
+    }
+
+    private function generateMaxFileSize() {
+        $maxSizeAccess = null;
+        $accountType = auth()->user()->account_type;
+        $accountsAccess = $this->json->courierAnnouncementAccessElementsAction()[ 'courier_announcement_file_max_size' ];
+
+        if ( in_array( $accountType, $accountsAccess[ 'access_accounts' ] ) ) {
+            $maxSizeAccess = $this->json->courierAnnouncementAction()[ 'max_size_single_image_file_premium' ];
+        } else if ( in_array( $accountType , $accountsAccess[ 'no_access_accounts' ] ) ) {
+            $maxSizeAccess = $this->json->courierAnnouncementAction()[ 'max_size_single_image_file_standard' ];
+        } else {
+            dd( 'ERROR generateMaxFileSize() in CourierAnnouncementController' );
+            // napisać funkcje ktora bedzie wysyłała email w momencie błędu #sema_update
+        }
+
+        return $maxSizeAccess ;
+    }
+
+    private function generateLinksForImages( $files, $tempPath ) {
+        $pathsArray = [];
+        $iterator = 1;
+        //dd( $tempPath );
+        if( $files !== null && count( $files ) > 0 ) {
+            foreach( $files as $file ) {
+                $pathsArray[ 'image' . $iterator ] = Storage::url( $tempPath . '/' .$file->hashName() );
+                $iterator++;
+                //array_push( $pathsArray, Storage::url( $tempPath . '/' .$file->hashName() ) );
+            }
+        }
+        //dd( $pathsArray );
+        return $pathsArray;
     }
 
     private $json = null;

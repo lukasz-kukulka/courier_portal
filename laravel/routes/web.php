@@ -74,4 +74,10 @@ Route::resource('courier_announcement', CourierAnnouncementController::class)->m
 Route::post('courier_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])->middleware(['auth', 'verified'])->name('courier_announcement.generateCourierAnnouncement');
 Route::post('courier_announcement_summary', [CourierAnnouncementController::class, 'summary'])->middleware(['auth', 'verified'])->name('courier_announcement.summary');
 
+Route::post('courier_announcement_summary_edit', [CourierAnnouncementController::class, 'editCreation'])->middleware(['auth', 'verified'])->name('courier_announcement.editCreation');
+
 Route::post('upload', [UploadFileController::class, 'store'] );
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

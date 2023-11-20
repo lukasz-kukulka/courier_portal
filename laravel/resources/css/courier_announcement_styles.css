@@ -1,0 +1,149 @@
+.cargo_type_button_container {
+    margin-top: -15px;
+}
+
+#courier_announcement_name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.add_new_cargo_type_button {
+    white-space: nowrap;
+    margin-bottom: 10px;
+}
+
+.action_cargo_container_info, .action_date_container_info {
+    font-size: 0.7em;
+}
+
+[class^="cargo_component_"]:not( .cargo_component_1 ) {
+    display: none;
+}
+
+[class^="date_component_"]:not( .date_component_1 ) {
+    display: none;
+}
+
+[class^="cargo_type_delete_btn_"] {
+    background-color: red !important;
+}
+
+[class^="date_delete_btn_"] {
+    background-color: red !important;
+}
+
+.action_date_container_button_1, .action_cargo_container_button_1 {
+    display: none;
+}
+
+.price_container {
+    display: flex !important;
+    border: none;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+[class^="container_post_code_button_"], .select_all_post_code_pl, .select_all_post_code_uk, .clear_all_post_code_uk, .clear_all_post_code_pl {
+    margin-bottom: 3px;
+    display: inline-block;
+}
+
+.select_all_post_code_pl, .select_all_post_code_uk, .clear_all_post_code_uk, .clear_all_post_code_pl {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+[class^="input_courier_announcement_picture_"]:not( .input_courier_announcement_picture_1 ) {
+    display: none !important;
+    margin-right: 100px;
+}
+
+.thumbnail img {
+    max-width: 100%;
+    height: auto;
+    max-height: 150px;
+    display: inline-block;
+}
+
+.thumbnail {
+    display: inline-flex;
+    flex-wrap: wrap;
+    position: relative;
+    padding: 10px;
+}
+
+.thumbnailsContainer {
+    display: inline-flex;
+    flex-wrap: wrap;
+}
+
+.thumbnail .fileNameOverlay {
+    position: absolute;
+    bottom: 5;
+    left: 5;
+    right: 5;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+.date_title_info {
+    font-size: 10px;
+    margin: 0px;
+    margin-top: -10px;
+    color: rgb(187, 0, 0);
+}
+
+.experience_date_info .experience_for_premium_date {
+    margin: 0px;
+}
+
+.picture_limit_info {
+    display: none;
+    color: red;
+}
+
+.title_summary_container {
+    padding-left: 10px !important;
+    font-size: 15px;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.full_summary_container, .postcodes_separate_data {
+    padding: 5px;
+}
+
+.additional_description_summary_container, .picture_container_summary {
+    margin-top: 15px !important;
+}
+
+.picture_body img {
+    width: 23%;
+    height: auto;
+}
+
+.bottom_summary {
+    margin: 0px !important;
+    margin-top: 10px !important;
+    padding: 0px !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.button_confirm_announcement_summary, .button_back_announcement_summary, .courier_announcement_experience_date_summary {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.postcode_button_summary {
+    margin: 2px;
+}
+
+.additional_description_summary_data {
+    padding-left: 10px;
+}

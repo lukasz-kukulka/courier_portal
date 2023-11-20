@@ -11,8 +11,9 @@ class PostCodeUk extends Model
     protected $table = 'post_codes_uk';
 
     public function __construct(array $attributes = []) {
-        parent::__construct($attributes);
         $this->addColumnsFromJson();
+        parent::__construct($attributes);
+
     }
 
     public function addColumnsFromJson() {
@@ -20,11 +21,11 @@ class PostCodeUk extends Model
             'courier_announcement_id'
         ];
         $json = app(\App\Http\Controllers\JsonParserController::class)->ukPostCodeAction();
-        $all_postcodes = json_decode($json, true);
-        $this->fillable = array_merge($this->fillable, array_keys( $all_postcodes ) );
+        //$all_postcodes = json_decode($json, true);
+        $this->fillable = array_merge($this->fillable, array_values( $json ) );
     }
 
-    public function authorUser() {
+    public function announcementId() {
         return $this->belongsTo( CourierAnnouncement::class, 'courier_announcement_id' );
     }
 }
