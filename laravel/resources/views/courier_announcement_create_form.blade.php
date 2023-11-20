@@ -16,7 +16,6 @@
         $postCodesPL = $JsonParserController->plPostCodeAction();
         $postCodesUK = $JsonParserController->ukPostCodeAction();
         $permDate = $JsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
-        $picrureFileFormat = $courierAnnouncenetData['accept_format_picture_file'];
 
         $login_user = auth()->user();
         //dodac do js ilosc cargo i daty ilosci zdjec weryfikacja #sema_update
@@ -32,7 +31,7 @@
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">{{ __('base.courier_announcement_create_form_title') }}</div>
-                        <div class="card-body">
+                        <div class="card-body p-2">
                             <form action="{{ route('courier_announcement.generateCourierAnnouncement') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row mb-3">
@@ -43,7 +42,7 @@
                                 </div>
                                 <div class="cargo_type_container table-responsive">
 
-                                    <table class="table border border-1 ">
+                                    <table id="cargo_table" class="table border border-1 cargo_table">
                                         <thead>
                                             <tr>
                                                 <th colspan="5" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_type_cargo_title')}}</p></th>
@@ -56,10 +55,12 @@
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_cargo_type_actions' ) }}</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="cargo_body_table">
+
                                             @for ( $i = 1; $i <= $cargoElementNumber; $i++ )
                                                 <x-cargo_type_component id="{{ $i }}" />
                                             @endfor
+
                                                 <table>
                                                     <tr>
                                                         <td colspan="5">
@@ -122,7 +123,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="all_post_codes_container table-responsive">
+                                <div class="all_post_codes_container p-2 table-responsive">
                                     <table class="table border border-1 ">
                                         <thead>
                                             <tr>
@@ -140,8 +141,8 @@
                                                             <div class="container_post_code_button_pl_{{ $code }}">
                                                                 <button class="btn btn-secondary btn-sm post_code_button_pl_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
                                                                     <input type="hidden" name="{{ $code }}" value="0">
-                                                                    <input class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}" id="{{ $code }}">
-                                                                    <label class="form-check-label" for="{{ $code }}">
+                                                                    <input id="post_code_checkbox_pl_{{ $code }}" class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}">
+                                                                    <label class="form-check-label" for="post_code_checkbox_pl_{{ $code }}">
                                                                         {{ $code }}
                                                                     </label>
                                                                 </button>
@@ -163,8 +164,8 @@
                                                             <div class="container_post_code_button_uk_{{ $code }}">
                                                                 <button class="btn btn-secondary btn-sm post_code_button_uk_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
                                                                     <input type="hidden" name="{{ $code }}" value="0">
-                                                                    <input class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}" id="{{ $code }}">
-                                                                    <label class="form-check-label" for="{{ $code }}">
+                                                                    <input id="post_code_checkbox_uk_{{ $code }}" class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}">
+                                                                    <label class="form-check-label" for="post_code_checkbox_uk_{{ $code }}">
                                                                         {{ $code }}
                                                                     </label>
                                                                 </button>
@@ -179,7 +180,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="experience_date_container table-responsive">
+                                <div class="experience_date_container p-2 table-responsive">
                                     <table class="table border border-1 ">
                                         <thead>
                                             <tr>
@@ -197,7 +198,7 @@
                                                 @if ( in_array( $login_user->account_type, $permDate[ 'access_accounts' ] ) )
                                                     <td>
                                                         <div class="container_experience_for_premium form-check">
-                                                            <input class="form-check-input" type="checkbox" value="1" id="experience_for_premium_date" name="experience_for_premium_date">
+                                                            <input class="form-check-input" type="checkbox" value="1" {{ old( 'experience_for_premium_date' ) ? 'checked' : '' }} id="experience_for_premium_date" name="experience_for_premium_date">
                                                             <label class="form-check-label" for="experience_for_premium_date">
                                                                 {{ __( 'base.perm_experience_announcement_date_info' ) }}
                                                             </label>
@@ -212,7 +213,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="courier_announcement_additional_description_container table-responsive">
+                                <div class="courier_announcement_additional_description_container p-2 table-responsive">
                                     <table class="table border border-1 ">
                                         <thead>
                                             <tr>
@@ -232,7 +233,7 @@
                                     </table>
                                 </div>
 
-                                <div class="courier_announcement_pictures_container table-responsive">
+                                <div class="courier_announcement_pictures_container p-2 table-responsive">
                                     <table class="table border border-1 ">
                                         <thead>
                                             <tr>
@@ -240,12 +241,19 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @if ( count( $errors->all() ) > 0 && old( "is_error_picture_info" ) )
+                                                <tr>
+                                                    <td>
+                                                        <div class="error_picture_info">{{ __( 'base.courier_announcement_error_picture_info' )}}</div>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                             <tr class="input_courier_announcement_picture align-middle h-100">
                                                 <td>
                                                     <p class="picture_limit_info">{{ __( 'base.courier_announcement_picture_limit_info' ) . $picturesNumber }}</p>
                                                     <div class="form-group input_pictures">
                                                         <label for="courier_announcement_picture_input">{{ __( 'base.courier_announcement_picrures_name' )}}</label>
-                                                        <input type="file" multiple class="form-control-file" accept="{{ $picrureFileFormat }}" id="courier_announcement_picture_input" name="files[]" onchange="displayThumbnails(event)">
+                                                        <input type="file" multiple class="form-control-file" accept="{{ $extensions }}" id="courier_announcement_picture_input" name="files[]" onchange="displayThumbnails(event)">
                                                     </div>
 
                                                     <div class="thumbnailsContainer">
@@ -262,11 +270,38 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                {{-- @if(request()->isMethod('post'))
-                                    <pre>{{ print_r(request()->all(), true) }}</pre>
+                                {{-- <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                @if(request()->isMethod('post'))
+                                    <pre>{{ print_r(request(), true) }}</pre>
                                 @endif
+                                <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
                                 @foreach(session()->all() as $key => $value)
                                     <p>{{ $key }}: {{ print_r($value, true) }}</p>
+                                @endforeach
+                                <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                @foreach(old() as $fieldName => $fieldValue)
+                                    <p>{{ $fieldName }}: {{ $fieldValue }}</p>
+                                @endforeach --}}
+                                {{-- <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                <p>------------------------------------------------------------------------------------------</p>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach --}}
+                                {{-- @foreach ($request->old() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach --}}
+                                {{-- @foreach(old() as $fieldName => $fieldValue)
+                                    <p>{{ $fieldName }}: {{ $fieldValue }}</p>
+                                @endforeach
+                                @foreach(request()->all() as $key => $value)
+                                  <p>{{ $key }}: {{ print_r($value, true) }}</p>
                                 @endforeach --}}
                                 <input type="hidden" name="cargo_number_visible" id="cargo_number_visible" value="{{ old( "cargo_number_visible", 1 ) }}">
                                 <input type="hidden" name="date_number_visible" id="date_number_visible" value="{{ old( "date_number_visible" ) > 1 ? old( "date_number_visible" ) : "1" }} ">
@@ -297,5 +332,4 @@
 <script src="{{ asset('js/courier_announcement_post_codes_scripts.js') }}"></script>
 <script src="{{ asset('js/courier_announcement_pictures_script.js') }}" ></script>
 <script src="{{ asset('js/courier_announcement_main_script.js') }}"></script>
-<script src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 @endsection

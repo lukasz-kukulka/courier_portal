@@ -10,7 +10,7 @@ return new class extends Migration
         Schema::create('courier_announcement_archive', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
-            $table->unsignedBigInteger('description');
+            $table->string('description');
             $table->date('experience_date')->nullable();
             $table->timestamps();
         });

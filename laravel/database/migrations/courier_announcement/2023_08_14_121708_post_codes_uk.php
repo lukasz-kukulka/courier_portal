@@ -15,6 +15,7 @@ return new class extends Migration
             foreach( $json as $post_code ) {
                 $table->boolean( $post_code )->default( false );
             }
+            $table->timestamps();
         });
     }
 

@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('cargo_name');
             $table->unsignedInteger('cargo_price');
             $table->string('cargo_description');
+            $table->string('currency');
             $table->timestamps();
         });
     }

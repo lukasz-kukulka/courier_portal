@@ -422,4 +422,9 @@ return [
     "courier_announcement_post_codes_uk_title_summary" => "Kody pocztowe pod jakie jeździmy",
     "courier_announcement_poland_delivery_direction_summary" => "Kody pocztowe pod jakie jeździmy w Polsce",
     "courier_announcement_united_kingdom_delivery_direction_summary" => "Kody pocztowe pod jakie jeździmy w UK",
+    "courier_announcement_aditional_info_title_summary" => "Dodatkowe informacje",
+    "courier_announcement_pictures_title_summary" => "Zdjęcia",
+    "courier_announcement_experience_date_summary" => "Ogłoszenie ważne do: ",
+    "courier_announcement_back_to_edit" => "Zmień",
+    "courier_announcement_error_picture_info" => "W przypadku niepoprawnego wypełnienia formularza i pojawienia sie błędów, muszisz jeszcze raz dodać zdjęcia",
 ];
