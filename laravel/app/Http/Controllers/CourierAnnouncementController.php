@@ -59,11 +59,15 @@ class CourierAnnouncementController extends Controller
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
         $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ) );
         $request->files->replace();
+
+        $headerData = $this->generateCourierAnnouncementSummaryHeader();
+
         return view( 'courier_announcement_summary' )
                         ->with( 'title', $summaryTitle )
                         ->with( 'countryPostCodesData', $countryData)
                         ->with( 'userAndCompany', $company )
-                        ->with( 'imagesLinks', $imagesLinks );
+                        ->with( 'imagesLinks', $imagesLinks )
+                        ->with('headerData', $headerData);
     }
 
     /**
@@ -74,10 +78,12 @@ class CourierAnnouncementController extends Controller
         // phpinfo();
         // dd( $x );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+        $headerData = $this->generateCourierAnnouncementCreateFormHeader();
 
         //dd( $request->all() );
         return view( 'courier_announcement_create_form' )
-            ->with( 'extensions', $extensions );
+            ->with( 'extensions', $extensions )
+            ->with('headerData', $headerData); ;
     }
 
     /**
@@ -488,4 +494,53 @@ class CourierAnnouncementController extends Controller
     }
 
     private $json = null;
+
+    private function generateCourierAnnouncementSummaryHeader() {
+        $jsonParserController = app(JsonParserController::class);
+        
+        $directions = json_decode($jsonParserController->directionsAction());
+        $courierAnnouncement = $jsonParserController->courierAnnouncementAction();
+        $postCodesPL = $jsonParserController->plPostCodeAction();
+        $postCodesUK = $jsonParserController->ukPostCodeAction();
+    
+        return compact(
+            'directions', 
+            'courierAnnouncement', 
+            'postCodesPL', 
+            'postCodesUK'
+        );
+    }
+    
+    
+    private function generateCourierAnnouncementCreateFormHeader() {
+        $jsonParserController = app(JsonParserController::class);
+        $courierAnnouncementData = $jsonParserController->courierAnnouncementAction();
+        
+        $cargoElementNumber = $courierAnnouncementData['premium_number_of_type_cargo'];
+        $dateElementNumber = $courierAnnouncementData['premium_number_of_type_date'];
+        $picturesNumber = $courierAnnouncementData['picture_file_input_limit_premium'];
+        $maxFilesPictureElement = $courierAnnouncementData['picture_file_input_limit_premium'];
+        $postCodesPL = $jsonParserController->plPostCodeAction();
+        $postCodesUK = $jsonParserController->ukPostCodeAction();
+        $permDate = $jsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
+        $pictureFileFormat = $courierAnnouncementData['accept_format_picture_file'];
+    
+        $loginUser = auth()->user();
+    
+        return compact(
+            'cargoElementNumber',
+            'dateElementNumber',
+            'picturesNumber',
+            'maxFilesPictureElement',
+            'postCodesPL',
+            'postCodesUK',
+            'permDate',
+            'pictureFileFormat',
+            'loginUser'
+        );
+    }
+    
+    
+
+
 }
