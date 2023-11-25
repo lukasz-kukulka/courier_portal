@@ -83,7 +83,7 @@ class CourierAnnouncementController extends Controller
         //dd( $request->all() );
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions )
-            ->with('headerData', $headerData); ;
+            ->with('headerData', $headerData); 
     }
 
     /**
