@@ -427,4 +427,6 @@ return [
     "courier_announcement_experience_date_summary" => "Ogłoszenie ważne do: ",
     "courier_announcement_back_to_edit" => "Zmień",
     "courier_announcement_error_picture_info" => "W przypadku niepoprawnego wypełnienia formularza i pojawienia sie błędów, muszisz jeszcze raz dodać zdjęcia",
+    "courier_announcement_confirm_info" => "Potwierdzenie dodania ogłoszenia",
+    "courier_announcement_thank_you_info" => "Dziekujemy za dodanie ogłoszenia, wkrótce pojawi sie ono na aszej stronie",
 ];
