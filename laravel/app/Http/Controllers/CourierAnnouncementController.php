@@ -24,46 +24,45 @@ class CourierAnnouncementController extends Controller
 
     }
     public function generateCourierAnnouncement( Request $request ) {
-
-        // UserModel::with('company')->find( auth()->user()->id );
-        // dd( auth()->user() );
-        //$old_value = ini_set('max_input_vars', 2000);
-        //dd( $request->all() );
-        //$this->validateAllRequestData( $request );
-
         $tempFilePath = $this->generateImagesTempFilesPath();
-        // $this->createOrCheckFolder( $tempFilePath, true );
         $this->saveImagesFilesInTempFolder( $request->file('files'), $tempFilePath );
-
         return $this->summary( $request );
-
-        //dd( $request->all() );
     }
 
     public function index() {
-
+        return view('announcement_list', [
+            'announcements' => CourierAnnouncement::with( [
+                'cargoTypeAnnouncement',
+                'imageAnnouncement',
+                'dateAnnouncement',
+                'postCodesPlAnnouncement',
+                'postCodesUkAnnouncement',
+            ] )->paginate( $this->json->searchAnnouncementAction()[ 'number_of_search_courier_announcement_in_one_page' ] ),
+        ]);
     }
 
     public function summary( Request $request ) {
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
         $request->flash();
-
-        //return $this->create( $request );
         $this->validateAllRequestData( $request );
-        // $this->createOrCheckFolder();
-
-        //dd($request);
-        //return $this->editCreation( $request );
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
         $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ) );
         $request->files->replace();
+
+        $headerData = $this->generateCourierAnnouncementSummaryHeader();
+
         return view( 'courier_announcement_summary' )
                         ->with( 'title', $summaryTitle )
                         ->with( 'countryPostCodesData', $countryData)
                         ->with( 'userAndCompany', $company )
-                        ->with( 'imagesLinks', $imagesLinks );
+                        ->with( 'imagesLinks', $imagesLinks )
+                        ->with( 'headerData', $headerData );
+    }
+
+    public function addAnnouncementConfirmation() {
+        return view( 'courier_announcement_confirmation_info' );
     }
 
     /**
@@ -74,10 +73,12 @@ class CourierAnnouncementController extends Controller
         // phpinfo();
         // dd( $x );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+        $headerData = $this->generateCourierAnnouncementCreateFormHeader();
 
         //dd( $request->all() );
         return view( 'courier_announcement_create_form' )
-            ->with( 'extensions', $extensions );
+            ->with( 'extensions', $extensions )
+            ->with( 'headerData', $headerData );
     }
 
     /**
@@ -101,6 +102,8 @@ class CourierAnnouncementController extends Controller
         $this->storeDates( $request, $courierAnnouncement->id);
         $this->storePostCodesPL( $request, $courierAnnouncement->id);
         $this->storePostCodesUK( $request, $courierAnnouncement->id);
+
+        return $this->addAnnouncementConfirmation();
     }
 
     private function getExperienceAnnouncementDate( $date, $checkboxDate ) {
@@ -136,8 +139,39 @@ class CourierAnnouncementController extends Controller
         }
     }
 
+    private function checkIfLastCargoIsEmpty( Request $request, $lastIndex ) {
+        $cargoName = $request->input( 'cargo_name_' . $lastIndex );
+        $cargoPrice = $request->input( 'cargo_price_' . $lastIndex );
+        $cargoDescription = $request->input( 'cargo_description_' . $lastIndex );
+        $cargoCurrency = $request->input( 'select_currency_' . $lastIndex );
+
+        if ( $cargoName === null && $cargoPrice === null && $cargoDescription === null && $cargoCurrency === null ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function checkIfLastDateIsEmpty( Request $request, $lastIndex ) {
+        $direction = $request->input( 'date_directions_select_' . $lastIndex );
+        $date = $request->input( 'date_input_' . $lastIndex );
+        $description = $request->input( 'date_description_' . $lastIndex );
+
+        if ( $direction === null && $date === null && $description === null ) {
+            return true;
+        }
+
+        return false;
+    }
+
     private function storeCargos( Request $request, $announcementID ) {
-        for ( $i = 1; $i <= $request->input( 'cargo_number_visible' ); $i++ ) {
+        $cargoElementsNumber = $request->input( 'cargo_number_visible' );
+        if ( $this->checkIfLastCargoIsEmpty( $request, $cargoElementsNumber ) ) {
+            $cargoElementsNumber--;
+        }
+
+        for ( $i = 1; $i <= $cargoElementsNumber; $i++ ) {
+
             $cargo = new CargoTypes ( [
                 'cargo_name' =>                      $request->input( 'cargo_name_' . $i ),
                 'cargo_price' =>                     $request->input( 'cargo_price_' . $i ),
@@ -149,7 +183,12 @@ class CourierAnnouncementController extends Controller
         }
     }
     private function storeDates( Request $request, $announcementID ) {
-        for ( $i = 1; $i <= $request->input( 'cargo_number_visible' ); $i++ ) {
+        $dateElementsNumber = $request->input( 'date_number_visible' );
+        if ( $this->checkIfLastDateIsEmpty( $request, $dateElementsNumber ) ) {
+            $dateElementsNumber--;
+        }
+
+        for ( $i = 1; $i <= $dateElementsNumber; $i++ ) {
             $date = new CourierTravelDate ( [
                 'direction' =>                      $request->input( 'date_directions_select_' . $i ),
                 'date' =>                           $request->input( 'date_input_' . $i ),
@@ -159,6 +198,7 @@ class CourierAnnouncementController extends Controller
             $date->save();
         }
     }
+
     private function storePostCodesPL( Request $request, $announcementID ) {
         $postCodesArray = [];
         foreach ( $this->json->plPostCodeAction() as $postCode ) {
@@ -488,4 +528,49 @@ class CourierAnnouncementController extends Controller
     }
 
     private $json = null;
+
+    private function generateCourierAnnouncementSummaryHeader() {
+        $jsonParserController = app(JsonParserController::class);
+
+        $directions = json_decode($jsonParserController->directionsAction());
+        $courierAnnouncement = $jsonParserController->courierAnnouncementAction();
+        $postCodesPL = $jsonParserController->plPostCodeAction();
+        $postCodesUK = $jsonParserController->ukPostCodeAction();
+
+        return compact(
+            'directions',
+            'courierAnnouncement',
+            'postCodesPL',
+            'postCodesUK'
+        );
+    }
+
+
+    private function generateCourierAnnouncementCreateFormHeader() {
+        $jsonParserController = app(JsonParserController::class);
+        $courierAnnouncementData = $jsonParserController->courierAnnouncementAction();
+
+        $cargoElementNumber = $courierAnnouncementData['premium_number_of_type_cargo'];
+        $dateElementNumber = $courierAnnouncementData['premium_number_of_type_date'];
+        $picturesNumber = $courierAnnouncementData['picture_file_input_limit_premium'];
+        $maxFilesPictureElement = $courierAnnouncementData['picture_file_input_limit_premium'];
+        $postCodesPL = $jsonParserController->plPostCodeAction();
+        $postCodesUK = $jsonParserController->ukPostCodeAction();
+        $permDate = $jsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
+        $pictureFileFormat = $courierAnnouncementData['accept_format_picture_file'];
+
+        $loginUser = auth()->user();
+
+        return compact(
+            'cargoElementNumber',
+            'dateElementNumber',
+            'picturesNumber',
+            'maxFilesPictureElement',
+            'postCodesPL',
+            'postCodesUK',
+            'permDate',
+            'pictureFileFormat',
+            'loginUser'
+        );
+    }
 }

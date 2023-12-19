@@ -20,10 +20,6 @@ class UserAnnouncementController extends Controller
 
     }
     public function index() {
-        return $this->showAllAnnouncement();
-    }
-
-    private function showAllAnnouncement() {
         return view('announcement_list', [
             'announcements' => UserAnnouncement::with( [
                 'parcelAnnouncement',

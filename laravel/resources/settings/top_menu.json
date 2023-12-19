@@ -57,8 +57,8 @@
             },
             "ele4" : {
                 "name" : "nav_menu_announcement_find_courier",
-                "link" : "user_announcement.create",
-                "route_name" : "user_announcement.create",
+                "link" : "courier_announcement.index",
+                "route_name" : "courier_announcement.index",
                 "permission": "login"
             }
         }
