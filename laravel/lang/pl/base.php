@@ -353,9 +353,9 @@ return [
     "nav_menu_declaration_cn23" => "Deklaracja CN23",
     "nav_menu_announcement" => "Ogłoszenia",
     "nav_menu_add_announcement_cargo" => "Dodaj ogłoszenie( szukam transportu )",
-    "nav_menu_add_announcement_courier" => "Dodaj ogłoszenie( oferuje transport ) - NIE DZIAŁA",
+    "nav_menu_add_announcement_courier" => "Dodaj ogłoszenie( oferuje transport )",
     "nav_menu_announcement_find_parcel" => "Znajdz paczkę",
-    "nav_menu_announcement_find_courier" => "Znajdz kuriera - NIE DZIAŁA",
+    "nav_menu_announcement_find_courier" => "Znajdz kuriera - NIE JEST JESZCZE GOTOWE",
 
     ######################## COURIER FORM ####################
 
@@ -428,5 +428,5 @@ return [
     "courier_announcement_back_to_edit" => "Zmień",
     "courier_announcement_error_picture_info" => "W przypadku niepoprawnego wypełnienia formularza i pojawienia sie błędów, muszisz jeszcze raz dodać zdjęcia",
     "courier_announcement_confirm_info" => "Potwierdzenie dodania ogłoszenia",
-    "courier_announcement_thank_you_info" => "Dziekujemy za dodanie ogłoszenia, wkrótce pojawi sie ono na aszej stronie",
+    "courier_announcement_thank_you_info" => "Dziekujemy za dodanie ogłoszenia, wkrótce pojawi sie ono na naszej stronie",
 ];

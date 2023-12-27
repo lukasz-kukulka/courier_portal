@@ -2,13 +2,6 @@
 
 @section('add_header')
     <link rel="stylesheet" href="{{ asset('css/courier_announcement_styles.css') }}">
-    @php
-        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $directions = json_decode( $JsonParserController->directionsAction() );
-        $courierAnnouncement = $JsonParserController->courierAnnouncementAction();
-        $postCodesPL = $JsonParserController->plPostCodeAction();
-        $postCodesUK = $JsonParserController->ukPostCodeAction();
-    @endphp
 @endsection
 
 @section('content')
@@ -75,7 +68,7 @@
                                             </thead>
                                             <tbody>
                                                 <div class="courier_announcement_date_summary_container text-center">
-                                                    @foreach( $directions as $dir )
+                                                    @foreach( $headerData['directions'] as $dir )
 
                                                             {{ $isFirstElement = false }}
                                                             <tr class="{{ 'direction_container_' . $dir->name }}">
@@ -113,9 +106,9 @@
                                                     @php
                                                         $postCodeArray = null;
                                                         if( $country[ 'country_name' ] === 'pl' ) {
-                                                            $postCodeArray = $postCodesPL;
+                                                            $postCodeArray = $headerData['postCodesPL'];
                                                         } else {
-                                                            $postCodeArray = $postCodesUK;
+                                                            $postCodeArray = $headerData['postCodesUK'];
                                                         }
                                                         for( $i = 1; $i <= count( $postCodeArray ); $i++ ) {
                                                             $current = $postCodeArray[ $i ];

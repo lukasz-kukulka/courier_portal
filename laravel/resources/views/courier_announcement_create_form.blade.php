@@ -2,25 +2,8 @@
 
 @section('add_header')
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-
     <link rel="stylesheet" href="{{ asset('css/courier_announcement_styles.css') }}">
-
-    @php
-        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $directionsData = $JsonParserController->directionsAction();
-        $courierAnnouncenetData = $JsonParserController->courierAnnouncementAction();
-        $cargoElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_cargo' ];
-        $dateElementNumber = $courierAnnouncenetData[ 'premium_number_of_type_date' ];
-        $picturesNumber = $courierAnnouncenetData[ 'picture_file_input_limit_premium' ];
-        $maxFilesPictuteElement = $courierAnnouncenetData[ 'picture_file_input_limit_premium' ];
-        $postCodesPL = $JsonParserController->plPostCodeAction();
-        $postCodesUK = $JsonParserController->ukPostCodeAction();
-        $permDate = $JsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
-
-        $login_user = auth()->user();
-        //dodac do js ilosc cargo i daty ilosci zdjec weryfikacja #sema_update
-    @endphp
-
+    {{-- dodac do js ilosc cargo i daty ilosci zdjec weryfikacja #sema_update --}}
 @endsection
 
 @section('content')
@@ -57,7 +40,7 @@
                                         </thead>
                                         <tbody id="cargo_body_table">
 
-                                            @for ( $i = 1; $i <= $cargoElementNumber; $i++ )
+                                            @for ( $i = 1; $i <= $headerData['cargoElementNumber']; $i++ )
                                                 <x-cargo_type_component id="{{ $i }}" />
                                             @endfor
 
@@ -98,7 +81,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @for ( $i = 1; $i <= $dateElementNumber; $i++ )
+                                            @for ( $i = 1; $i <= $headerData['dateElementNumber']; $i++ )
                                                 <x-transport_date_component id="{{ $i }}" />
                                             @endfor
                                             <div>
@@ -137,7 +120,7 @@
                                             <tr class="align-middle h-100">
                                                 <td>
                                                     <div class="pl_post_codes_container text-center">
-                                                        @foreach ( $postCodesPL as $code )
+                                                        @foreach ( $headerData['postCodesPL'] as $code )
                                                             <div class="container_post_code_button_pl_{{ $code }}">
                                                                 <button class="btn btn-secondary btn-sm post_code_button_pl_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
                                                                     <input type="hidden" name="{{ $code }}" value="0">
@@ -160,7 +143,7 @@
                                             <tr class="align-middle h-100">
                                                 <td>
                                                     <div class="uk_post_codes_container text-justify">
-                                                        @foreach ( $postCodesUK as $code )
+                                                        @foreach ( $headerData['postCodesUK'] as $code )
                                                             <div class="container_post_code_button_uk_{{ $code }}">
                                                                 <button class="btn btn-secondary btn-sm post_code_button_uk_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
                                                                     <input type="hidden" name="{{ $code }}" value="0">
@@ -195,7 +178,7 @@
                                                         {{-- <input type="date" class="form-control @error( "date_input_" . $id ) is-invalid @enderror" id="date_input_{{ $id }}" name="date_input_{{ $id }}" value="{{ old( "date_input_" . $id  ) }}"> --}}
                                                     </div>
                                                 </td>
-                                                @if ( in_array( $login_user->account_type, $permDate[ 'access_accounts' ] ) )
+                                                @if ( in_array( $headerData['loginUser']->account_type, $headerData['permDate'][ 'access_accounts' ] ) )
                                                     <td>
                                                         <div class="container_experience_for_premium form-check">
                                                             <input class="form-check-input" type="checkbox" value="1" {{ old( 'experience_for_premium_date' ) ? 'checked' : '' }} id="experience_for_premium_date" name="experience_for_premium_date">
@@ -204,7 +187,7 @@
                                                             </label>
                                                         </div>
                                                     </td>
-                                                @elseif ( in_array( $login_user->account_type, $permDate[ 'access_accounts' ] ) )
+                                                @elseif ( in_array( $headerData['loginUser']->account_type, $headerData['permDate'][ 'access_accounts' ] ) )
                                                     <td>
                                                         <p class="experience_date_info">{{ __( 'base.courier_announcement_experience_date_info') }}</p>
                                                     </td>
@@ -250,7 +233,7 @@
                                             @endif
                                             <tr class="input_courier_announcement_picture align-middle h-100">
                                                 <td>
-                                                    <p class="picture_limit_info">{{ __( 'base.courier_announcement_picture_limit_info' ) . $picturesNumber }}</p>
+                                                    <p class="picture_limit_info">{{ __( 'base.courier_announcement_picture_limit_info' ) . $headerData['picturesNumber'] }}</p>
                                                     <div class="form-group input_pictures">
                                                         <label for="courier_announcement_picture_input">{{ __( 'base.courier_announcement_picrures_name' )}}</label>
                                                         <input type="file" multiple class="form-control-file" accept="{{ $extensions }}" id="courier_announcement_picture_input" name="files[]" onchange="displayThumbnails(event)">
@@ -320,12 +303,12 @@
 </div>
 <script src="{{
     asset('js/courier_announcement_global_variables.js') }}"
-    maxCargoNumber="<?php echo $cargoElementNumber; ?>"
+    maxCargoNumber="<?php echo $headerData['cargoElementNumber']; ?>"
     maxButtonText="<?php echo __( 'base.courier_announcement_cargo_maximum_cargo_btn' ); ?>"
-    maxDateNumber="<?php echo $dateElementNumber; ?>"
+    maxDateNumber="<?php echo $headerData['dateElementNumber']; ?>"
     maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
     deletePictureButtonText="<?php echo __( 'base.courier_announcement_picture_delete_button_text' ); ?>"
-    maxPictureNumber="<?php echo $picturesNumber; ?>"
+    maxPictureNumber="<?php echo $headerData['picturesNumber']; ?>"
 ></script>
 <script src="{{ asset('js/courier_announcement_cargo_type_scripts.js') }}"></script>
 <script src="{{ asset('js/courier_announcement_date_scripts.js') }}" ></script>
