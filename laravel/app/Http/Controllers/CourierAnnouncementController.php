@@ -65,25 +65,14 @@ class CourierAnnouncementController extends Controller
         return view( 'courier_announcement_confirmation_info' );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create( Request $request ) {
-        // $x = ini_set('max_input_vars', 1200);
-        // phpinfo();
-        // dd( $x );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $headerData = $this->generateCourierAnnouncementCreateFormHeader();
-
-        //dd( $request->all() );
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions )
             ->with( 'headerData', $headerData );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request) {
         $data = $request->all();
         $courierAnnouncement = new CourierAnnouncement( [
@@ -228,44 +217,23 @@ class CourierAnnouncementController extends Controller
         $postCodesUK->save();
     }
 
+    public function show(string $id) {}
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id) {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id) {
-
-    }
+    public function edit(string $id) {}
 
     public function editCreation( Request $request ) {
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
         $request->flash();
 
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
-        dd( "EDIT CREATION: ", $request );
+        //dd( "EDIT CREATION: ", $request );
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions );
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id) {
-        //
-    }
+    public function update(Request $request, string $id) {}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id) {
-        //
-    }
+    public function destroy(string $id) {}
 
     private function generateAcceptedFileFormatForCreateBlade() {
         $extensions = $this->json->courierAnnouncementAction()['accept_format_picture_file'];
@@ -296,11 +264,6 @@ class CourierAnnouncementController extends Controller
     private function saveImagesFilesInTempFolder( $files, $savePatch ) {
         if ( $files ) {
             foreach( $files as $file ) {
-                // $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
-                // dd( storage_path(public_path($savePatch ))  );
-                // // Zapisz plik w głównym folderze public
-                // dd($file->storeAs( public_path($savePatch )  ) );
-
                 Storage::put( $savePatch, $file );
             }
         }
@@ -321,15 +284,6 @@ class CourierAnnouncementController extends Controller
         return $folderName;
 
     }
-
-    // private function createOrCheckFolder( $folderPath, $cleanBefore = false ) {
-    //     if( $cleanBefore === true ) {
-    //         Storage::deleteDirectory( $folderPath );
-    //     }
-    //     if ( !File::exists( $folderPath )) {
-    //         File::makeDirectory( $folderPath, 0755, true, true);
-    //     }
-    // }
 
     private function validateAllRequestData( $request ) {
         $rules = $this->generateAllCargoRules( $request );
@@ -444,8 +398,6 @@ class CourierAnnouncementController extends Controller
 
     private function generateExperienceDateRules( $request ) {
         $rules = [];
-        // dd($request);
-        // dd( "|", $request->input( 'experience_for_premium_date' ), "|", );
         if ( $request->input( 'experience_for_premium_date' ) !== 1 && $request->input( 'experience_for_premium_date' ) !== '1'  ) {
             $rules[ 'experience_announcement_date_input' ] = 'required|date|after:today';
         }
@@ -515,31 +467,24 @@ class CourierAnnouncementController extends Controller
     private function generateLinksForImages( $files, $tempPath ) {
         $pathsArray = [];
         $iterator = 1;
-        //dd( $tempPath );
         if( $files !== null && count( $files ) > 0 ) {
             foreach( $files as $file ) {
                 $pathsArray[ 'image' . $iterator ] = Storage::url( $tempPath . '/' .$file->hashName() );
                 $iterator++;
-                //array_push( $pathsArray, Storage::url( $tempPath . '/' .$file->hashName() ) );
             }
         }
-        //dd( $pathsArray );
         return $pathsArray;
     }
 
     private $json = null;
 
     private function generateCourierAnnouncementSummaryHeader() {
-        $jsonParserController = app(JsonParserController::class);
-
-        $directions = json_decode($jsonParserController->directionsAction());
-        $courierAnnouncement = $jsonParserController->courierAnnouncementAction();
-        $postCodesPL = $jsonParserController->plPostCodeAction();
-        $postCodesUK = $jsonParserController->ukPostCodeAction();
+        $directions = json_decode($this->json->directionsAction());
+        $postCodesPL = $this->json->plPostCodeAction();
+        $postCodesUK = $this->json->ukPostCodeAction();
 
         return compact(
             'directions',
-            'courierAnnouncement',
             'postCodesPL',
             'postCodesUK'
         );
@@ -547,25 +492,24 @@ class CourierAnnouncementController extends Controller
 
 
     private function generateCourierAnnouncementCreateFormHeader() {
-        $jsonParserController = app(JsonParserController::class);
-        $courierAnnouncementData = $jsonParserController->courierAnnouncementAction();
+        $courierAnnouncementData = $this->json->courierAnnouncementAction();
 
         $cargoElementNumber = $courierAnnouncementData['premium_number_of_type_cargo'];
+        // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik cargoElementNumber #sema_update
         $dateElementNumber = $courierAnnouncementData['premium_number_of_type_date'];
+        // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik dateElementNumber #sema_update
         $picturesNumber = $courierAnnouncementData['picture_file_input_limit_premium'];
-        $maxFilesPictureElement = $courierAnnouncementData['picture_file_input_limit_premium'];
-        $postCodesPL = $jsonParserController->plPostCodeAction();
-        $postCodesUK = $jsonParserController->ukPostCodeAction();
-        $permDate = $jsonParserController->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
+        // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik picturesNumber #sema_update
+        $postCodesPL = $this->json->plPostCodeAction();
+        $postCodesUK = $this->json->ukPostCodeAction();
+        $permDate = $this->json->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
         $pictureFileFormat = $courierAnnouncementData['accept_format_picture_file'];
-
         $loginUser = auth()->user();
 
         return compact(
             'cargoElementNumber',
             'dateElementNumber',
             'picturesNumber',
-            'maxFilesPictureElement',
             'postCodesPL',
             'postCodesUK',
             'permDate',
