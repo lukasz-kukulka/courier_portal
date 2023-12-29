@@ -21,10 +21,11 @@ class CourierAnnouncementController extends Controller
 {
     public function __construct() {
         $this->json = new JsonParserController;
-
     }
+
     public function generateCourierAnnouncement( Request $request ) {
         $tempFilePath = $this->generateImagesTempFilesPath();
+        $this->generateTempFolderIfDontExist();
         $this->saveImagesFilesInTempFolder( $request->file('files'), $tempFilePath );
         return $this->summary( $request );
     }
@@ -45,6 +46,7 @@ class CourierAnnouncementController extends Controller
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
         $request->flash();
         $this->validateAllRequestData( $request );
+        $this->generateImagesFolderIfDontExist();
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
@@ -108,6 +110,7 @@ class CourierAnnouncementController extends Controller
         $folderPath = storage_path( 'app' . DIRECTORY_SEPARATOR . $tempPath );
         $fileNames = collect(File::files($folderPath))->map->getRelativePathname();
         $allNewFilePaths = [];
+
         foreach( $fileNames as $file ) {
             $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $file;
             $newFilePath = $filePath . DIRECTORY_SEPARATOR . $file;
@@ -267,22 +270,33 @@ class CourierAnnouncementController extends Controller
                 Storage::put( $savePatch, $file );
             }
         }
-
     }
 
     private function generateImagesFilesPath() {
         $user = Auth::user();
+        $userNameFolder = $user->username  . "_" . $user->id;
+        return (
+            $this->publicFolder .
+            DIRECTORY_SEPARATOR .
+            $this->personalMainFolderImages .
+            DIRECTORY_SEPARATOR .
+            $userNameFolder .
+            DIRECTORY_SEPARATOR .
+            $this->courierAnnouncementCategoryFolder
+        );
 
-        $folderName = 'personal_images' . DIRECTORY_SEPARATOR . $user->name  . "_" . $user->id . DIRECTORY_SEPARATOR . 'courier_announcement';
-        return $folderName;
     }
 
     private function generateImagesTempFilesPath( $separator = DIRECTORY_SEPARATOR ) {
         $user = Auth::user();
-
-        $folderName =  'public' . $separator . 'temporary_user_images' . $separator . $user->name  . "_" . $user->id . '_temp_images';
-        return $folderName;
-
+        $personalImagesUserFolder = $user->username  . "_" . $user->id . '_temp_images';
+        return (
+            $this->publicFolder .
+            $separator .
+            $this->tempUserFolder .
+            $separator .
+            $personalImagesUserFolder
+        );
     }
 
     private function validateAllRequestData( $request ) {
@@ -476,8 +490,6 @@ class CourierAnnouncementController extends Controller
         return $pathsArray;
     }
 
-    private $json = null;
-
     private function generateCourierAnnouncementSummaryHeader() {
         $directions = json_decode($this->json->directionsAction());
         $postCodesPL = $this->json->plPostCodeAction();
@@ -517,4 +529,48 @@ class CourierAnnouncementController extends Controller
             'loginUser'
         );
     }
+
+    private function generateTempFolderIfDontExist() {
+        $user = Auth::user();
+        $personalImagesUserFolder = $user->username  . "_" . $user->id . '_temp_images';
+        $tempPatch = storage_path(
+            'app' .
+            DIRECTORY_SEPARATOR .
+            $this->publicFolder .
+            DIRECTORY_SEPARATOR .
+            $this->tempUserFolder .
+            DIRECTORY_SEPARATOR .
+            $personalImagesUserFolder
+        );
+
+        if ( !File::isDirectory( $tempPatch ) ) {
+            File::makeDirectory( $tempPatch, 0755, true );
+        }
+    }
+
+    private function generateImagesFolderIfDontExist() {
+        $user = Auth::user();
+        $userNameFolder = $user->username  . "_" . $user->id;
+        $tempPatch = storage_path(
+            'app' .
+            DIRECTORY_SEPARATOR .
+            $this->publicFolder .
+            DIRECTORY_SEPARATOR .
+            $this->personalMainFolderImages .
+            DIRECTORY_SEPARATOR .
+            $userNameFolder .
+            DIRECTORY_SEPARATOR .
+            $this->courierAnnouncementCategoryFolder
+        );
+
+        if ( !File::isDirectory( $tempPatch ) ) {
+            File::makeDirectory( $tempPatch, 0755, true );
+        }
+    }
+
+    private $json = null;
+    private $personalMainFolderImages = 'personal_images';
+    private $courierAnnouncementCategoryFolder = 'courier_announcement';
+    private $publicFolder = 'public';
+    private $tempUserFolder = 'temporary_user_images';
 }
