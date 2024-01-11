@@ -69,14 +69,14 @@
                                             <tbody>
                                                 <div class="courier_announcement_date_summary_container text-center">
                                                     @foreach( $headerData['directions'] as $dir )
-
+                                                    {{-- {{dd($dir)}} --}}
                                                             {{ $isFirstElement = false }}
-                                                            <tr class="{{ 'direction_container_' . $dir->name }}">
-                                                                <th scope="row" class="col-3">{{ $dir->print_name }}</th>
+                                                            <tr class="{{ 'direction_container_' . $dir['name'] }}">
+                                                                <th scope="row" class="col-3">{{ $dir[ 'print_name' ] }}</th>
                                                                 <td class="col-9">
                                                                     @php
                                                                         for ( $i = 1; $i <= request()->input( 'date_number_visible' ); $i++ ) {
-                                                                            if ( ( request()->input( "date_directions_select_" . $i ) ) == $dir->print_name ) {
+                                                                            if ( ( request()->input( "date_directions_select_" . $i ) ) == $dir[ 'print_name' ] ) {
                                                                                 $comma = $isFirstElement ? ", " : "";
                                                                                 $dateInput = request()->input( 'date_input_' . $i );
                                                                                 $dateDescription = ( request()->input( 'date_description_' . $i ) != "" ? "( " . request()->input( 'date_description_' . $i ) . " )" : "" );
@@ -85,7 +85,7 @@
                                                                             }
                                                                         }
                                                                     @endphp
-                                                                    <input type="hidden" name="{{ "is_empty_" . $dir->name }}" id="{{ "is_empty_" . $dir->name }}" value="{{ $isFirstElement === false ? "false" : "true" }}">
+                                                                    <input type="hidden" name="{{ "is_empty_" . $dir['name'] }}" id="{{ "is_empty_" . $dir['name'] }}" value="{{ $isFirstElement === false ? "false" : "true" }}">
                                                                 </td>
                                                             </tr>
 

@@ -24,8 +24,39 @@ function setExperienceDateCheckboxFromPrevData() {
     }
 }
 
+function subscribeContactButtons() {
+    var fillButton = document.getElementById(
+        "courier_announcement_fill_data_contact_button"
+    );
+    var clearButton = document.getElementById(
+        "courier_announcement_clear_data_contact_button"
+    );
+    fillButton.addEventListener("click", function () {
+        fillContactData();
+    });
+    clearButton.addEventListener("click", function () {
+        clearContactData();
+    });
+}
+
+function fillContactData() {
+    for (var key in contactArray) {
+        var input = document.getElementById(key);
+        if (input.value == "") {
+            input.value = contactArray[key];
+        }
+    }
+}
+
+function clearContactData() {
+    for (var key in contactArray) {
+        var input = document.getElementById(key);
+        input.value = "";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
+    subscribeContactButtons();
     setActionForDateExperience();
-    addListenerForSubmitButtonAndDeleteEmptyFields();
     setExperienceDateCheckboxFromPrevData();
 });
