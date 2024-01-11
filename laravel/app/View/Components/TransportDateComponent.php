@@ -17,7 +17,7 @@ class TransportDateComponent extends Component
     public function render(): View|Closure|string {
         return view('components.transport_date_component', [
             'id' => $this->id,
-            'directions' => json_decode( $this->directions, true ) ,
+            'directions' => $this->directions,
         ] );
     }
 
@@ -25,4 +25,3 @@ class TransportDateComponent extends Component
     private $directions;
 
 }
-

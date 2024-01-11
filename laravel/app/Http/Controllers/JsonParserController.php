@@ -33,7 +33,8 @@ class JsonParserController extends Controller
 
     public function directionsAction() {
         $jsonData = file_get_contents( $this->directions_json_file );
-        return $jsonData;
+        $json = json_decode( $jsonData, true );
+        return $json;
     }
 
     public function cargoAction() {

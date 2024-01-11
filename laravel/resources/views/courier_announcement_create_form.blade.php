@@ -253,39 +253,44 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                {{-- <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                @if(request()->isMethod('post'))
-                                    <pre>{{ print_r(request(), true) }}</pre>
-                                @endif
-                                <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                @foreach(session()->all() as $key => $value)
-                                    <p>{{ $key }}: {{ print_r($value, true) }}</p>
-                                @endforeach
-                                <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                @foreach(old() as $fieldName => $fieldValue)
-                                    <p>{{ $fieldName }}: {{ $fieldValue }}</p>
-                                @endforeach --}}
-                                {{-- <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                <p>------------------------------------------------------------------------------------------</p>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach --}}
-                                {{-- @foreach ($request->old() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach --}}
-                                {{-- @foreach(old() as $fieldName => $fieldValue)
-                                    <p>{{ $fieldName }}: {{ $fieldValue }}</p>
-                                @endforeach
-                                @foreach(request()->all() as $key => $value)
-                                  <p>{{ $key }}: {{ print_r($value, true) }}</p>
-                                @endforeach --}}
+                                <div class="contact_container border border-1">
+                                    <table class="table table-sm border border-1 additional_info_table_single">
+                                        <thead>
+                                            <tr class="table-info contact_header">
+                                                <td colspan="3">
+                                                    <p class="h3 text-center">{{ __( 'base.courier_announcement_contact_create_title' ) }}</p>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="contact_body">
+                                                <td><p>
+                                                    <div class="picture_body">
+                                                        <div class="fill_data_contact_buttons_container">
+                                                            <div class="fill_data_contact_buttons_left">
+                                                                <button id="courier_announcement_fill_data_contact_button" type="button" class="btn btn-primary">{{ __( 'base.courier_announcement_contact_fill_button' ) }}</button>
+                                                            </div>
+                                                            <div class="fill_data_contact_buttons_right">
+                                                                <button id="courier_announcement_clear_data_contact_button" type="button" class="btn btn-primary">{{ __( 'base.courier_announcement_contact_clear_button' ) }}</button>
+                                                            </div>
+                                                        </div>
+
+                                                        @foreach ( $contactData as $key => $value )
+                                                            <div class="one_line_contact form-control">
+                                                                <div class="one_line_contact_left">
+                                                                    <label class="col-form-label text-md-end" for="{{ $key }}"><strong>{{ __( 'base.' . $key ) }}</strong></label>
+                                                                </div>
+                                                                <div class="one_line_contact_right">
+                                                                    <input class="form-control" type="text" id="{{ $key }}" name="{{ $key }}">
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </p></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <input type="hidden" name="cargo_number_visible" id="cargo_number_visible" value="{{ old( "cargo_number_visible", 1 ) }}">
                                 <input type="hidden" name="date_number_visible" id="date_number_visible" value="{{ old( "date_number_visible" ) > 1 ? old( "date_number_visible" ) : "1" }} ">
                                 <button id="courier_announcement_submit_button" type="submit" class="btn btn-primary">{{ __( 'base.courier_announcement_submit_button_text' ) }}</button>
@@ -309,10 +314,16 @@
     maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
     deletePictureButtonText="<?php echo __( 'base.courier_announcement_picture_delete_button_text' ); ?>"
     maxPictureNumber="<?php echo $headerData['picturesNumber']; ?>"
+    contactData="<?php echo htmlentities(json_encode($contactData), ENT_QUOTES, 'UTF-8'); ?>"
 ></script>
 <script src="{{ asset('js/courier_announcement_cargo_type_scripts.js') }}"></script>
 <script src="{{ asset('js/courier_announcement_date_scripts.js') }}" ></script>
 <script src="{{ asset('js/courier_announcement_post_codes_scripts.js') }}"></script>
 <script src="{{ asset('js/courier_announcement_pictures_script.js') }}" ></script>
-<script src="{{ asset('js/courier_announcement_main_script.js') }}"></script>
+
+<script src="{{ asset('js/courier_announcement_main_script.js') }}"
+    >
+</script>
+
+
 @endsection

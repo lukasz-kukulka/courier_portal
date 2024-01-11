@@ -35,13 +35,13 @@
         "name" : "nav_menu_announcement",
         "link" : "",
         "type" : "dropdown",
-        "permission": "login",
+        "permission": "all",
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "nav_menu_add_announcement_cargo",
                 "link" : "user_announcement.create",
                 "route_name" : "user_announcement.create",
-                "permission": "all"
+                "permission": "login"
             },
             "ele2" : {
                 "name" : "nav_menu_add_announcement_courier",
@@ -53,7 +53,7 @@
                 "name" : "nav_menu_announcement_find_parcel",
                 "link" : "user_announcement.index",
                 "route_name" : "user_announcement.index",
-                "permission": "login"
+                "permission": "all"
             },
             "ele4" : {
                 "name" : "nav_menu_announcement_find_courier",

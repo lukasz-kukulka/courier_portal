@@ -27,3 +27,7 @@ var picturesQuantity = 0;
 var cargo_visible_number_xxx = document.getElementById("cargo_number_visible");
 var isFirstCheckboxPLMark = false;
 var isFirstCheckboxUKMark = false;
+
+var contactArray = JSON.parse(
+    document.currentScript.getAttribute("contactData")
+);
