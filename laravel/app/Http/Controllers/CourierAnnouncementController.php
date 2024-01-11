@@ -376,7 +376,7 @@ class CourierAnnouncementController extends Controller
         $contactArray[ 'email' ] = $data->email;
         $contactArray[ 'telephone_number' ] = $data->phone_number;
 
-        if ($data->relationLoaded('company')) {
+        if ( $data->relationLoaded('company') && $data->company !== null ) {
             $contactArray[ 'company' ] = $data->company->company_name;
             $contactArray[ 'street' ] = $data->company->company_address;
             $contactArray[ 'city' ] = $data->company->company_city;
@@ -590,7 +590,13 @@ class CourierAnnouncementController extends Controller
         $titleMid = __( 'base.courier_announcement_full_title_summary_mid' );
         $titleEnd = $cargoNumber > $maxCargoInTitle ? __( 'base.courier_announcement_full_title_summary_end' ) : "";
         $cargoNames = "";
-        $companyName = $company->company->company_name;
+
+        if ( $company->company !== null ) {
+            $companyName = $company->company->company_name;
+        } else {
+            $companyName = '';
+        }
+
         for( $i = 1; $i <= min( $cargoNumber, $maxCargoInTitle ); $i++ ) {
             if ( $i > 1 ) {
                 $cargoNames .= ", ";
