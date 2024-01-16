@@ -21,6 +21,7 @@
                         <div class="card-body">
                             <form action="{{ route('user_announcement.cargoDataGenerator') }}" method="POST" id="user_announcement_form">
                                 @csrf
+
                                 <x-input_form_component name="direction" type="select" :options="$directionsData" />
                                 <x-input_form_component name="post_code_sending" type="text" />
                                 <x-input_form_component name="post_code_receiving" type="text" />
@@ -34,6 +35,10 @@
                                     <div class="row mb-3">
                                         <label class="form-label col-md-4 d-flex align-items-center justify-content-end" for="looking_transport_for">{{ __('base.looking_transport_for') }}</label>
                                         <div class="col-md-6">
+                                            @if(session('isZeroItems') && session('isZeroItems') === true )
+                                                <p class="alert alert-danger" role="alert">{{ __( 'base.announcement_createis_zero_items_message' ) }}</p>
+                                            @endif
+
                                             @foreach ( $cargoData[ 'cargo_types' ] as $cargo_type )
                                                 <div class="form-outline row mb-3">
                                                     <div class="col-md-8">

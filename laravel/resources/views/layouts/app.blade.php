@@ -40,14 +40,14 @@
                     <ul class="navbar-nav me-auto">
 
                         @foreach ( $menuData as $item )
-                            @if ( $item['permission'] == "login"  )
+                            {{-- @if ( $item['permission'] == "login"  )
                                 @auth
                                     @include('partials.nav_menu_element', ['item' => $item ] )
                                 @endauth
 
-                            @else
+                            @else --}}
                                 @include('partials.nav_menu_element', ['item' => $item ] )
-                            @endif
+                            {{-- @endif --}}
 
                         @endforeach
 

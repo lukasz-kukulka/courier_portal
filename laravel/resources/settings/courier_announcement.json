@@ -13,5 +13,10 @@
     "available_delivery_country": {
         "pl": "poland_delivery_direction",
         "uk": "united_kingdom_delivery_direction"
+    },
+    "contact_form_fields": {
+        "prefix_name": "contact_detail_",
+        "personal": ["name", "surname", "email", "telephone_number", "additional_telephone_number"],
+        "company": ["company", "street", "city", "post_code", "country", "website"]
     }
 }

@@ -124,28 +124,56 @@
                                     </div>{{-- END full_postcodes_data_containers_summary --}}
 
                                     <div class="additional_description_summary_container">
-                                        <div class="aditional_description_summary_title border border-1">
-                                            <p class="h3 text-center">{{ __( 'base.courier_announcement_aditional_info_title_summary' ) }}</p>
-                                        </div>
-                                        <div class="additional_description_summary_data border border-1">
-                                            @php
-                                                $descriptionData = request()->input( 'additional_description_input' );
-                                                if ( $descriptionData !== "" || $descriptionData !== null ) {
-                                                    echo ( '<p>' . $descriptionData . '</p>' );
-                                                }
-                                            @endphp
-                                        </div>
+                                        @php $descriptionData = request()->input( 'additional_description_input', null ); @endphp
+                                        @if( $descriptionData !== null )
+                                            <div class="aditional_description_summary_title border border-1">
+                                                <p class="h3 text-center">{{ __( 'base.courier_announcement_aditional_info_title_summary' ) }}</p>
+                                            </div>
+                                            <div class="additional_description_summary_data border border-1">
+                                                @php
+
+                                                    if ( $descriptionData !== "" || $descriptionData !== null ) {
+                                                        echo ( '<p>' . $descriptionData . '</p>' );
+                                                    }
+                                                @endphp
+                                            </div>
+                                        @endif
                                     </div>{{-- END aditional_description_summary_container --}}
                                     <div class="picture_container_summary" >
-                                        <div class="picture_title">
-                                            <p class="h3 text-center">{{ __( 'base.courier_announcement_pictures_title_summary' ) }}</p>
+                                        @if ( count( $imagesLinks ) )
+                                            <div class="picture_title">
+                                                <p class="h3 text-center">{{ __( 'base.courier_announcement_pictures_title_summary' ) }}</p>
+                                            </div>
+                                            <div class="picture_body">
+                                                @foreach ( $imagesLinks as $link )
+                                                    <img src="{{ asset( $link ) }}" alt="aaaa">
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    </div> {{-- END picture_container_summary --}}
+                                    <div class="summary_contact_cointainer">
+                                        <div class="summary_contact_cointainer_head">
+                                            <p class="h3 text-center">{{ __( 'base.courier_announcement_single_contact_title' ) }}</p>
                                         </div>
-                                        <div class="picture_body">
-                                            @foreach ( $imagesLinks as $link )
-                                                <img src="{{ asset( $link ) }}" alt="aaaa">
+                                        <div class="summary_contact_cointainer_body">
+                                            @foreach ( $contactData as $key => $value )
+                                                @if( $value != null )
+                                                    @php $cellName = "contact_detail_" . $key @endphp
+                                                    <div class="one_line_contact form-control">
+                                                        <div class="one_line_contact_left">
+                                                            <p><strong>{{ __( 'base.' . $key ) }}</strong></p>
+                                                        </div>
+                                                        <div class="one_line_contact_right">
+
+                                                            <p>{{ $value }}</p>
+                                                            <input type="hidden" name="{{ $cellName }}" value="{{ $value }}">
+                                                        </div>
+                                                    </div>
+                                                    @endif
                                             @endforeach
                                         </div>
-                                    </div> {{-- END picture_container_summary --}}
+
+                                    </div>
                                 </div> {{-- END full_summary_container --}}
 
                                 <div class="bottom_summary container row">

@@ -6,9 +6,5 @@
     "uk_pl" : {
         "name": "uk_pl_direction",
         "print_name": "Anglia -> Polska"
-    },
-    "test" : {
-        "name": "test_dir_name",
-        "print_name": "TEST -> TEST2"
     }
 }

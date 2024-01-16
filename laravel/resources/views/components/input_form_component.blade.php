@@ -10,6 +10,16 @@
             @if ( $name === 'email' )
                 @php $default_data = Auth::user()->email; @endphp
             @endif
+            @if ( $name === 'name' )
+                @php $default_data = Auth::user()->name; @endphp
+            @endif
+            @if ( $name === 'surname' )
+                @php $default_data = Auth::user()->surname; @endphp
+            @endif
+            @if ( $name === 'd_o_b' )
+                @php $default_data = Auth::user()->d_o_b; @endphp
+            @endif
+
             @if ( $type === 'textarea' )
                 <textarea id="{{ $name }}" class="form-control @error( $name ) is-invalid @enderror" name="{{ $name }}" required autocomplete="{{ $name }}" rows="1">{{ old( $name ) }}</textarea>
             @elseif ( $type === 'select' )

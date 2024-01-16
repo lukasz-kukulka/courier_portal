@@ -17,6 +17,7 @@ use App\Models\CourierAnnouncementImages;
 use App\Models\CourierTravelDate;
 use App\Models\PostCodePl;
 use App\Models\PostCodeUk;
+use App\Models\CourierAnnouncementContact;
 
 class CourierAnnouncementController extends Controller
 {
@@ -25,6 +26,7 @@ class CourierAnnouncementController extends Controller
     }
 
     public function generateCourierAnnouncement( Request $request ) {
+        dd($request);
         $tempFilePath = $this->generateImagesTempFilesPath();
         $this->generateTempFolderIfDontExist();
         $this->saveImagesFilesInTempFolder( $request->file('files'), $tempFilePath );
@@ -64,12 +66,14 @@ class CourierAnnouncementController extends Controller
         $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ) );
         $request->files->replace();
         $headerData = $this->generateCourierAnnouncementSummaryHeader();
+        $contactData = $this->generateContactData( $request );
 
         return view( 'courier_announcement_summary' )
                         ->with( 'title', $summaryTitle )
                         ->with( 'countryPostCodesData', $countryData)
                         ->with( 'userAndCompany', $company )
                         ->with( 'imagesLinks', $imagesLinks )
+                        ->with( 'contactData', $contactData )
                         ->with( 'headerData', $headerData );
     }
 
@@ -102,6 +106,7 @@ class CourierAnnouncementController extends Controller
         $userId = auth()->id();
         $courierAnnouncement->authorUser()->associate( $userId );
         $courierAnnouncement->save();
+        $this->storeContactData( $request, $courierAnnouncement->id);
         $this->storeImages( $courierAnnouncement->id);
         $this->storeCargos( $request, $courierAnnouncement->id);
         $this->storeDates( $request, $courierAnnouncement->id);
@@ -116,6 +121,18 @@ class CourierAnnouncementController extends Controller
             return null;
         }
         return $date;
+    }
+
+    private function storeContactData( Request $request, $announcementID ) {
+        $contactArray =  $this->generateContactData( $request );
+
+        $date = new CourierAnnouncementContact ( [] );
+        foreach ( $contactArray as $key => $value ) {
+            $date->{$key} = $value;
+        }
+
+        $date->announcementId()->associate( $announcementID );
+        $date->save();
     }
 
     private function storeImages( $announcementID ) {
@@ -375,6 +392,7 @@ class CourierAnnouncementController extends Controller
         $contactArray[ 'surname' ] = $data->surname;
         $contactArray[ 'email' ] = $data->email;
         $contactArray[ 'telephone_number' ] = $data->phone_number;
+        $contactArray[ 'additional_telephone_number' ] = '';
 
         if ( $data->relationLoaded('company') && $data->company !== null ) {
             $contactArray[ 'company' ] = $data->company->company_name;
@@ -383,13 +401,9 @@ class CourierAnnouncementController extends Controller
             $contactArray[ 'post_code' ] = $data->company->company_post_code;
             $contactArray[ 'country' ] = $data->company->company_country;
             $contactArray[ 'website' ] = $data->company->company_name;
-            if ( $data->phone_number == $data->company->company_phone_number ) {
-                $contactArray[ 'additional_telephone_number' ] = '';
-            } else {
+            if ( $data->phone_number != $data->company->company_phone_number ) {
                 $contactArray[ 'additional_telephone_number' ] = $data->company->company_phone_number;
             }
-        } else {
-            $contactArray[ 'additional_telephone_number' ] = '';
         }
 
         return $contactArray;
@@ -757,6 +771,21 @@ class CourierAnnouncementController extends Controller
         if ( !File::isDirectory( $tempPatch ) ) {
             File::makeDirectory( $tempPatch, 0755, true );
         }
+    }
+
+    private function generateContactData( $request ) {
+        $contactJson = $this->json->courierAnnouncementAction()[ 'contact_form_fields' ];
+        $contactArray = [];
+
+        foreach( $contactJson[ 'personal' ] as $field ) {
+            $contactArray[ $field ] = $request->input( 'contact_detail_' . $field, null );
+        }
+
+        foreach( $contactJson[ 'company' ] as $field ) {
+            $contactArray[ $field ] = $request->input( 'contact_detail_' . $field, null );
+        }
+
+        return $contactArray;
     }
 
     private $json = null;
