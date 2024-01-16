@@ -26,7 +26,6 @@ class CourierAnnouncementController extends Controller
     }
 
     public function generateCourierAnnouncement( Request $request ) {
-        dd($request);
         $tempFilePath = $this->generateImagesTempFilesPath();
         $this->generateTempFolderIfDontExist();
         $this->saveImagesFilesInTempFolder( $request->file('files'), $tempFilePath );
@@ -86,7 +85,6 @@ class CourierAnnouncementController extends Controller
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
         $headerData = $this->generateCourierAnnouncementCreateFormHeader();
-        //dd($contactData);
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions )
             ->with( 'contactData', $contactData )
