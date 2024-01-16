@@ -356,7 +356,7 @@ return [
     ######################## TOP MENU ####################
 
     "nav_menu_home" => "Strona główna",
-    "nav_menu_account_type" => "Wybierz typ konta",
+    "nav_menu_account_type" => "Rodzaje kont",
     "nav_menu_declaration" => "Deklaracje",
     "nav_menu_declaration_cn22" => "Deklaracja CN22",
     "nav_menu_declaration_cn23" => "Deklaracja CN23",
@@ -364,7 +364,7 @@ return [
     "nav_menu_add_announcement_cargo" => "Dodaj ogłoszenie( szukam transportu )",
     "nav_menu_add_announcement_courier" => "Dodaj ogłoszenie( oferuje transport )",
     "nav_menu_announcement_find_parcel" => "Znajdz paczkę",
-    "nav_menu_announcement_find_courier" => "Znajdz kuriera - NIE JEST JESZCZE GOTOWE", 
+    "nav_menu_announcement_find_courier" => "Znajdz kuriera", 
 
     ######################## COURIER FORM ####################
 
@@ -446,4 +446,8 @@ return [
     "courier_announcement_contact_create_title" => "Twoje dane kontaktowe",
     "courier_announcement_contact_fill_button" => "Uzupełnij dane z profilu",
     "courier_announcement_contact_clear_button" => "Wyczyść formularz kontaktowy",
+    "no_access_title" => "Brak dostepu do zawartości",
+    "no_access_content" => "Twoje konto nie ma dostępu do tej strony, zmień rodzaj konta, lub wybierz inną opcje menu",
+    "no_access_change_account_link" => "Zmień rodzaj konta",
+    "announcement_createis_zero_items_message" => "Musisz wybrać przynajmniej jeden item",
 ];

@@ -21,8 +21,6 @@
         @foreach ( $accountData[ 'accounts_types' ] as $account )
             <div class="rectangle"  id="{{ $account[ 'id' ] }}">
                 <div class="account_name">{{ $account[ 'name' ] }}</div>
-
-                {{ var_dump($account[ 'id' ] ) }}
                     @foreach ( $account[ 'description' ] as $description )
                         <div class="acount_description">{{ $description[ 'title' ]}}</div>
                         @if (  $description[ 'status' ] == "can" )

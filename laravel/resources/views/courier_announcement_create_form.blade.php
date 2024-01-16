@@ -276,12 +276,13 @@
                                                         </div>
 
                                                         @foreach ( $contactData as $key => $value )
+                                                            @php $cellName = "contact_detail_" . $key @endphp
                                                             <div class="one_line_contact form-control">
                                                                 <div class="one_line_contact_left">
-                                                                    <label class="col-form-label text-md-end" for="{{ $key }}"><strong>{{ __( 'base.' . $key ) }}</strong></label>
+                                                                    <label class="col-form-label text-md-end" for="{{ $cellName }}"><strong>{{ __( 'base.' . $key ) }}</strong></label>
                                                                 </div>
                                                                 <div class="one_line_contact_right">
-                                                                    <input class="form-control" type="text" id="{{ $key }}" name="{{ $key }}">
+                                                                    <input class="form-control" type="text" id="{{ $cellName }}" name="{{ $cellName }}">
                                                                 </div>
                                                             </div>
                                                         @endforeach

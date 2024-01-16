@@ -41,7 +41,7 @@ function subscribeContactButtons() {
 
 function fillContactData() {
     for (var key in contactArray) {
-        var input = document.getElementById(key);
+        var input = document.getElementById("contact_detail_" + key);
         if (input.value == "") {
             input.value = contactArray[key];
         }
@@ -50,7 +50,7 @@ function fillContactData() {
 
 function clearContactData() {
     for (var key in contactArray) {
-        var input = document.getElementById(key);
+        var input = document.getElementById("contact_detail_" + key);
         input.value = "";
     }
 }

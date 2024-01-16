@@ -37,7 +37,7 @@ class UserAnnouncementController extends Controller
     }
 
     public function store(Request $request) {
-        //dodac validator do danych
+        //dodac validator do danych #sema_update
         $data = $request->all();
         $announcement_data = json_decode( $data['announcement_data'], true);
         $announcement = new UserAnnouncement ( [
@@ -151,11 +151,22 @@ class UserAnnouncementController extends Controller
             'post_code_receiving' =>    [ 'required', 'string', 'max:10' ],
             'phone_number' =>           [ 'required', 'numeric', 'Min Digits:9', 'Max Digits:15' ],
             'email' =>                  [ 'required', 'email', 'max:255' ],
-            'expect_sending_date' =>    [ 'required', 'max:255', 'after:' . date('Y-m-d') ],
+            'expect_sending_date' =>    [ 'required', 'max:255', 'after:' . date('Y-m-d', strtotime('-1 day')) ],
             'experience_date' =>        [ 'required', 'max:255', 'before:' . $experience_max_date_string ],
         ]);
 
         return $validator;
+    }
+
+    private function validateIsZeroItems( Request $request ) {
+        if( $request->parcel == 0 &&
+            $request->human == 0 &&
+            $request->pallet == 0 &&
+            $request->animal == 0 &&
+            $request->other == 0 ) {
+            return true;
+        }
+        return false;
     }
 
     public function show(string $id) {
@@ -163,10 +174,10 @@ class UserAnnouncementController extends Controller
     }
 
     public function cargoDataGenerator(Request $request) {
-        //
+        $isZeroItems = $this->validateIsZeroItems( $request );
         $validator = $this->validator( $request->all() );
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+        if ($validator->fails() || $isZeroItems) {
+            return redirect()->back()->withErrors($validator)->withInput()->with( 'isZeroItems', $isZeroItems );
         } else {
             $data = $request->all();
             array_shift( $_POST );
