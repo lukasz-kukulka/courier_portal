@@ -628,7 +628,7 @@ class CourierAnnouncementController extends Controller
         $titleMid = __( 'base.courier_announcement_full_title_summary_mid' );
 
         foreach( $announcements as $announcement ) {
-            //dd($announcement);
+            dd($announcement);
             $cargoNumber = count( $announcement->cargoTypeAnnouncement );
             $titleEnd = $cargoNumber > $maxCargoInTitle ? __( 'base.courier_announcement_full_title_summary_end' ) : "";
 
