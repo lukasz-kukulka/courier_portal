@@ -11,12 +11,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
             $table->foreign('author')->references('id')->on('users');
-            $table->string('company_name');
-            $table->string('company_address');
-            $table->string('company_post_code');
-            $table->string('company_city');
-            $table->string('company_country');
-            $table->string('company_phone_number', 15 );
+            $table->string('company_name')->nullable();
+            $table->string('company_address')->nullable();
+            $table->string('company_post_code')->nullable();
+            $table->string('company_city')->nullable();
+            $table->string('company_country')->nullable();
+            $table->string('company_phone_number', 15 )->nullable();
             $table->string('company_register_link')->nullable();
             $table->boolean('confirmed')->default( false );
             $table->timestamps();

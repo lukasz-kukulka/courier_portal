@@ -13,6 +13,7 @@
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <!-- Scripts -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     {{-- @vite(['resources/js/app.js', 'resources/css/app.css']) --}}
@@ -20,6 +21,7 @@
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $menuData = $JsonParserController->menuAction();
+        $userMenuData = $JsonParserController->menuUserAction();
     @endphp
 
 </head>
@@ -59,18 +61,25 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Zaloguj') }}</a>
+                                    <a class="nav-link" href="{{ route('login') }}">
+                                        <i class="bi bi-box-arrow-right h4"></i>
+                                        {{ __('base.login') }}
+                                    </a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Rejestracja') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">
+                                        <i class="bi bi-person-fill-add h4"></i>
+                                        {{ __('base.register') }}
+                                    </a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="bi bi-person-lines-fill h4"></i>
                                     {{ Auth::user()->username }}
                                 </a>
 
@@ -78,8 +87,16 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                            <i class="bi bi-box-arrow-in-left h5"></i>
+                                        {{ __('base.logout') }}
                                     </a>
+                                    <div class="dropdown-divider"></div>
+                                    @foreach ( $userMenuData as $item )
+                                        <a class="dropdown-item {{ $item[ 'name' ] }}" href="{{ route( $item[ 'link' ] ) }}" type="button">
+                                            <i class="{{ $item[ 'icon' ] }}"></i>
+                                            {{ __('base.' . $item[ 'name' ] ) }}
+                                        </a>
+                                    @endforeach
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
