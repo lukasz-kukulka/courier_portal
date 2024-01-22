@@ -1,0 +1,16 @@
+{
+    "accounts_type_change" : {
+        "name" : "nav_menu_account_type_change",
+        "route_name" : "edit_type_account",
+        "link" : "edit_type_account",
+        "icon": "bi bi-cast h5",
+        "permission": "login"
+    },
+    "user_profile_change" : {
+        "name" : "nav_menu_user_profile_change",
+        "route_name" : "user_edit_profile",
+        "link" : "user_edit_profile",
+        "icon" : "bi bi-person-square h5",
+        "permission": "login"
+    }
+}

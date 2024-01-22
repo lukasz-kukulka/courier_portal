@@ -14,8 +14,7 @@
                     <div class="card">
                         {{-- <div class="card-header">{{ __('base.accounts_form') }}</div> --}}
                         <div class="card-body">
-                            <div class="confirm_info_account">{{ __('base.thank_you_for_filled_account') }}</div>
-                            <div class="confirm_info_step">{{ __('base.you_account_is_ready') }}</div><br>
+                            <div class="confirm_info_account">{{ __('base.change_account_is_comfirmed') }}</div>
                             <div class="confirm_info_step">{{ __('base.you_account_is_ready_redirected') }}</div><br>
                             <div class="link_to_home_page"><a href="{{ route('main') }}">{{ __('base.back_to_home_page') }}</a></div><br>
                         </div>

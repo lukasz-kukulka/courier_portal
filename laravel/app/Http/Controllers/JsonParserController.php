@@ -9,6 +9,7 @@ class JsonParserController extends Controller
     public function __construct() {
         $settingsDir = 'settings'. DIRECTORY_SEPARATOR;
         $this->menu_json_file  = resource_path( $settingsDir . 'top_menu.json');
+        $this->menu_user_json_file  = resource_path( $settingsDir . 'top_menu_user.json');
         $this->account_json_file  = resource_path( $settingsDir . 'accounts.json');
         $this->directions_json_file  = resource_path( $settingsDir . 'directions.json');
         $this->cargo_json_file  = resource_path( $settingsDir . 'cargo.json');
@@ -21,6 +22,12 @@ class JsonParserController extends Controller
 
     public function menuAction() {
         $jsonData = file_get_contents( $this->menu_json_file );
+        $json = json_decode( $jsonData, true );
+        return $json;
+    }
+
+    public function menuUserAction() {
+        $jsonData = file_get_contents( $this->menu_user_json_file );
         $json = json_decode( $jsonData, true );
         return $json;
     }
@@ -74,6 +81,7 @@ class JsonParserController extends Controller
     }
 
     private $menu_json_file;
+    private $menu_user_json_file;
     private $account_json_file;
     private $directions_json_file;
     private $cargo_json_file;

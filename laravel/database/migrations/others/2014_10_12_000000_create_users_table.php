@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('account_type')->nullable();
             $table->string('group')->nullable();
+            $table->string('is_company')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

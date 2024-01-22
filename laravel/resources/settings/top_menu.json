@@ -3,30 +3,28 @@
         "name" : "nav_menu_home",
         "route_name" : "home",
         "type" : "standard",
+        "icon": "bi bi-house-door-fill h4",
         "permission": "all"
-    },
-    "accounts" : {
-        "name" : "nav_menu_account_type",
-        "route_name" : "account_register",
-        "type" : "standard",
-        "permission": "login"
     },
     "declaration" : {
         "name" : "nav_menu_declaration",
         "link" : "",
         "type" : "dropdown",
+        "icon": "bi bi-pen-fill h4",
         "permission": "login",
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "nav_menu_declaration_cn22",
                 "link" : "cn22",
                 "route_name" : "cn22",
+                "icon": "bi bi-pen h5",
                 "permission": "login"
             },
             "ele2" : {
                 "name" : "nav_menu_declaration_cn23",
                 "link" : "cn23",
                 "route_name" : "cn23",
+                "icon": "bi bi-pen h5",
                 "permission": "login"
             }
         }
@@ -35,30 +33,35 @@
         "name" : "nav_menu_announcement",
         "link" : "",
         "type" : "dropdown",
+        "icon": "bi bi-megaphone-fill h4",
         "permission": "all",
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "nav_menu_add_announcement_cargo",
                 "link" : "user_announcement.create",
                 "route_name" : "user_announcement.create",
+                "icon": "bi bi-file-earmark-plus h5",
                 "permission": "login"
             },
             "ele2" : {
                 "name" : "nav_menu_add_announcement_courier",
                 "link" : "user_announcement.create",
                 "route_name" : "courier_announcement.create",
+                "icon": "bi bi-truck h5",
                 "permission": "login"
             },
             "ele3" : {
                 "name" : "nav_menu_announcement_find_parcel",
                 "link" : "user_announcement.index",
                 "route_name" : "user_announcement.index",
+                "icon": "bi bi-box-seam h5",
                 "permission": "all"
             },
             "ele4" : {
                 "name" : "nav_menu_announcement_find_courier",
                 "link" : "courier_announcement.index",
                 "route_name" : "courier_announcement.index",
+                "icon": "bi bi-search h5",
                 "permission": "login"
             }
         }

@@ -11,7 +11,7 @@ class UserModel extends Model
     protected $table = 'users';
     protected $fillable = [
         'username', 'name', 'surname', 'phone_number', 'd_o_b', 'email',
-        'password', 'account_type', 'group'
+        'password', 'account_type', 'group', 'is_company'
     ];
 
     public function userAnnouncement() {
