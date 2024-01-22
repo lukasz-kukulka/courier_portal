@@ -5,46 +5,36 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\UserCompany;
+use App\Models\UserModel;
 class CustomUserController extends Controller
 {
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create( Request $request )
-    {
-        $validator = $this->validator( $request->all() );
-        if ($validator->fails()) {
-            return redirect()->route('account_confirmed_get', $request->all() )->withErrors( $validator )->withInput();
-        } else {
-            $this->update( $request );
-            return redirect()->route('account_last_confirmed' );
-        }
+    public function create( Request $request ){
+        return $this->validator( $request->all() );
     }
 
-    private function validator(array $data)
-    {
-        $validate_result = Validator::make($data, [
+    private function validator( $data) {
+        $userRules = [
             'name' => ['required', 'string', 'max:55'],
             'surname' => ['required', 'string', 'max:55'],
             'phone_number' => ['required', 'numeric', 'digits_between:9,14'],
+            'email' => ['required', 'email'],
             'd_o_b' => ['required', 'date', 'before:2010-01-01'],
-        ]);
+        ];
+        $companyRules = [];
 
-        if ( $data['name'] == 'account_type' ) {
-            $company_validate_result = Validator::make($data, [
-                'company_name' => ['required', 'string', 'max:99'],
-                'company_address' => ['required', 'string', 'max:55'],
-                'company_phone_number' => ['required', 'numeric', 'min:9', 'max:14'],
-                'company_post_code' => ['required', 'string', 'max:9'],
-                'company_city' => ['required', 'string', 'max:44'],
-                'company_country' => ['required', 'string', 'max:44'],
-            ]);
-
-            $validate_result->merge( $company_validate_result );
+        if ( array_key_exists( 'company_fields_checkbox', $data ) ) {
+            $companyRules = [
+                'company_name' => ['nullable', 'string', 'max:99'],
+                'company_address' => ['nullable', 'string', 'max:55'],
+                'company_phone_number' => ['nullable', 'string', 'min:9', 'max:14'],
+                'company_post_code' => ['nullable', 'string', 'max:9'],
+                'company_city' => ['nullable', 'string', 'max:44'],
+                'company_country' => ['nullable', 'string', 'max:44'],
+            ];
         }
-        // $validate_result->save();
-        return $this->setAttributesFormNames( $validate_result );
+
+        $validateResult = Validator::make($data, array_merge( $userRules, $companyRules ) );
+        return $this->setAttributesFormNames( $validateResult );
     }
 
     private function setAttributesFormNames( $data ) {
@@ -52,6 +42,7 @@ class CustomUserController extends Controller
             'name' => __('base.name'),
             'surname' => __('base.surname'),
             'phone_number' => __('base.phone_number'),
+            'email' =>  __('base.email'),
             'company_name' => __('base.company_name'),
             'company_address' => __('base.company_address'),
             'company_phone_number' => __('base.company_phone_number'),
@@ -64,68 +55,109 @@ class CustomUserController extends Controller
         return $data;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update( Request $request ) {
+    public function store( Request $request ) {
         $user = auth()->user();
         $user->name = $request->input('name');
         $user->surname = $request->input('surname');
         $user->phone_number = $request->input('phone_number');
+        $user->email = $request->input('email');
         $user->d_o_b = $request->input('d_o_b');
         $user->group = $request->input('account_type');
         $user->account_type = $request->input('account_type');
+        $user->is_company = $request->input('company_fields_checkbox') != null ? true : false;
+
         $user->save();
-        $this->storeCompany( $request );
+
+        if( $user->is_company ) {
+            $this->storeCompany( $request );
+        }
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    private function storeCompany( $request ) {
-        if( $request->input('account_type') === 'courier_pro' ) {
-            $company = new UserCompany ( [
-                'company_name' => $request->input('company_name'),
-                'company_address' => $request->input('company_address'),
-                'company_post_code' => $request->input('company_post_code'),
-                'company_city' => $request->input('company_city'),
-                'company_country' => $request->input('company_country'),
-                'company_phone_number' => $request->input('company_phone_number'),
-                'company_register_link' => $request->input('company_register_link'),
-                'company_name' => $request->input('company_name'),
-            ] );
-            $userId = auth()->id();
-            $company->authorUser()->associate( $userId );
-            $company->save();
+    public function show(string $id) {
+
+    }
+
+    public function edit() {
+        $accountType = auth()->user()->account_type;
+        $company = UserModel::with('company')->find( auth()->user()->id )->company;
+        return view('accounts.confirmed_account')
+                ->with( 'accountType', $accountType )
+                ->with( 'isEdit', true )
+                ->with( 'company', $company );
+    }
+
+    public function editUserSummary() {
+        return view( 'accounts.edit_account_confirm_last' );
+    }
+
+    public function update( Request $request ) {
+        $valid = $this->create( $request );
+
+        if ($valid->fails()) {
+            $accountType = $request->account_type;
+            return redirect()
+                ->route('user_edit_profile', $request->all() )
+                ->withErrors( $valid )
+                ->withInput()
+                ->with( 'accountType', $accountType );
+        } else {
+            $this->updateUser( $request );
+            $this->updateCompany( $request );
+            return redirect()->route('user_edit_summary' );
         }
     }
 
-     public function destroy(string $id)
-    {
-        //
+    private function updateUser( $request ) {
+        $user = UserModel::find( auth()->user()->id );
+        $user->name = $request->name;
+        $user->surname = $request->surname;
+        $user->phone_number = $request->phone_number;
+        $user->email = $request->email;
+        $user->d_o_b = $request->d_o_b;
+        $user->save();
+    }
+
+    private function updateCompany( $request ) {
+        $company = UserModel::find( auth()->id() )->company;
+
+        if ( $request->input('company_fields_checkbox') == null ) {
+            if ( $company !== null ) {
+                $company->delete();
+            }
+        } else {
+            if ( $company !== null ) {
+                $company->company_name = $request->input('company_name');
+                $company->company_address = $request->input('company_address');
+                $company->company_post_code = $request->input('company_post_code');
+                $company->company_city = $request->input('company_city');
+                $company->company_country = $request->input('company_country');
+                $company->company_phone_number = $request->input('company_phone_number');
+                $company->company_register_link = $request->input('company_register_link');
+                $company->save();
+            } else {
+                $this->storeCompany( $request );
+            }
+        }
+    }
+
+    private function storeCompany( $request ) {
+        $company = new UserCompany ( [
+            'company_name' => $request->input('company_name'),
+            'company_address' => $request->input('company_address'),
+            'company_post_code' => $request->input('company_post_code'),
+            'company_city' => $request->input('company_city'),
+            'company_country' => $request->input('company_country'),
+            'company_phone_number' => $request->input('company_phone_number'),
+            'company_register_link' => $request->input('company_register_link'),
+        ] );
+        $userId = auth()->id();
+        $company->authorUser()->associate( $userId );
+        $company->save();
+
+    }
+
+    public function destroy(string $id){
+
     }
 }

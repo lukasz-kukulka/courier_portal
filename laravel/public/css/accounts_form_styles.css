@@ -1,11 +1,14 @@
-.confirm_info_account, .confirm_info_step {
+.confirm_info_account,
+.confirm_info_step,
+.edit_profile_title {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-.confirm_info_account {
+.confirm_info_account,
+.edit_profile_title {
     font-size: 22px;
 }
 
@@ -16,11 +19,11 @@
 .company_section_title {
     display: flex;
     justify-content: center;
-    font-size: 22px
+    font-size: 22px;
 }
 
 .link_to_home_page {
     display: flex;
     justify-content: center;
-    font-size: 22px
+    font-size: 22px;
 }

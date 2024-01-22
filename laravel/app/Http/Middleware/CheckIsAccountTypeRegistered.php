@@ -16,16 +16,17 @@ class CheckIsAccountTypeRegistered
      */
     public function handle(Request $request, Closure $next): Response
     {
-
+        // dd($request);
         if ( auth()->check() && auth()->user()->account_type === null && auth()->user()->email_verified_at !== null &&
              !in_array($request->path(), [
                 'logout',
-                'accounts/account_register',
+                'register_account',
                 'accounts/confirmed_account',
-                'person_data',
+                'create_person_data',
+                '/accounts/confirmed_personal_data',
                 'accounts/confirmed_account_last'
              ]) ) {
-           return redirect()->route( 'account_register' );
+           return redirect()->route( 'register_account' )->send();
         }
 
         return $next($request);
