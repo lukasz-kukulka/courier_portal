@@ -1,12 +1,6 @@
 @extends('layouts.app')
 
 @section('add_header')
-    {{-- <script src="{{ asset('js/accounts_scripts.js') }}"></script> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/accounts_form_styles.css') }}"> --}}
-    @php
-        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $cargoData = $JsonParserController->cargoAction();
-    @endphp
 @endsection
 
 @section('content')
@@ -20,28 +14,14 @@
                         <div class="card-body">
                             <form action="{{ route('user_announcement.summary') }}" method="POST" id="user_announcement_form_cargo_details">
                                 @csrf
-                                @php
-                                    $params_data = [];
-                                    $items_quantity = [];
-                                @endphp
-                                @foreach ($cargoData[ 'cargo_types' ] as $cargo_type )
-                                    @php
-                                        if ( $_POST[ $cargo_type[ 'id' ] ] > 0 ) {
-                                            $quantity_element = [ 'id' => $cargo_type[ 'id' ], 'value' => $_POST[ $cargo_type[ 'id' ] ] ];
-                                            array_push( $items_quantity, $quantity_element );
-                                            for ( $i = 0; $i < $_POST[ $cargo_type[ 'id' ] ]; $i++ ) {
-                                                array_push( $params_data,  $cargo_type );
-                                            }
-                                        }
-                                    @endphp
-                                    @if ( $_POST[ $cargo_type[ 'id' ] ] > 0 )
-                                        <x-cargo_details_component :name="$cargo_type[ 'id' ]" :number="$_POST[ $cargo_type[ 'id' ] ]" :params="json_encode( $cargo_type[ 'params' ] )" />
-                                    @endif
+                                @foreach ( $cargoData as $cargo )
+                                    <x-cargo_details_component :name="$cargo[ 'cargoId' ]" :number="$cargo[ 'cargoQuantity' ]" :params="json_encode( $cargo[ 'cargoParams' ] )" />
                                 @endforeach
-                                <input type="hidden" name="quantity" value="{{ json_encode( $items_quantity ) }}">
-                                <input type="hidden" name="json_data" value="{{ json_encode( $params_data ) }}">
-                                <input type="hidden" name="announcement_data" value="{{ json_encode( $announcement_data ) }}">
-
+                                <input type="hidden" name="announcement_data" value="{{ json_encode( request()->all() ) }}">
+                                <input type="hidden" name="is_edit_mode" value="{{ request()->input( 'is_edit_mode' ) }}">
+                                @if ( request()->input( 'is_edit_mode' ) == true )
+                                    <input type="hidden" name="announcement_id" value="{{ request()->input( 'announcementId' ) }}">
+                                @endif
                                 <div class="row mb-0">
                                     <div class="col text-end">
                                         <button type="submit" class="btn btn-primary">
@@ -49,8 +29,6 @@
                                         </button>
                                     </div>
                                 </div>
-
-
                             </form>
                         </div>
                     </div>

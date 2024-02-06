@@ -42,15 +42,7 @@
                     <ul class="navbar-nav me-auto">
 
                         @foreach ( $menuData as $item )
-                            {{-- @if ( $item['permission'] == "login"  )
-                                @auth
-                                    @include('partials.nav_menu_element', ['item' => $item ] )
-                                @endauth
-
-                            @else --}}
-                                @include('partials.nav_menu_element', ['item' => $item ] )
-                            {{-- @endif --}}
-
+                            @include('partials.nav_menu_element', ['item' => $item ] )
                         @endforeach
 
                     </ul>

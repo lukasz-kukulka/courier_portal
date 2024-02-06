@@ -22,7 +22,7 @@
                                 <th scope="row">&nbsp&nbsp</th>
                                 <td class="d-flex align-items-center">
                                     <div class="text-start">
-                                        <form class="d-inline-block me-2" action="{{ route('courier_announcement.show' , ['courier_announcement' => $announcement->id ] ) }}" method="GET">
+                                        <form class="d-inline-block me-2" action="{{ route('courier_announcement.show', ['courier_announcement' => $announcement->id ] ) }}" method="GET">
                                             <button type="submit" class="btn btn-primary">{{ __( 'base.details_announcement_button' ) }}</button>
                                         </form>
                                         @if ( Auth::user()->id == $announcement->author )

@@ -8,12 +8,14 @@ use Illuminate\View\Component;
 
 class InputFormComponent extends Component
 {
-    public function __construct( $name, $type, $options = '', $isRequired = 'required', $value = '' ) {
+    public function __construct( $name, $type, $options = '', $isRequired = 'required', $value = '', $maxLength = 10000, $defaultValue = '' ) {
         $this->input_name = $name;
         $this->input_type = $type;
         $this->select_options_array =  $options;
         $this->required = $isRequired;
         $this->value = $value;
+        $this->maxLength = $maxLength;
+        $this->defaultValue = $defaultValue;
     }
 
     public function render(): View|Closure|string {
@@ -23,6 +25,8 @@ class InputFormComponent extends Component
             'options' => $this->select_options_array,
             'required' => $this->required,
             'value' => $this->value,
+            'maxLength' => $this->maxLength,
+            'defaultValue' => $this->defaultValue,
         ] );
     }
 
@@ -31,4 +35,6 @@ class InputFormComponent extends Component
     private $select_options_array;
     private $required;
     private $value;
+    private $maxLength;
+    private $defaultValue;
 }

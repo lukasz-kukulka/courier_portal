@@ -56,7 +56,16 @@ class JsonParserController extends Controller
         return $json;
     }
 
+    public function getPostCodes( $direction ) {
+        $variableName = 'post_codes_' . $direction;
+        
+        $jsonData = file_get_contents( $this->$variableName );
+        $json = json_decode( $jsonData, true );
+        return $json;
+    }
+
     public function plPostCodeAction() {
+        
         $jsonData = file_get_contents( $this->post_codes_pl );
         $json = json_decode( $jsonData, true );
         return $json;

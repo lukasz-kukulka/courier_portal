@@ -38,8 +38,8 @@
         "dropdown_elements" : {
             "ele1" : {
                 "name" : "nav_menu_add_announcement_cargo",
-                "link" : "user_announcement.create",
-                "route_name" : "user_announcement.create",
+                "link" : "generate_user_announcement",
+                "route_name" : "generate_user_announcement",
                 "icon": "bi bi-file-earmark-plus h5",
                 "permission": "login"
             },
