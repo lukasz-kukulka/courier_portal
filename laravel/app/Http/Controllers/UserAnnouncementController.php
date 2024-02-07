@@ -37,6 +37,31 @@ class UserAnnouncementController extends Controller
         ]);
     }
 
+    public function indexForSingleUser() {
+        $authorId = auth()->user()->id;
+        // dd($authorId  );
+        $announcement = view('announcement_list', [
+            'announcements' => UserAnnouncement::where('author', $authorId)
+                ->with('parcelAnnouncement',
+                       'humanAnnouncement',
+                       'palletAnnouncement',
+                       'animalAnnouncement',
+                       'otherAnnouncement')
+                ->paginate( $this->json->searchAnnouncementAction()[ 'number_of_search_announcement_in_one_page' ] ),
+            ] );
+        // dd( $announcement );
+        return view('announcement_list', [
+            'announcements' => UserAnnouncement::where('author', $authorId)
+                ->with('parcelAnnouncement',
+                       'humanAnnouncement',
+                       'palletAnnouncement',
+                       'animalAnnouncement',
+                       'otherAnnouncement')
+
+                ->paginate( $this->json->searchAnnouncementAction()[ 'number_of_search_announcement_in_one_page' ] ),
+        ]);
+    }
+
     public function create() {
         $directionsData = $this->generateDirectionData();
         $cargoData = $this->json->cargoAction();
@@ -435,74 +460,87 @@ class UserAnnouncementController extends Controller
         $title = $this->generateTitleAnnouncement( $announcementData );
         $announcementArray = $this->getAnnouncementObjectArray( $title, $announcementData );
         $userAnnouncement = $this->getAnnouncementWithRelation( $announcementData[ 'announcement_id' ] );
-        $userAnnouncement->parcelAnnouncement()->delete();
-        $userAnnouncement->humanAnnouncement()->delete();
-        $userAnnouncement->palletAnnouncement()->delete();
-        $userAnnouncement->animalAnnouncement()->delete();
-        $userAnnouncement->otherAnnouncement()->delete();
+        $this->deleteRelations( $userAnnouncement );
         UserAnnouncement::where('id', $announcementId)->update( $announcementArray );
         $this->storeCargoTypes( $announcementData, $announcementId );
 
     }
 
     public function destroy( string $id ) {
-        dd('delete');
+        return view( 'announcement_delete_asking' )
+            ->with( 'announcementId', $id);
     }
 
-    private function moveToArchiveAndDestroy( $announcementData ) {
-        $userAnnouncement = $this->getAnnouncementWithRelation( $announcementData[ 'announcement_id' ] );
-        $announcementArchive = new UserAnnouncementArchive ( $this->getAnnouncementObjectArray( $userAnnouncement[ 'title' ], $announcementData ) );
-        // $userId = auth()->id();
-        // $announcement->authorUser()->associate( $userId );
-        // $announcement->save();
-        // $this->storeCargoTypes( $announcementData, $announcement->id );
-        dd( $announcementArchive );
+    public function destroyConfirm( string $id ) {
+        $announcement = $this->getAnnouncementWithRelation( $id );
+        $this->storeAnnouncementArchive( $announcement );
+        $this->deleteAnnouncement( $announcement );
+        return view( 'announcement_delete_confirm' )
+            ->with( 'announcementId', $id);
     }
 
-    private function storeCargoTypesArchive( $request, $announcementId ) {
-        $this->storeAnimalDataArchive( $request, $announcementId );
-        $this->storeHumanDataArchive( $request, $announcementId );
-        $this->storeOtherDataArchive( $request, $announcementId );
-        $this->storePalletDataArchive( $request, $announcementId );
-        $this->storeParcelDataArchive( $request, $announcementId );
+    private function storeAnnouncementArchive( $request ) {
+        $announcementArchive = new UserAnnouncementArchive ( $request->getAttributes() );
+        $userId = auth()->id();
+        $announcementArchive->authorUser()->associate( $userId );
+        $announcementArchive->save();
+        $announcementId = $request->id;
+        $this->storeAnimalDataArchive( $request->animalAnnouncement, $announcementId );
+        $this->storeHumanDataArchive( $request->humanAnnouncement, $announcementId );
+        $this->storeOtherDataArchive( $request->otherAnnouncement, $announcementId );
+        $this->storePalletDataArchive( $request->palletAnnouncement, $announcementId );
+        $this->storeParcelDataArchive( $request->parcelAnnouncement, $announcementId );
+    }
+
+    private function deleteAnnouncement( $announcement ) {
+        $this->deleteRelations( $announcement );
+        $announcement->delete();
+    }
+
+    private function deleteRelations( $announcement ) {
+        $announcement->parcelAnnouncement()->delete();
+        $announcement->humanAnnouncement()->delete();
+        $announcement->palletAnnouncement()->delete();
+        $announcement->animalAnnouncement()->delete();
+        $announcement->otherAnnouncement()->delete();
     }
 
     private function storeAnimalDataArchive( $request, $announcementId ) {
-        //dd( $request);
-        for( $i = 0; $i < $request[ 'animal' ]; $i++ ) {
-            $animal = new AnimalAnnouncementArchive ( $this->getAnimalDataArray( $request, $announcementId, $i ) );
+        foreach( $request as $animal ) {
+            $animal = new AnimalAnnouncementArchive ( $animal->getAttributes()  );
             $animal->announcementId()->associate( $announcementId  );
             $animal->save();
         }
     }
 
     private function storeHumanDataArchive( $request, $announcementId ) {
-        if ( $request[ 'human' ] > 0 ) {
-            $human = new HumanAnnouncementArchive ( $this->getHumanDataArray( $request, $announcementId ) );
+        foreach( $request as $human ) {
+            $human = new HumanAnnouncementArchive ( $human->getAttributes()  );
             $human->announcementId()->associate( $announcementId  );
             $human->save();
         }
     }
 
     private function storeOtherDataArchive( $request, $announcementId ) {
-        for( $i = 0; $i < $request[ 'other' ]; $i++ ) {
-            $other = new OtherAnnouncementArchive ( $this->getOtherDataArray( $request, $announcementId, $i ) );
+        foreach( $request as $other ) {
+            $other = new OtherAnnouncementArchive ( $other->getAttributes()  );
             $other->announcementId()->associate( $announcementId  );
             $other->save();
         }
     }
 
     private function storePalletDataArchive( $request, $announcementId ) {
-        for( $i = 0; $i < $request[ 'pallet' ]; $i++ ) {
-            $pallet = new PalletAnnouncementArchive (  $this->getPalletDataArray( $request, $announcementId, $i ));
+        foreach( $request as $pallet ) {
+            $pallet = new PalletAnnouncementArchive ( $pallet->getAttributes()  );
             $pallet->announcementId()->associate( $announcementId  );
             $pallet->save();
         }
     }
 
     private function storeParcelDataArchive( $request, $announcementId ) {
-        for( $i = 0; $i < $request[ 'parcel' ]; $i++ ) {
-            $parcel = new ParcelAnnouncementArchive ( $this->getParcelDataArray( $request, $announcementId, $i ) );
+
+        foreach( $request as $parcel ) {
+            $parcel = new ParcelAnnouncementArchive ( $parcel->getAttributes() );
             $parcel->announcementId()->associate( $announcementId  );
             $parcel->save();
         }

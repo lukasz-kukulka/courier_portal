@@ -100,19 +100,26 @@ use App\Http\Controllers\CustomUserController;
 
 
 
-
     Route::resource('user_announcement', UserAnnouncementController::class)
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro']);
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro']);
     Route::post('cargo_generator', [UserAnnouncementController::class, 'cargoDataGenerator'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
         ->name('user_announcement.cargoDataGenerator');
+    Route::get('user_announcements_list', [UserAnnouncementController::class, 'indexForSingleUser'])
+        ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
+        ->name('user_announcements_list');
+
+    Route::post('announcement_confirm_destroy/{id}', [UserAnnouncementController::class, 'destroyConfirm'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
+        ->name('announcement_confirm_destroy');
+
     Route::post('user_announcement_summary', [UserAnnouncementController::class, 'summary'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
         ->name('user_announcement.summary');
 } //####################################################################
 
 
-{ //############################### USER ANNOUNCEMENT ##################
+{ //############################### COURIER ANNOUNCEMENT ##################
     // Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified', 'account_check:courier_pro,courier,standard_pro']);
     Route::get('create_courier_announcement', [CourierAnnouncementController::class, 'create'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])

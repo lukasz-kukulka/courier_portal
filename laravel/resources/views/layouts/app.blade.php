@@ -69,12 +69,17 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item" >
+                                <a class="nav-link" href="#">
+                                    <i class="bi bi-person-square h4"></i>
+                                    {{ __( 'base.nav_menu_user_login_as' ) . Auth::user()->username }}
+                                </a>
+                            </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <i class="bi bi-person-lines-fill h4"></i>
-                                    {{ Auth::user()->username }}
+                                    <i class="bi bi-gear-fill h4"></i>
+                                    {{ __( 'base.nav_menu_user_menu_user' ) }}
                                 </a>
-
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

@@ -42,7 +42,9 @@
                                             <form class="d-inline-block me-2" action="{{ route('user_announcement.edit', ['user_announcement' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_edit">
                                                 <button type="submit" class="btn btn-success">{{ __( 'base.edit_announcement_button' ) }}</button>
                                             </form>
-                                            <form class="d-inline-block me-2" action="{{ route('user_announcement.destroy', ['user_announcement' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_delete">
+                                            <form class="d-inline-block me-2" action="{{ route('user_announcement.destroy', ['user_announcement' => $announcement->id ] ) }}" method="POST" id="user_announcement_single_announcement_delete">
+                                                @csrf
+                                                @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">{{ __( 'base.delete_announcement_button' ) }}</button>
                                             </form>
                                             {{-- @if ( $announcement->priority === null )

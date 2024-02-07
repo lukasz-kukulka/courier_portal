@@ -587,4 +587,11 @@ return [
     "delivery_to" => "Doreczęnie do",
     "announcement_confirm_added" => "Twoje ogłoszenie zostało dodane, wkrótce pojawi sie ono na naszej stronie",
     "announcement_confirm_edited" => "Twoje ogłoszenie zostało poprawnie zedytowane, wkrótce nowa wersja pojawi sie na naszej stronie",
+    "announcement_delete_asking_title" => "Usuwanie ogłoszenia",
+    "announcement_delete_asking_question" => "Czy jestes pewien, że chcesz usunąć ogłoszenie?",
+    "announcement_delete_info_title" => "Usunięcię ogłoszenia",
+    "announcement_confirm_deleted" => "Twoje ogłoszenie zostało usunięte",
+    "nav_menu_user_announcement_list" => "Moje ogłoszenia",
+    "nav_menu_user_login_as" => "Zalogowany jako: ",
+    "nav_menu_user_menu_user" => "Menu",
 ];
