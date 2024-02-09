@@ -11,16 +11,20 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('author'); // klucz obcy
             $table->unsignedInteger('priority')->nullable();
-            $table->string('direction');
-            $table->string('post_code_sending');
-            $table->string('post_code_receiving');
+            $table->string('direction_sending');
+            $table->string('post_code_prefix_sending');
+            $table->string('post_code_postfix_sending');
+            $table->string('city_sending');
+            $table->string('direction_receiving');
+            $table->string('post_code_prefix_receiving');
+            $table->string('post_code_postfix_receiving');
+            $table->string('city_receiving');
             $table->string('phone_number', 15 );
             $table->string('email');
             $table->date('expect_sending_date');
             $table->date('experience_date');
             $table->string('title');
-            $table->longText( 'order_description_short' );
-            $table->longText( 'order_description_long' );
+            $table->string('additional_info')->nullable();
             $table->unsignedInteger('parcels_quantity')->nullable();
             $table->unsignedInteger('humans_quantity')->nullable();
             $table->unsignedInteger('pallets_quantity')->nullable();

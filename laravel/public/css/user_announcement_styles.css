@@ -1,0 +1,43 @@
+[class^="direction_container_"],
+[class*="direction_city_container_"],
+[class*="postfix_container_"] {
+    display: none;
+}
+
+.tooltip {
+    /* visibility: hidden; */
+    opacity: 1 !important;
+    position: relative;
+    display: inline-block;
+}
+
+.bi.bi-question-diamond-fill {
+    color: rgb(0, 99, 10);
+}
+
+.alert_direction {
+    margin-left: 10px !important;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    top: -5px;
+    left: 105%;
+    background-color: rgb(80, 80, 80);
+    color: #ffffff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+[class*="user_announcement_address_summary_"] {
+    font-size: 12px;
+    font-weight: 900;
+}
