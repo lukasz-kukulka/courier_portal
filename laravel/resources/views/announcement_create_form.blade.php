@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.user_announcement_card_name') }}</div>
                         <div class="card-body">
-                            <form action="{{ route('user_announcement.cargoDataGenerator') }}" method="POST" id="user_announcement_form">
+                            <form action="{{ route('cargo_generator') }}" method="POST" id="user_announcement_form">
                                 @csrf
 
                                 @foreach ($errors->all() as $error)

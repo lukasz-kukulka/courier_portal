@@ -29,9 +29,9 @@
                                 @if ( $param === "number" )
                                     <input name="{{ $name . "_" . $key ."_". $i }}" type="number" id="{{ $name . "_" . $key ."_". $i }}" class="form-control" value="{{ old( $name . "_" . $key ."_". $i, 0  ) }}" min="0" max="99999"/>
                                 @elseif ( $param === "text" )
-                                    <input name="{{ $name . "_" . $key."_". $i }}" type="text" id="{{ $name . "_" . $key ."_". $i}}" value="{{ old( $name . "_" . $key ."_". $i, 0  ) }}" class="form-control" maxlength="1000"/>
+                                    <input name="{{ $name . "_" . $key."_". $i }}" type="text" id="{{ $name . "_" . $key ."_". $i}}" value="{{ old( $name . "_" . $key ."_". $i  ) }}" class="form-control" maxlength="1000"/>
                                 @elseif ( $param === "textarea" )
-                                    <textarea id="{{ $name . "_" . $key ."_". $i }}" class="form-control" name="{{ $name . "_" . $key ."_". $i }}" rows="{{ $params[ $key . '_size' ] }}" maxlength="10000">{{ old( $name . "_" . $key ."_". $i, 0  ) }}</textarea>
+                                    <textarea id="{{ $name . "_" . $key ."_". $i }}" class="form-control" name="{{ $name . "_" . $key ."_". $i }}" rows="{{ $params[ $key . '_size' ] }}" maxlength="10000">{{ old( $name . "_" . $key ."_". $i  ) }}</textarea>
                                 @endif
                                     <label class="form-label mt-1" for="{{ $key ."_". $i }}">&nbsp{{__( 'base.' . $key )}}</label>
                                 </div>

@@ -12,7 +12,7 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.user_announcement_card_name') }}</div>
                         <div class="card-body">
-                            <form action="{{ route('user_announcement.summary') }}" method="POST" id="user_announcement_form_cargo_details">
+                            <form action="{{ route('user_announcement_summary') }}" method="POST" id="user_announcement_form_cargo_details">
                                 @csrf
                                 @foreach ( $cargoData as $cargo )
                                     <x-cargo_details_component :name="$cargo[ 'cargoId' ]" :number="$cargo[ 'cargoQuantity' ]" :params="json_encode( $cargo[ 'cargoParams' ] )" />
