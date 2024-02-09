@@ -11,9 +11,10 @@ class UserAnnouncementArchive extends Model
 
     protected $table = 'user_announcement_data_archive';
     protected $fillable = [
-        'author', 'direction', 'post_code_sending', 'post_code_receiving', 'phone_number', 'email',
-        'expect_sending_date', 'experience_date', 'title', 'order_description_short', 'order_description_long',
-        'parcels_quantity', 'humans_quantity', 'pallets_quantity', 'animals_quantity', 'others_quantity'
+        'author', 'direction_sending', 'post_code_prefix_sending', 'post_code_postfix_sending', 'city_sending',
+        'direction_receiving', 'post_code_prefix_receiving', 'post_code_postfix_receiving', 'city_receiving',
+        'phone_number', 'email', 'expect_sending_date', 'experience_date', 'title',
+        'additional_info', 'parcels_quantity', 'humans_quantity', 'pallets_quantity', 'animals_quantity', 'others_quantity'
     ];
 
     public function authorUser() {

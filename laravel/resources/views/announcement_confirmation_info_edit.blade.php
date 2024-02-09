@@ -9,7 +9,7 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.announcement_confirm_info') }}</div>
                         <div class="card-body text-center">
-                            <div class="confirm_info_step">{{ __('base.announcement_confirm_added') }}</div><br>
+                            <div class="confirm_info_step">{{ __('base.announcement_confirm_edited') }}</div><br>
                             <div class="confirm_info_step">{{ __('base.you_account_is_ready_redirected') }}</div><br>
                             <div class="link_to_home_page"><a href="{{ route('main') }}">{{ __('base.back_to_home_page') }}</a></div><br>
                         </div>

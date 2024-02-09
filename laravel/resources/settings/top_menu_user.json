@@ -12,5 +12,12 @@
         "link" : "user_edit_profile",
         "icon" : "bi bi-person-square h5",
         "permission": "login"
+    },
+    "user_announcement_list" : {
+        "name" : "nav_menu_user_announcement_list",
+        "route_name" : "user_announcements_list",
+        "link" : "user_announcements_list",
+        "icon" : "bi bi-megaphone-fill",
+        "permission": "login"
     }
 }

@@ -19,27 +19,39 @@
                             <tbody>
                               <tr>
                                 <th scope="row"></th>
-                                <td>{{ $announcement->order_description_short }}</td>
+                                <td>
+                                    <strong>{{ __( 'base.delivery_from' ) }}</strong>
+                                    {{' ' . __( 'base.direction_print_full_name_genitive_' . $announcement[ 'direction_sending' ] ) . ' ' .
+                                    $announcement[ 'post_code_prefix_sending' ] . $announcement[ 'post_code_postfix_sending' ] . ' ' . $announcement[ 'city_sending' ] . ' | ' }}
+
+                                    <strong>{{ __( 'base.delivery_to' ) }}</strong>
+                                    {{' ' . __( 'base.direction_print_full_name_genitive_' . $announcement[ 'direction_receiving' ] ) . ' ' .
+                                    $announcement[ 'post_code_prefix_receiving' ] . $announcement[ 'post_code_postfix_receiving' ] . ' ' . $announcement[ 'city_receiving' ] }}<br>
+
+                                </td>
                               </tr >
                               <tr>
                                 <th scope="row">&nbsp&nbsp</th>
+
                                 <td class="d-flex align-items-center">
                                     <div class="text-start">
-                                        <form class="d-inline-block me-2">
+                                        <form class="d-inline-block me-2" action="{{ route( 'user_announcement.show', ['user_announcement' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_show">
                                             <button type="submit" class="btn btn-primary">{{ __( 'base.details_announcement_button' ) }}</button>
                                         </form>
                                         @if ( Auth::user()->id == $announcement->author )
-                                            <form class="d-inline-block me-2">
+                                            <form class="d-inline-block me-2" action="{{ route('user_announcement.edit', ['user_announcement' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_edit">
                                                 <button type="submit" class="btn btn-success">{{ __( 'base.edit_announcement_button' ) }}</button>
                                             </form>
-                                            <form class="d-inline-block me-2">
+                                            <form class="d-inline-block me-2" action="{{ route('user_announcement.destroy', ['user_announcement' => $announcement->id ] ) }}" method="POST" id="user_announcement_single_announcement_delete">
+                                                @csrf
+                                                @method('DELETE')
                                                 <button type="submit" class="btn btn-danger">{{ __( 'base.delete_announcement_button' ) }}</button>
                                             </form>
-                                            @if ( $announcement->priority === null )
+                                            {{-- @if ( $announcement->priority === null )
                                                 <form class="d-inline-block">
                                                     <button type="submit" class="btn btn-warning">{{ __( 'base.upgrade_announcement_button' ) }}</button>
                                                 </form>
-                                            @endif
+                                            @endif --}}
 
                                         @endif
                                     </div>
