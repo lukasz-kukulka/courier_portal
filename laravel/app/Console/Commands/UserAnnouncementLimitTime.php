@@ -35,6 +35,12 @@ class UserAnnouncementLimitTime extends Command
 
     // }
     public function handle() {
+        $this->actionsForUserAnnouncement();
+        $this->actionsForUserAnnouncementArchive();
+
+    }
+
+    private function actionsForUserAnnouncement() {
         $expiredPosts = UserAnnouncement::with(
             'parcelAnnouncement',
             'humanAnnouncement',
@@ -47,6 +53,19 @@ class UserAnnouncementLimitTime extends Command
             $newArchivePost->authorUser()->associate( $post[ 'author' ] );
             $newArchivePost->save();
             $this->storeAllCargoArchive( $post );
+            $post->delete();
+        }
+    }
+
+    private function actionsForUserAnnouncementArchive() {
+        $archivePosts = UserAnnouncementArchive::with(
+            'parcelAnnouncement',
+            'humanAnnouncement',
+            'palletAnnouncement',
+            'animalAnnouncement',
+            'otherAnnouncement'
+        )->where('experience_date', '<', now()->subDays(31) )->get();
+        foreach ($archivePosts as $post) {
             $post->delete();
         }
     }
