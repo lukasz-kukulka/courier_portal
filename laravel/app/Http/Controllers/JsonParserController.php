@@ -16,6 +16,7 @@ class JsonParserController extends Controller
         $this->search_announcement_json_file  = resource_path( $settingsDir . 'announcement.json');
         $this->post_codes_pl  = resource_path( $settingsDir . 'post_codes_pl.json');
         $this->post_codes_uk  = resource_path( $settingsDir . 'post_codes_uk.json');
+        $this->post_codes_test = resource_path( $settingsDir . 'post_codes_test.json');
         $this->courier_announcement_json_file = resource_path( $settingsDir . 'courier_announcement.json');
         $this->element_access = resource_path( $settingsDir . 'accounts_access_for_elements.json');
     }
@@ -97,6 +98,7 @@ class JsonParserController extends Controller
     private $search_announcement_json_file;
     private $post_codes_pl;
     private $post_codes_uk;
+    private $post_codes_test;
     private $courier_announcement_json_file;
     private $element_access;
 }

@@ -100,37 +100,36 @@ use App\Http\Controllers\CustomUserController;
         ->middleware( ['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'] )
         ->name('generate_user_announcement');
     Route::post('cargo_generator', [UserAnnouncementController::class, 'cargoDataGenerator'])
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('cargo_generator');
     Route::get('user_announcements_list', [UserAnnouncementController::class, 'indexForSingleUser'])
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('user_announcements_list');
     Route::post('announcement_confirm_destroy/{id}', [UserAnnouncementController::class, 'destroyConfirm'])
         ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('announcement_confirm_destroy');
     Route::post('user_announcement_summary', [UserAnnouncementController::class, 'summary'])
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('user_announcement_summary');
 } //####################################################################
 
 
 { //############################### COURIER ANNOUNCEMENT ##################
-    // Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified', 'account_check:courier_pro,courier,standard_pro']);
-    Route::get('create_courier_announcement', [CourierAnnouncementController::class, 'create'])
+    Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro']);
+    Route::get('courier_announcement_creator', [CourierAnnouncementController::class, 'create'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
-        ->name('courier_announcement.create');
-    Route::post('courier_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
-        ->name('courier_announcement.generateCourierAnnouncement');
+        ->name('courier_announcement_creator');
+    Route::post('courier_announcement_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
+        ->name('courier_announcement_generator');
     Route::post('courier_announcement_summary', [CourierAnnouncementController::class, 'summary'])
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('courier_announcement.summary');
     Route::get('courier_announcement_index', [CourierAnnouncementController::class, 'index'])
-        ->middleware(['auth', 'verified', 'account_check:courier_pro,courier,standard,standard_pro'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('courier_announcement.index');
-
     Route::post('courier_announcement_summary_edit', [CourierAnnouncementController::class, 'editCreation'])
-        ->middleware(['auth', 'verified'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('courier_announcement.editCreation');
 } //####################################################################
 

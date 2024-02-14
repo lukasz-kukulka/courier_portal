@@ -13,9 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
+        Log::info('Rozpoczęcie schedule Kernel!');
         $schedule->command('app:user-announcement-limit-time')->dailyAt("00:10");
-        $schedule->command('app:courier-travel-dates')->dailyAt("00:20");
-        //$schedule->command('app:user-announcement-limit-time')->everyMinute();
+        Log::info('Zakończenie schedule Kernel!');
     }
 
     /**

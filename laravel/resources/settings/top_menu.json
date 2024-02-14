@@ -45,8 +45,8 @@
             },
             "ele2" : {
                 "name" : "nav_menu_add_announcement_courier",
-                "link" : "user_announcement.create",
-                "route_name" : "courier_announcement.create",
+                "link" : "courier_announcement_creator",
+                "route_name" : "courier_announcement_creator",
                 "icon": "bi bi-truck h5",
                 "permission": "login"
             },

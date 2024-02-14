@@ -35,9 +35,13 @@ class UserAnnouncementLimitTime extends Command
 
     // }
     public function handle() {
+        Log::info('Rozpoczęcie actionsForUserAnnouncement()');
         $this->actionsForUserAnnouncement();
+
+        Log::info('Rozpoczęcie actionsForUserAnnouncementArchive()');
         $this->actionsForUserAnnouncementArchive();
 
+        Log::info('Zakończenie handle() w UserAnnouncementLimitTime');
     }
 
     private function actionsForUserAnnouncement() {

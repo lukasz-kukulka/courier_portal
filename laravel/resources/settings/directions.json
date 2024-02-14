@@ -12,5 +12,12 @@
         "print_full_name": "base.direction_print_full_name_uk",
         "unicode": "&#127468&#127463",
         "image_path" : "images/uk_flag.jpg"
+    },
+    "test" : {
+        "name": "test",
+        "print_name": "UK",
+        "print_full_name": "base.direction_print_full_name_test",
+        "unicode": "&#127468&#127463",
+        "image_path" : "images/uk_flag.jpg"
     }
 }

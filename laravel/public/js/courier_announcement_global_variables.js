@@ -13,7 +13,8 @@ var date = {
     maxDateIndex: document.currentScript.getAttribute("maxDateNumber"),
     maxDateButtonText: document.currentScript.getAttribute("maxButtonDateText"),
     defaultDateButtonText: null,
-    directionIsSet: false,
+    directionFromIsSet: false,
+    directionToIsSet: false,
     dateIsSet: false,
 };
 

@@ -1,7 +1,7 @@
 function addNewDateButton() {
     var button = document.querySelector(".add_date_component_btn");
     button.addEventListener("click", function (event) {
-        setAddNewDateButtonVisible(true, true);
+        setAddNewDateButtonVisible( true, true, true );
         if (date.currentDateIndex < date.maxDateIndex) {
             date.currentDateIndex++;
             const dateComponent = document.querySelector(
@@ -21,7 +21,8 @@ function addNewDateButton() {
         }
         setDeleteActionOnFirstElementOnDate();
         date.dateIsSet = false;
-        date.directionIsSet = false;
+        date.directionFromIsSet = false;
+        date.directionToIsSet = false;
     });
 }
 
@@ -73,23 +74,26 @@ function deleteAnyDateButton() {
 
 function accessForAddNextElementToDate() {
     for (let index = 1; index <= date.maxDateIndex; index++) {
-        var dateDirection = document.querySelector(
-            "#date_directions_select_" + index.toString()
+        var dateDirectionFrom = document.querySelector(
+            "#from_date_directions_select_" + index.toString()
+        );
+        var dateDirectionTo = document.querySelector(
+            "#to_date_directions_select_" + index.toString()
         );
         var dateInput = document.querySelector(
             "#date_input_" + index.toString()
         );
 
-        dateDirection.addEventListener("input", function () {
+        dateDirectionFrom.addEventListener("input", function () {
             if (this.value == "default_direction") {
-                date.directionIsSet = false;
+                date.directionFromIsSet = false;
                 for (
                     let visible_item_index = date.currentDateIndex - 1;
                     visible_item_index >= 1;
                     visible_item_index--
                 ) {
                     const dateDirectionTemp = document.querySelector(
-                        "#date_directions_select_" +
+                        "#from_date_directions_select_" +
                             visible_item_index.toString()
                     );
                     if (dateDirectionTemp.value != "default_direction") {
@@ -98,9 +102,32 @@ function accessForAddNextElementToDate() {
                     }
                 }
             } else {
-                date.directionIsSet = true;
+                date.directionFromIsSet = true;
             }
-            setAddNewDateButtonVisible(date.directionIsSet, date.dateIsSet);
+            setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
+        });
+
+        dateDirectionTo.addEventListener("input", function () {
+            if (this.value == "default_direction") {
+                date.directionToIsSet = false;
+                for (
+                    let visible_item_index = date.currentDateIndex - 1;
+                    visible_item_index >= 1;
+                    visible_item_index--
+                ) {
+                    const dateDirectionTemp = document.querySelector(
+                        "#to_date_directions_select_" +
+                            visible_item_index.toString()
+                    );
+                    if (dateDirectionTemp.value != "default_direction") {
+                        nameInfoIsVisible = true;
+                        break;
+                    }
+                }
+            } else {
+                date.directionToIsSet = true;
+            }
+            setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
         });
 
         dateInput.addEventListener("input", function () {
@@ -129,7 +156,7 @@ function accessForAddNextElementToDate() {
                     date.dateIsSet = false;
                 }
             }
-            setAddNewDateButtonVisible(date.directionIsSet, date.dateIsSet);
+            setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
         });
     }
 }
@@ -148,9 +175,17 @@ function validateConditionsDate(formDate) {
     }
 }
 
-function setAddNewDateButtonVisible(inputDirection, inputDate) {
+function setAddNewDateButtonVisible(
+    inputDirectionFrom,
+    inputDirectionTo,
+    inputDate
+) {
     var addButton = document.querySelector(".add_date_component_btn");
-    if (inputDirection == true && inputDate == true) {
+    if (
+        inputDirectionFrom == true &&
+        inputDirectionTo == true &&
+        inputDate == true
+    ) {
         addButton.style.opacity = 1.0;
         addButton.style.pointerEvents = "auto";
     } else {
@@ -160,21 +195,21 @@ function setAddNewDateButtonVisible(inputDirection, inputDate) {
 }
 
 function checkLastDateItem() {
-    var dateDirection = document.querySelector(
-        "#date_directions_select_" + date.currentDateIndex.toString()
+    var dateDirectionFrom = document.querySelector(
+        "#from_date_directions_select_" + date.currentDateIndex.toString()
+    );
+    var dateDirectionTo = document.querySelector(
+        "#to_date_directions_select_" + date.currentDateIndex.toString()
     );
     var dateInput = document.querySelector(
         "#date_input_" + date.currentDateIndex.toString()
     );
-    if (
-        dateInput.value == "" &&
-        (dateDirection.value == "default_direction" ||
-            dateDirection.value == "" ||
-            dateDirection.value == null)
-    ) {
-        setAddNewDateButtonVisible(false, false);
+    if ( dateInput.value == "" &&
+         ( dateDirectionFrom.value == "default_direction" || dateDirectionFrom.value == "" || dateDirectionFrom.value == null ) &&
+         ( dateDirectionTo.value == "default_direction" || dateDirectionTo.value == "" || dateDirectionTo.value == null ) ) {
+        setAddNewDateButtonVisible(false, false, false);
     } else {
-        setAddNewDateButtonVisible(true, true);
+        setAddNewDateButtonVisible(true, true, true);
     }
 }
 
@@ -215,34 +250,47 @@ function setVisibleDateComponents() {
 }
 
 function setDateDataAfterValidation(index) {
-    var dateDirection = document.querySelector(
-        "#date_directions_select_" + index.toString()
+    var dateDirectionFrom = document.querySelector(
+        "#from_date_directions_select_" + index.toString()
+    );
+    var dateDirectionTo = document.querySelector(
+        "#to_date_directions_select_" + index.toString()
     );
     var dateInput = document.querySelector("#date_input_" + index.toString());
 
-    if (
-        dateInput.value != null &&
-        dateInput.value != "" &&
-        validateConditionsDate(dateInput.value)
+    if ( dateInput.value != null &&
+         dateInput.value != "" &&
+         validateConditionsDate(dateInput.value)
     ) {
         date.dateIsSet = true;
     } else {
         date.dateIsSet = false;
     }
 
-    if (
-        dateDirection.value != "default_direction" &&
-        dateDirection.value != "" &&
-        dateDirection.value != null
+    if ( dateDirectionFrom.value != "default_direction" &&
+        dateDirectionFrom.value != "" &&
+        dateDirectionFrom.value != null
     ) {
-        date.dateDirection = true;
+        date.directionFromIsSet = true;
     } else {
-        date.dateDirection = false;
+        date.directionFromIsSet = false;
     }
 
-    setAddNewDateButtonVisible(date.dateDirection, date.dateIsSet);
+    if (
+        dateDirectionTo.value != "default_direction" &&
+        dateDirectionTo.value != "" &&
+        dateDirectionTo.value != null
+    ) {
+        date.directionToIsSet = true;
+    } else {
+        date.directionToIsSet = false;
+    }
 
-    // setCurrencyAndPriceInfoVisible( cargo.priceInfoIsVisible, cargo.currencyInfoIsVisible, index );
+    setAddNewDateButtonVisible(
+        date.directionFromIsSet,
+        date.directionToIsSet,
+        date.dateIsSet
+    );
 }
 
 document.addEventListener("DOMContentLoaded", function () {

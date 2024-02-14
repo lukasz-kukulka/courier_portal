@@ -76,7 +76,7 @@
                                                                 <td class="col-9">
                                                                     @php
                                                                         for ( $i = 1; $i <= request()->input( 'date_number_visible' ); $i++ ) {
-                                                                            if ( ( request()->input( "date_directions_select_" . $i ) ) == $dir[ 'print_name' ] ) {
+                                                                            if ( ( request()->input( "from_date_directions_select_" . $i ) ) == $dir[ 'print_name' ] ) {
                                                                                 $comma = $isFirstElement ? ", " : "";
                                                                                 $dateInput = request()->input( 'date_input_' . $i );
                                                                                 $dateDescription = ( request()->input( 'date_description_' . $i ) != "" ? "( " . request()->input( 'date_description_' . $i ) . " )" : "" );
