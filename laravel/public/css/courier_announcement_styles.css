@@ -221,3 +221,7 @@
     display: flex;
     justify-content: center;
 }
+
+[class*="_post_codes_single_container"], .all_post_codes_container {
+    display: none !important;
+}

@@ -594,4 +594,6 @@ return [
     "nav_menu_user_announcement_list" => "Moje ogłoszenia",
     "nav_menu_user_login_as" => "Zalogowany jako: ",
     "nav_menu_user_menu_user" => "Menu",
+    "courier_announcement_date_direction_name_from" => "Wyjazd z",
+    "courier_announcement_date_direction_name_to" => "Do",
 ];

@@ -115,13 +115,13 @@ use App\Http\Controllers\CustomUserController;
 
 
 { //############################### COURIER ANNOUNCEMENT ##################
-    // Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified', 'account_check:courier_pro,courier,standard_pro']);
+    Route::resource('courier_announcement', CourierAnnouncementController::class)->middleware(['auth', 'verified', 'account_check:courier_pro,courier,standard_pro']);
     Route::get('create_courier_announcement', [CourierAnnouncementController::class, 'create'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
         ->name('courier_announcement.create');
-    Route::post('courier_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])
+    Route::post('courier_announcement_generator', [CourierAnnouncementController::class, 'generateCourierAnnouncement'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
-        ->name('courier_announcement.generateCourierAnnouncement');
+        ->name('courier_announcement_generator');
     Route::post('courier_announcement_summary', [CourierAnnouncementController::class, 'summary'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
         ->name('courier_announcement.summary');

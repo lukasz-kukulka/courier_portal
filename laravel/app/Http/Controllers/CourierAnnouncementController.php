@@ -253,9 +253,7 @@ class CourierAnnouncementController extends Controller
     public function show( string $id ) {
         $courierAnnouncement = CourierAnnouncement::findOrFail($id);
         //$user = UserModel::findOrFail($courierAnnouncement->author);
-        // dd($user);
         $courierAnnouncementCollection = new Collection( [$courierAnnouncement] );
-        // dd($courierAnnouncementCollection);
         $announcementTitle = $this->generateAnnouncementTitlesInList( $courierAnnouncementCollection );
         $cargo = $courierAnnouncementCollection[0]->cargoTypeAnnouncement;
         $dates = $courierAnnouncementCollection[0]->dateAnnouncement;
@@ -346,13 +344,17 @@ class CourierAnnouncementController extends Controller
     public function edit(string $id) { }
 
     public function editCreation( Request $request ) {
-        $request->session()->flashInput( $request->input() ); // zamiana post na sesje
-        $request->flash();
-
+        //dd( $request->all() );
+        session()->put('_old_input', $request->all() );
+        $company = UserModel::with('company')->find( auth()->user()->id );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+        $contactData = $this->generateDataForContact( $company );
+        $headerData = $this->generateCourierAnnouncementCreateFormHeader();
         //dd( "EDIT CREATION: ", $request );
         return view( 'courier_announcement_create_form' )
-            ->with( 'extensions', $extensions );
+            ->with( 'extensions', $extensions )
+            ->with( 'contactData', $contactData )
+            ->with( 'headerData', $headerData );
     }
 
     public function update(Request $request, string $id) {
@@ -398,7 +400,7 @@ class CourierAnnouncementController extends Controller
             $contactArray[ 'city' ] = $data->company->company_city;
             $contactArray[ 'post_code' ] = $data->company->company_post_code;
             $contactArray[ 'country' ] = $data->company->company_country;
-            $contactArray[ 'website' ] = $data->company->company_name;
+            $contactArray[ 'website' ] = $data->company->website;
             if ( $data->phone_number != $data->company->company_phone_number ) {
                 $contactArray[ 'additional_telephone_number' ] = $data->company->company_phone_number;
             }
@@ -482,17 +484,35 @@ class CourierAnnouncementController extends Controller
         $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $this->json->plPostCodeAction() );
         $experienceDate = $this->generateExperienceDateRules( $request );
         $imagesRules = $this->generateImagesValidationRules( $request->file('files') );
-        $rules = array_merge( $nameRules, $cargoRules, $dateRules, $postCodesUKRules, $postCodesPLRules, $experienceDate, $imagesRules );
+        $contactRules = $this->generateContactValidationRules( $request );
 
+        $rules = array_merge( $nameRules,
+                              $cargoRules,
+                              $dateRules,
+                              $postCodesUKRules,
+                              $postCodesPLRules,
+                              $experienceDate,
+                              $contactRules,
+                              $imagesRules );
+
+        return $rules;
+    }
+
+    private function generateContactValidationRules( $request ) {
+        $rules = [];
+        $rules[ 'contact_detail_name' ] = 'required|max:100';
+        $rules[ 'contact_detail_surname' ] = 'required|max:100';
+        $rules[ 'contact_detail_email' ] = 'required|email|max:100';
+        $rules[ 'contact_detail_telephone_number' ] = 'required|numeric|max_digits:15';
         return $rules;
     }
 
     private function generateCargoValidationRules( $request ) {
         $rules = [];
 
-        $rules[ "cargo_name_1" ] = 'required';
-        $rules[ "cargo_description_1" ] = 'required';
-        $rules[ "cargo_price_1" ] = 'required|numeric|min:1';
+        $rules[ "cargo_name_1" ] = 'required|max:200';
+        $rules[ "cargo_description_1" ] = 'required|max:1200';
+        $rules[ "cargo_price_1" ] = 'required|numeric|min:1|max:99999';
         $rules[ "select_currency_1" ] = 'required|not_in:option_default';
 
         for( $i = 2; $i < 10000; $i++ ) {
@@ -507,9 +527,9 @@ class CourierAnnouncementController extends Controller
                 ( $selectCurrency == "option_default" || $selectCurrency == null ) ) {
                 break;
             } else {
-                $rules[ "cargo_name_" . $i ] = 'required';
-                $rules[ "cargo_description_" . $i ] = 'required';
-                $rules[ "cargo_price_" . $i ] = 'required|numeric|min:1';
+                $rules[ "cargo_name_" . $i ] = 'required|max:100';
+                $rules[ "cargo_description_" . $i ] = 'required|max:1200';
+                $rules[ "cargo_price_" . $i ] = 'required|numeric|min:1|max:99999';
                 $rules[ "select_currency_" . $i ] = 'required|not_in:option_default';
             }
         }
@@ -519,16 +539,21 @@ class CourierAnnouncementController extends Controller
     private function generateDateValidationRules( $request ) {
         $rules = [];
 
-        $rules[ "date_directions_select_1" ] = 'required|not_in:default_direction';
+        $rules[ "from_date_directions_select_1" ] = 'required|not_in:default_direction';
+        $rules[ "to_date_directions_select_1" ] = 'required|not_in:default_direction';
         $rules[ "date_input_1" ] = 'required|date|after:today';
 
         for( $i = 2; $i < 10000; $i++ ) {
-            $dateDirection = $request->input(  'date_directions_select_' . $i );
+            $dateDirectionFrom = $request->input(  'from_date_directions_select_' . $i );
+            $dateDirectionTo = $request->input(  'to_date_directions_select_' . $i );
             $date = $request->input(  'date_input_' . $i );
-            if( ( $dateDirection === null || $dateDirection === "default_direction" ) && $date === null ) {
+            if( ( $dateDirectionFrom === null || $dateDirectionFrom === "default_direction" ) &&
+                ( $dateDirectionTo === null || $dateDirectionTo === "default_direction" ) &&
+                  $date === null ) {
                 break;
             } else {
-                $rules[ "date_directions_select_" . $i ] = 'required|not_in:default_direction';
+                $rules[ "from_date_directions_select_" . $i ] = 'required|not_in:default_direction';
+                $rules[ "to_date_directions_select_" . $i ] = 'required|not_in:default_direction';
                 $rules[ "date_input_" . $i ] = 'required|date|after:today';
             }
         }
@@ -705,6 +730,13 @@ class CourierAnnouncementController extends Controller
         );
     }
 
+    private function generateDirectionsPostcodesArray() {
+        $directionsArray = [];
+        foreach( $this->json->directionsAction() as $direction ) {
+            $directionsArray[ $direction[ 'name' ] ] = $this->json->getPostCodes( $direction[ 'name' ] );
+        }
+        return $directionsArray;
+    }
 
     private function generateCourierAnnouncementCreateFormHeader() {
         $courierAnnouncementData = $this->json->courierAnnouncementAction();
@@ -715,8 +747,9 @@ class CourierAnnouncementController extends Controller
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik dateElementNumber #sema_update
         $picturesNumber = $courierAnnouncementData['picture_file_input_limit_premium'];
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik picturesNumber #sema_update
-        $postCodesPL = $this->json->plPostCodeAction();
-        $postCodesUK = $this->json->ukPostCodeAction();
+        $allPostCodes = $this->generateDirectionsPostcodesArray();
+        // $postCodesPL = $this->json->plPostCodeAction(); // <----- do usuniecia
+        // $postCodesUK = $this->json->ukPostCodeAction(); // <----- do usuniecia
         $permDate = $this->json->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
         $pictureFileFormat = $courierAnnouncementData['accept_format_picture_file'];
         $loginUser = auth()->user();
@@ -725,11 +758,10 @@ class CourierAnnouncementController extends Controller
             'cargoElementNumber',
             'dateElementNumber',
             'picturesNumber',
-            'postCodesPL',
-            'postCodesUK',
             'permDate',
             'pictureFileFormat',
-            'loginUser'
+            'loginUser',
+            'allPostCodes'
         );
     }
 

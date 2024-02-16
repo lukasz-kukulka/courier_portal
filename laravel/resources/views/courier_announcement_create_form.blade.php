@@ -2,7 +2,6 @@
 
 @section('add_header')
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link rel="stylesheet" href="{{ asset('css/courier_announcement_styles.css') }}">
     {{-- dodac do js ilosc cargo i daty ilosci zdjec weryfikacja #sema_update --}}
 @endsection
 
@@ -15,8 +14,9 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.courier_announcement_create_form_title') }}</div>
                         <div class="card-body p-2">
-                            <form action="{{ route('courier_announcement.generateCourierAnnouncement') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
+                            <form action="{{ route('courier_announcement_generator') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
+                                {{-- {{dd( $errors->all() )}} --}}
                                 <div class="row mb-3">
                                     <label for="courier_announcement_name" class="col-md-4 col-form-label text-md-end">{{ __('base.courier_announcement_name' ) }}</label>
                                     <div class="col-md-6">
@@ -67,16 +67,17 @@
                                     <table class="table border border-1 ">
                                         <thead>
                                             <tr>
-                                                <th colspan="5" class="text-center border-1">
+                                                <th colspan="6" class="text-center border-1">
                                                     <p class="h3 text-center">{{ __('base.courier_announcement_date_title')}}</p>
                                                     <p class="date_title_info">{{ __('base.courier_announcement_date_title_info')}}</p>
                                                 </th>
                                             </tr>
                                             <tr class="text-center">
                                                 <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_date_id' ) }}</th>
-                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_direction_name' ) }}</th>
+                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_direction_name_from' ) }}</th>
+                                                <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_direction_name_to' ) }}</th>
                                                 <th class="col-md-2" scope="col">{{ __( 'base.courier_announcement_date_start_date_name' ) }}</th>
-                                                <th class="col-md-6"scope="col">{{ __( 'base.courier_announcement_date_description_name' ) }}</th>
+                                                <th class="col-md-4"scope="col">{{ __( 'base.courier_announcement_date_description_name' ) }}</th>
                                                 <th class="col-md-1" scope="col">{{ __( 'base.courier_announcement_date_actions' ) }}</th>
                                             </tr>
                                         </thead>
@@ -114,51 +115,31 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="text-center">
-                                                <td scope="col">{{ __( 'base.post_codes_pl_title' ) }}</td>
-                                            </tr>
-                                            <tr class="align-middle h-100">
-                                                <td>
-                                                    <div class="pl_post_codes_container text-center">
-                                                        @foreach ( $headerData['postCodesPL'] as $code )
-                                                            <div class="container_post_code_button_pl_{{ $code }}">
-                                                                <button class="btn btn-secondary btn-sm post_code_button_pl_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
-                                                                    <input type="hidden" name="{{ $code }}" value="0">
-                                                                    <input id="post_code_checkbox_pl_{{ $code }}" class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}">
-                                                                    <label class="form-check-label" for="post_code_checkbox_pl_{{ $code }}">
-                                                                        {{ $code }}
-                                                                    </label>
-                                                                </button>
-                                                            </div>
+                                            @foreach ( $headerData['allPostCodes'] as $key => $oneDirectionPostCodes )
 
-                                                        @endforeach
-                                                        <button type="button" class="btn btn-sm btn-success select_all_post_code_pl">{{ __( 'base.selecet_all_post_codes_pl' ) }}</button>
-                                                        <button type="button" class="btn btn-sm btn-danger clear_all_post_code_pl">{{ __( 'base.clear_all_post_codes_pl' ) }}</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <td scope="col">{{ __( 'base.post_codes_uk_title' ) }}</td>
-                                            </tr>
-                                            <tr class="align-middle h-100">
-                                                <td>
-                                                    <div class="uk_post_codes_container text-justify">
-                                                        @foreach ( $headerData['postCodesUK'] as $code )
-                                                            <div class="container_post_code_button_uk_{{ $code }}">
-                                                                <button class="btn btn-secondary btn-sm post_code_button_uk_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
-                                                                    <input type="hidden" name="{{ $code }}" value="0">
-                                                                    <input id="post_code_checkbox_uk_{{ $code }}" class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}">
-                                                                    <label class="form-check-label" for="post_code_checkbox_uk_{{ $code }}">
-                                                                        {{ $code }}
-                                                                    </label>
-                                                                </button>
-                                                            </div>
-                                                        @endforeach
-                                                        <button type="button" class="btn btn-sm btn-success select_all_post_code_uk">{{ __( 'base.selecet_all_post_codes_uk' ) }}</button>
-                                                        <button type="button" class="btn btn-sm btn-danger clear_all_post_code_uk">{{ __( 'base.clear_all_post_codes_uk' ) }}</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    <tr class="{{ $key }}_post_codes_single_container_title text-center">
+                                                        <td scope="col">{{ __( 'base.post_codes_' . $key . '_title' ) }}</td>
+                                                    </tr>
+                                                    <tr class="align-middle h-100 {{ $key }}_post_codes_single_container_body">
+                                                        <td>
+                                                            @foreach ( $oneDirectionPostCodes as $code )
+                                                                <div class="container_post_code_button_{{ $key }}_{{ $code }}">
+                                                                    <button class="btn btn-secondary btn-sm post_code_button_{{ $key }}_{{ $code }}" type="button" data-toggle="collapse" data-target="#checkboxCollapse" aria-expanded="false" aria-controls="checkboxCollapse">
+                                                                        <input type="hidden" name="{{ $code }}" value="0">
+                                                                        <input id="post_code_checkbox_{{ $key }}_{{ $code }}" class="form-check-input @error( $code ) is-invalid @enderror" type="checkbox" value="{{ $code }}" {{ old( $code ) ? 'checked' : '' }} name="{{ $code }}">
+                                                                        <label class="form-check-label" for="post_code_checkbox_{{ $key }}_{{ $code }}">
+                                                                            {{ $code }}
+                                                                        </label>
+                                                                    </button>
+                                                                </div>
+
+                                                            @endforeach
+                                                            <button type="button" class="btn btn-sm btn-success select_all_post_code_{{ $key }}">{{ __( 'base.selecet_all_post_codes_' . $key ) }}</button>
+                                                            <button type="button" class="btn btn-sm btn-danger clear_all_post_code_{{ $key }}">{{ __( 'base.clear_all_post_codes_' . $key ) }}</button>
+                                                        </td>
+                                                    </tr>
+
+                                            @endforeach
 
                                         </tbody>
                                     </table>
@@ -282,7 +263,7 @@
                                                                     <label class="col-form-label text-md-end" for="{{ $cellName }}"><strong>{{ __( 'base.' . $key ) }}</strong></label>
                                                                 </div>
                                                                 <div class="one_line_contact_right">
-                                                                    <input class="form-control" type="text" id="{{ $cellName }}" name="{{ $cellName }}">
+                                                                    <input class="form-group form-control @error( $cellName ) is-invalid @enderror" type="text" id="{{ $cellName }}" name="{{ $cellName }}" value="{{ old( $cellName ) }}" maxlength="200">
                                                                 </div>
                                                             </div>
                                                         @endforeach
@@ -307,6 +288,7 @@
 
     </div>
 </div>
+<link rel="stylesheet" href="{{ asset('css/courier_announcement_styles.css') }}">
 <script src="{{
     asset('js/courier_announcement_global_variables.js') }}"
     maxCargoNumber="<?php echo $headerData['cargoElementNumber']; ?>"
