@@ -250,15 +250,6 @@ function setDeleteActionOnFirstElementOnCargo() {
 function editCargoVisibleNumberBeforeFormSend() {
     var form = document.getElementById("courier_announcement_form");
     var cargo_visible_number = document.getElementById("cargo_number_visible");
-    let cargoNumberVisible = localStorage.getItem("cargo_number_visible");
-
-    console.log(
-        "editCargoVisibleNumberBeforeFormSend()",
-        "cargo_visible_number: ",
-        cargo_visible_number.value,
-        "cargoNumberVisible: ",
-        cargoNumberVisible
-    );
     cargo.currentCargoIndex = parseInt(cargo_visible_number.value);
     document
         .getElementById("courier_announcement_submit_button")
@@ -274,7 +265,6 @@ function editCargoVisibleNumberBeforeFormSend() {
 }
 
 function setVisibleCargoComponents() {
-    console.log("setVisibleCargoComponents()");
     for (let i = 1; i <= cargo.currentCargoIndex; i++) {
         var element = document.querySelector(".cargo_component_" + i);
         setCargoDataAfterValidation(i);
@@ -337,10 +327,4 @@ document.addEventListener("DOMContentLoaded", function () {
     setDeleteActionOnFirstElementOnCargo();
     setVisibleCargoComponents();
     checkLastCargoItem();
-    console.log(
-        "end courier cargo script",
-        "cargo_number_visible: ",
-        cargo_number_visible.value
-    );
-    console.log(form);
 });

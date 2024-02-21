@@ -480,8 +480,9 @@ class CourierAnnouncementController extends Controller
         $nameRules[ "courier_announcement_name" ] = 'required';
         $cargoRules = $this->generateCargoValidationRules( $request );
         $dateRules = $this->generateDateValidationRules( $request );
-        $postCodesUKRules = $this->generatePostCodeUKValidationRules( $request, $this->json->ukPostCodeAction() );
-        $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $this->json->plPostCodeAction() );
+        // $postCodesUKRules = $this->generatePostCodeUKValidationRules( $request, $this->json->ukPostCodeAction() );
+        // $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $this->json->plPostCodeAction() );
+        $postCodesRules = $this->generateAllPostCodesValidationRules( $request );
         $experienceDate = $this->generateExperienceDateRules( $request );
         $imagesRules = $this->generateImagesValidationRules( $request->file('files') );
         $contactRules = $this->generateContactValidationRules( $request );
@@ -560,48 +561,83 @@ class CourierAnnouncementController extends Controller
         return $rules;
     }
 
-    private function generatePostCodePLValidationRules( $request, $json ) {
-        $rules = [];
-        $postCodePLRequired = true;
-        foreach( $json as $postCode ) {
-            $postCodeName =  $postCode;
-            if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
-                $postCodePLRequired = false;
+    // private function generatePostCodePLValidationRules( $request, $json ) {
+    //     dd( $request->all() );
+    //     $rules = [];
+    //     $postCodePLRequired = true;
+    //     foreach( $json as $postCode ) {
+    //         $postCodeName =  $postCode;
+    //         if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
+    //             $postCodePLRequired = false;
 
+    //             break;
+    //         } else {
+    //             $rules[ $postCodeName ] = 'required|not_in:0';
+    //         }
+    //     }
+
+    //     if( $postCodePLRequired === true ) {
+    //         return $rules;
+    //     }
+
+    //     return [];
+    // }
+
+    private function generateAllPostCodesValidationRules( $request ) {
+
+        $fromDirection = $request->input( 'from_date_directions_select_1' );
+        $toDirection = $request->input( 'to_date_directions_select_1' );
+
+        $fromDirectionPostcodesRules =  generateSinglePostCodesValidationRules( $request, $direction );
+
+        if( $toDirection != $fromDirection ) {
+
+        }
+
+
+
+
+    }
+
+    private function generateSinglePostCodesValidationRules( $request, $direction ) {
+        $rules = [];
+        $postCodeRequired = true;
+        foreach( $this->json->getPostCodes( $direction  ) as $postCode ) {
+            if( $request->input( $postCode ) !== "0" && $request->input( $postCode ) !== null && $request->input( $postCode ) !== "" ) {
+                $postCodeRequired = false;
                 break;
             } else {
-                $rules[ $postCodeName ] = 'required|not_in:0';
+                $rules[ $postCode ] = 'required|not_in:0';
             }
         }
 
-        if( $postCodePLRequired === true ) {
+        if( $postCodeRequired === true ) {
             return $rules;
         }
-
         return [];
     }
 
-    private function generatePostCodeUKValidationRules( $request, $json ) {
-        $rules = [];
-        $postCodeUKRequired = true;
-        foreach( $json as $postCode ) {
-            $postCodeName =  $postCode;
-            if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
+    // private function generatePostCodeUKValidationRules( $request, $json ) {
+    //     $rules = [];
+    //     $postCodeUKRequired = true;
+    //     foreach( $json as $postCode ) {
+    //         $postCodeName =  $postCode;
+    //         if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
 
-                $postCodeUKRequired = false;
+    //             $postCodeUKRequired = false;
 
-                break;
-            } else {
-                $rules[ $postCodeName ] = 'required|not_in:0';
-            }
-        }
+    //             break;
+    //         } else {
+    //             $rules[ $postCodeName ] = 'required|not_in:0';
+    //         }
+    //     }
 
-        if( $postCodeUKRequired === true ) {
-            return $rules;
-        }
+    //     if( $postCodeUKRequired === true ) {
+    //         return $rules;
+    //     }
 
-        return [];
-    }
+    //     return [];
+    // }
 
     private function generateExperienceDateRules( $request ) {
         $rules = [];
@@ -748,6 +784,7 @@ class CourierAnnouncementController extends Controller
         $picturesNumber = $courierAnnouncementData['picture_file_input_limit_premium'];
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik picturesNumber #sema_update
         $allPostCodes = $this->generateDirectionsPostcodesArray();
+        $directions = $this->json->directionsAction();
         // $postCodesPL = $this->json->plPostCodeAction(); // <----- do usuniecia
         // $postCodesUK = $this->json->ukPostCodeAction(); // <----- do usuniecia
         $permDate = $this->json->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
@@ -761,7 +798,8 @@ class CourierAnnouncementController extends Controller
             'permDate',
             'pictureFileFormat',
             'loginUser',
-            'allPostCodes'
+            'allPostCodes',
+            'directions'
         );
     }
 

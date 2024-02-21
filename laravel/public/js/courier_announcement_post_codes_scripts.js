@@ -38,7 +38,6 @@ function changeSingleCheckboxButtonClass(checkbox) {
 }
 
 function changeButtonColorIfCheckBoxChecked() {
-    console.log("TEST changeButtonColorIfCheckBoxChecked()");
     var allPostCodeCheckboxes = document.querySelectorAll(
         '[id^="post_code_checkbox_"]'
     );

@@ -30,10 +30,10 @@ function deleteAnyDateButton() {
         '[class^="date_delete_btn_"]'
     );
     deleteButtons.forEach(function (button) {
-        button.addEventListener("click", function (event) {
+        button.addEventListener("click", function ( event ) {
             var buttonClass = button.className;
             var match = buttonClass.match(/date_delete_btn_(\d+)/);
-            if (date.maxDateIndex > parseInt(match[1])) {
+            if ( date.maxDateIndex > parseInt( match[ 1 ] ) ) {
                 for ( var i = parseInt( match[ 1 ] ); i <= date.currentDateIndex; i++ ) {
                     var dateDirectionFrom = document.querySelector(
                         "#from_date_directions_select_" + (i + 1).toString()
@@ -86,7 +86,8 @@ function accessForAddNextElementToDate() {
         );
 
         dateDirectionFrom.addEventListener("input", function () {
-            if (this.value == "default_direction") {
+            var object = this;
+            if ( object.value == "default_direction" ) {
                 date.directionIsSet = false;
                 for (
                     let visible_item_index = date.currentDateIndex - 1;
@@ -104,12 +105,15 @@ function accessForAddNextElementToDate() {
                 }
             } else {
                 date.directionFromIsSet = true;
+                setAllDirectionSelectorChange( object )
+                setVisiblePostCodes();
             }
             setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
         });
 
         dateDirectionTo.addEventListener("input", function () {
-            if (this.value == "default_direction") {
+            var object = this;
+            if ( object.value == "default_direction" ) {
                 date.directionIsSet = false;
                 for (
                     let visible_item_index = date.currentDateIndex - 1;
@@ -127,6 +131,8 @@ function accessForAddNextElementToDate() {
                 }
             } else {
                 date.directionToIsSet = true;
+                setAllDirectionSelectorChange( object );
+                setVisiblePostCodes();
             }
             setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
         });
@@ -134,18 +140,11 @@ function accessForAddNextElementToDate() {
         dateInput.addEventListener("input", function () {
             if (this.value == "") {
                 date.dateIsSet = false;
-                for (
-                    let visible_item_index = date.currentDateIndex - 1;
-                    visible_item_index >= 1;
-                    visible_item_index--
-                ) {
+                for ( let visible_item_index = date.currentDateIndex - 1; visible_item_index >= 1; visible_item_index-- ) {
                     const dateInputTemp = document.querySelector(
                         "#date_input_" + visible_item_index.toString()
                     );
-                    if (
-                        dateInputTemp.value != "" &&
-                        validateConditionsDate(dateInputTemp.value)
-                    ) {
+                    if ( dateInputTemp.value != "" && validateConditionsDate(dateInputTemp.value) ) {
                         nameInfoIsVisible = true;
                         break;
                     }
@@ -243,12 +242,8 @@ function setVisibleDateComponents() {
 }
 
 function setDateDataAfterValidation(index) {
-    var dateDirectionFrom = document.querySelector(
-        "#from_date_directions_select_" + index.toString()
-    );
-    var dateDirectionTo = document.querySelector(
-        "#to_date_directions_select_" + index.toString()
-    );
+    var dateDirectionFrom = document.querySelector( "#from_date_directions_select_" + index.toString() );
+    var dateDirectionTo = document.querySelector( "#to_date_directions_select_" + index.toString() );
     var dateInput = document.querySelector("#date_input_" + index.toString());
 
     if ( dateInput.value != null && dateInput.value != "" && validateConditionsDate(dateInput.value) ) {
@@ -270,6 +265,57 @@ function setDateDataAfterValidation(index) {
     }
 
     setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet);
+}
+
+function setVisiblePostCodes() {
+    for( key in allDirectionsCall ) {
+        if ( allDirectionsCall.hasOwnProperty(key) && allDirectionsCall[ key ] != 0 ) {
+            if( date.allPostCodesIsContainerIsVisible == false ) {
+                date.allPostCodesIsContainerIsVisible = true;
+                var allDirectionDivSelector = document.querySelector( ".all_post_codes_container" );
+                allDirectionDivSelector.style.display = 'block';
+            }
+
+            var singlePostCodeContainerTitle = document.querySelector( "." + key + "_post_codes_single_container_title" );
+            var singlePostCodeContainerBody = document.querySelector( "." + key + "_post_codes_single_container_body" );
+
+            singlePostCodeContainerTitle.style.display = 'table-row';
+            singlePostCodeContainerBody.style.display = 'table-row';
+
+        }
+        else if ( allDirectionsCall.hasOwnProperty(key) && allDirectionsCall[ key ] == 0 ) {
+            var singlePostCodeContainerTitle = document.querySelector( "." + key + "_post_codes_single_container_title" );
+            var singlePostCodeContainerBody = document.querySelector( "." + key + "_post_codes_single_container_body" );
+
+            singlePostCodeContainerTitle.style.display = 'none';
+            singlePostCodeContainerBody.style.display = 'none';
+            clearUnvisibleCheckbox( key );
+            makeDefaultBorderColor();
+        }
+    }
+}
+
+function setAllDirectionSelectorChange( object ) {
+    if ( allDirectionsCall.hasOwnProperty( object.dataset.previousValue ) ) {
+        allDirectionsCall[ object.dataset.previousValue ]--;
+    }
+    object.dataset.previousValue = object.value;
+    allDirectionsCall[ object.value ]++;
+}
+
+function clearUnvisibleCheckbox( direction ) {
+    var allPostCodeCheckboxes = document.querySelectorAll( '[id^="post_code_checkbox_' + key + '"]' );
+
+    allPostCodeCheckboxes.forEach( function( checkbox ) {
+        checkbox.checked = false;
+        console.log( checkbox );
+        var name = checkbox.id;
+        var matchPostfix = name.match(/post_code_checkbox_(.+)/);
+        const button = document.querySelector(
+            ".post_code_button_" + matchPostfix[1] );
+        button.classList.remove("btn-info");
+        button.classList.add("btn-secondary");
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {

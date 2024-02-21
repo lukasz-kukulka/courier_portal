@@ -118,7 +118,7 @@
                                             @foreach ( $headerData['allPostCodes'] as $key => $oneDirectionPostCodes )
 
                                                     <tr class="{{ $key }}_post_codes_single_container_title text-center">
-                                                        <td scope="col">{{ __( 'base.post_codes_' . $key . '_title' ) }}</td>
+                                                        <td>{{ __( 'base.post_codes_' . $key . '_title' ) }}</td>
                                                     </tr>
                                                     <tr class="align-middle h-100 {{ $key }}_post_codes_single_container_body">
                                                         <td>
@@ -297,6 +297,7 @@
     maxButtonDateText="<?php echo __( 'base.courier_announcement_cargo_maximum_date_btn' ); ?>"
     deletePictureButtonText="<?php echo __( 'base.courier_announcement_picture_delete_button_text' ); ?>"
     maxPictureNumber="<?php echo $headerData['picturesNumber']; ?>"
+    directions="<?php echo htmlentities(json_encode($headerData['directions']), ENT_QUOTES, 'UTF-8'); ?>"
     contactData="<?php echo htmlentities(json_encode($contactData), ENT_QUOTES, 'UTF-8'); ?>"
 ></script>
 <script src="{{ asset('js/courier_announcement_cargo_type_scripts.js') }}"></script>

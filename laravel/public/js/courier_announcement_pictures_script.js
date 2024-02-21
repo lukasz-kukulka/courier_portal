@@ -152,7 +152,6 @@ function addListenerForSubmitButtonAndAddFilesArray() {
 function generateVariableIfAddedFiles(form) {
     const errorPictureInfo = document.createElement("input");
 
-    //console.log(uploadedFiles.length);
     if (uploadedFiles.length > 0) {
         errorPictureInfo.type = "hidden";
         errorPictureInfo.name = "is_error_picture_info";
@@ -161,7 +160,6 @@ function generateVariableIfAddedFiles(form) {
     }
 
     form.appendChild(errorPictureInfo);
-    //console.log(form);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
