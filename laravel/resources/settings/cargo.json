@@ -59,7 +59,7 @@
             "id" : "animal",
             "params" : {
                 "param1" : {
-                    "id": "animal_type",
+                    "id": "type",
                     "type" : "text"
                 },
                 "param2" : {
@@ -67,7 +67,7 @@
                     "type" : "number"
                 },
                 "param3" : {
-                    "id": "short_animal_description",
+                    "id": "short_description",
                     "type" : "textarea",
                     "textarea_size" : 3
                 }

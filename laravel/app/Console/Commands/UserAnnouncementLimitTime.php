@@ -35,6 +35,12 @@ class UserAnnouncementLimitTime extends Command
 
     // }
     public function handle() {
+        $this->actionsForUserAnnouncement();
+        $this->actionsForUserAnnouncementArchive();
+
+    }
+
+    private function actionsForUserAnnouncement() {
         $expiredPosts = UserAnnouncement::with(
             'parcelAnnouncement',
             'humanAnnouncement',
@@ -43,27 +49,23 @@ class UserAnnouncementLimitTime extends Command
             'otherAnnouncement'
         )->where('experience_date', '<', now())->get();
         foreach ($expiredPosts as $post) {
-            $newArchivePost = new UserAnnouncementArchive ( [
-                'direction' =>                      $post[ 'direction' ],
-                'author' =>                         $post[ 'author' ],
-                'post_code_sending' =>              $post[ 'post_code_sending' ],
-                'post_code_receiving' =>            $post[ 'post_code_receiving' ],
-                'phone_number' =>                   $post[ 'phone_number' ],
-                'email' =>                          $post[ 'email' ],
-                'expect_sending_date' =>            $post[ 'expect_sending_date' ],
-                'experience_date' =>                $post[ 'experience_date' ],
-                'title' =>                          $post[ 'title' ],
-                'order_description_short' =>        $post[ 'order_description_short' ],
-                'order_description_long' =>         $post[ 'order_description_long' ],
-                'parcels_quantity' =>               $post[ 'parcels_quantity' ],
-                'humans_quantity' =>                $post[ 'humans_quantity' ],
-                'pallets_quantity' =>               $post[ 'pallets_quantity' ],
-                'animals_quantity' =>               $post[ 'animals_quantity' ],
-                'others_quantity' =>                $post[ 'others_quantity' ],
-            ] );
+            $newArchivePost = new UserAnnouncementArchive ( $post->getAttributes() );
             $newArchivePost->authorUser()->associate( $post[ 'author' ] );
             $newArchivePost->save();
             $this->storeAllCargoArchive( $post );
+            $post->delete();
+        }
+    }
+
+    private function actionsForUserAnnouncementArchive() {
+        $archivePosts = UserAnnouncementArchive::with(
+            'parcelAnnouncement',
+            'humanAnnouncement',
+            'palletAnnouncement',
+            'animalAnnouncement',
+            'otherAnnouncement'
+        )->where('experience_date', '<', now()->subDays(31) )->get();
+        foreach ($archivePosts as $post) {
             $post->delete();
         }
     }
@@ -88,12 +90,7 @@ class UserAnnouncementLimitTime extends Command
 
     private function storeAnimalDataArchive ( $data, $announcement_id  ) {
         foreach ( $data as $element ) {
-            $animal = new AnimalAnnouncementArchive ( [
-                'announcement_id' =>                      $element[ 'announcement_id' ],
-                'animal_type' =>                          $element[ 'animal_type' ],
-                'weight' =>                               $element[ 'weight' ],
-                'animal_description' =>                   $element[ 'animal_description' ],
-            ] );
+            $animal = new AnimalAnnouncementArchive ( $element->getAttributes() );
             $animal->announcementId()->associate( $announcement_id  );
             $animal->save();
         }
@@ -101,11 +98,7 @@ class UserAnnouncementLimitTime extends Command
 
     private function storeHumanDataArchive ( $data, $announcement_id ) {
         foreach ( $data as $element ) {
-            $human = new HumanAnnouncementArchive ( [
-                'announcement_id' =>                      $element[ 'announcement_id' ],
-                'adult' =>                                $element[ 'adult' ],
-                'kids' =>                                 $element[ 'kids' ],
-            ] );
+            $human = new HumanAnnouncementArchive ( $element->getAttributes() );
             $human->announcementId()->associate( $announcement_id  );
             $human->save();
         }
@@ -113,10 +106,7 @@ class UserAnnouncementLimitTime extends Command
 
     private function storeOtherDataArchive ( $data, $announcement_id ) {
         foreach ( $data as $element ) {
-            $other = new OtherAnnouncementArchive ( [
-                'announcement_id' =>                      $element[ 'announcement_id' ],
-                'description' =>                          $element[ 'description' ],
-            ] );
+            $other = new OtherAnnouncementArchive ( $element->getAttributes() );
             $other->announcementId()->associate( $announcement_id  );
             $other->save();
         };
@@ -124,13 +114,7 @@ class UserAnnouncementLimitTime extends Command
 
     private function storePalletDataArchive ( $data, $announcement_id ) {
         foreach ( $data as $element ) {
-            $pallet = new PalletAnnouncementArchive ( [
-                'announcement_id' =>                        $element[ 'announcement_id' ],
-                'weight' =>                                 $element[ 'weight' ],
-                'length' =>                                 $element[ 'length' ],
-                'width' =>                                  $element[ 'width' ],
-                'height' =>                                 $element[ 'height' ],
-            ] );
+            $pallet = new PalletAnnouncementArchive ( $element->getAttributes() );
             $pallet->announcementId()->associate( $announcement_id  );
             $pallet->save();
         }
@@ -138,13 +122,7 @@ class UserAnnouncementLimitTime extends Command
 
     private function storeParcelDataArchive ( $data, $announcement_id ) {
         foreach ( $data as $element ) {
-            $parcel = new ParcelAnnouncementArchive ( [
-                'announcement_id' =>                        $element[ 'announcement_id' ],
-                'weight' =>                                 $element[ 'weight' ],
-                'length' =>                                 $element[ 'length' ],
-                'width' =>                                  $element[ 'width' ],
-                'height' =>                                 $element[ 'height' ],
-            ] );
+            $parcel = new ParcelAnnouncementArchive ( $element->getAttributes() );
             $parcel->announcementId()->associate( $announcement_id  );
             $parcel->save();
         }
