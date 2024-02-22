@@ -3,11 +3,6 @@
 @section('add_header')
     <link rel="stylesheet" href="{{ asset('css/user_announcement_styles.css') }}">
     {{-- <script src="{{ asset('js/accounts_scripts.js') }}"></script> --}}
-    @php
-        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $directionsData = $JsonParserController->getJsonData('directions.json');
-        $cargoData = $JsonParserController->getJsonData('cargo.json');
-    @endphp
 @endsection
 
 @section('content')

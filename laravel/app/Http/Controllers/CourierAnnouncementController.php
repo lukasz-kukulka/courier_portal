@@ -21,6 +21,7 @@ use App\Models\CourierAnnouncementContact;
 
 class CourierAnnouncementController extends Controller
 {
+
     public function __construct() {
         $this->json = new JsonParserController;
     }
@@ -42,9 +43,8 @@ class CourierAnnouncementController extends Controller
         ]);
 
         $announcementTitles = $this->generateAnnouncementTitlesInList($query->get());
-
-        $jsonParserController = new JsonParserController(); 
-        $perPage = $jsonParserController->courierAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
+ 
+        $perPage = $this->json->courierAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
     
         $announcements = $query->paginate($perPage);
     
@@ -55,6 +55,7 @@ class CourierAnnouncementController extends Controller
     
         return $view;
     }
+
 
     public function summary( Request $request ) {
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
@@ -87,10 +88,14 @@ class CourierAnnouncementController extends Controller
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
         $headerData = $this->generateCourierAnnouncementCreateFormHeader();
+        $directionsData = $this->json->directionsAction();
+        $cargoData = $this->json->cargoAction();
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions )
             ->with( 'contactData', $contactData )
-            ->with( 'headerData', $headerData );
+            ->with( 'headerData', $headerData )
+            ->with('directionsData', $directionsData)
+            ->with('cargoData', $cargoData); 
     }
 
     public function store(Request $request) {
@@ -410,8 +415,7 @@ class CourierAnnouncementController extends Controller
     }
 
     private function generateAcceptedFileFormatForCreateBlade() {
-        $jsonParserController = new JsonParserController();
-        $extensions = $jsonParserController->courierAnnouncementAction()['accept_format_picture_file'];
+        $extensions = $this->json->courierAnnouncementAction()['accept_format_picture_file'];
         $result = '';
         for ( $i = 0; $i < count( $extensions ); $i++ ) {
             if ( $i === count( $extensions ) - 1 ) {
@@ -424,8 +428,7 @@ class CourierAnnouncementController extends Controller
     }
 
     private function generateAcceptedFileFormatForVerification() {
-        $jsonParserController = new JsonParserController();
-        $extensions = $jsonParserController->courierAnnouncementAction()['accept_format_picture_file'];
+        $extensions = $this->json->courierAnnouncementAction()['accept_format_picture_file'];
         $result = '';
         for ( $i = 0; $i < count( $extensions ); $i++ ) {
             if ( $i === 0 ) {
@@ -625,10 +628,8 @@ class CourierAnnouncementController extends Controller
     }
 
     private function generateAnnouncementTitlesInList($announcements) {
-        $allTitles = array();
-        $jsonParserController = new JsonParserController(); 
-    
-        $courierAnnouncement = $jsonParserController->getJsonData('courier_announcement.json');
+        $allTitles = array(); 
+        $courierAnnouncement = $this->json->getJsonData('courier_announcement.json');
         $maxCargoInTitle = $courierAnnouncement['max_cargo_names_in_title'];
         $titleFront = __('base.courier_announcement_full_title_summary_front');
         $titleMid = __('base.courier_announcement_full_title_summary_mid');
