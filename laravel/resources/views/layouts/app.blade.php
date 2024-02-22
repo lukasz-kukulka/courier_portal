@@ -20,10 +20,9 @@
     @yield('add_header')
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $menuData = $JsonParserController->getMenuData();
-        $userMenuData = $JsonParserController->getMenuUserData();
+        $menuData = $JsonParserController->menuAction();
+        $userMenuData = $JsonParserController->menuUserAction();
     @endphp
-
 </head>
 <body>
     <div id="app">

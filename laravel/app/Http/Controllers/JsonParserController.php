@@ -27,30 +27,48 @@ class JsonParserController extends Controller
         }
     }
 
-    public function getMenuData($returnType = 'array') {
-        return $this->getJsonData('top_menu.json', $returnType);
+    public function menuAction() {
+        return $this->getJsonData('top_menu.json');
     }
 
-    public function getMenuUserData($returnType = 'array') {
-        return $this->getJsonData('top_menu_user.json', $returnType);
+    public function menuUserAction() {
+        return $this->getJsonData('top_menu_user.json');
     }
 
-    public function getCourierAnnouncementData($returnType = 'array') {
-        return $this->getJsonData('courier_announcement.json', $returnType);
+    public function accountAction() {
+        return $this->getJsonData('accounts.json');
     }
 
-    private function getJsonDataWithCountrySuffix($prefix, $countryCode, $returnType = 'array') {
-        $filename = $prefix . '_' . $countryCode . '.json';
-        return $this->getJsonData($filename, $returnType);
+    public function directionsAction() {
+        return $this->getJsonData('directions.json');
     }
 
-    public function getPostCodesDataByCountry($countryCode, $returnType = 'array') {
-        return $this->getJsonDataWithCountrySuffix('post_codes', $countryCode, $returnType);
+    public function cargoAction() {
+        return $this->getJsonData('cargo.json');
     }
 
-    public function getCourierAnnouncementAccessElements($returnType = 'array') {
-        return $this->getJsonData('accounts_access_for_elements.json', $returnType);
+    public function searchAnnouncementAction() {
+        return $this->getJsonData('announcement.json');
     }
-    
+
+    public function getPostCodes($direction) {
+        $variableName = 'post_codes_' . $direction . '.json';
+        return $this->getJsonData($variableName);
+    }
+
+    public function plPostCodeAction() {
+        return $this->getJsonData('post_codes_pl.json');
+    }
+
+    public function ukPostCodeAction() {
+        return $this->getJsonData('post_codes_uk.json');
+    }
+
+    public function courierAnnouncementAction() {
+        return $this->getJsonData('courier_announcement.json');
+    }
+
+    public function courierAnnouncementAccessElementsAction() {
+        return $this->getJsonData('accounts_access_for_elements.json');
+    }
 }
-

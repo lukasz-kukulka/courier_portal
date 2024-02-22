@@ -44,7 +44,7 @@ class CourierAnnouncementController extends Controller
         $announcementTitles = $this->generateAnnouncementTitlesInList($query->get());
 
         $jsonParserController = new JsonParserController(); 
-        $perPage = $jsonParserController->getCourierAnnouncementData()['number_of_search_courier_announcement_in_one_page'];
+        $perPage = $jsonParserController->courierAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
     
         $announcements = $query->paginate($perPage);
     
@@ -291,7 +291,7 @@ class CourierAnnouncementController extends Controller
 
     private function getPostCodesAndDirections( $courierAnnouncement ) {
         $array = [];
-        $courierAnnouncementJson = $this->json->getCourierAnnouncementData();
+        $courierAnnouncementJson = $this->json->courierAnnouncementAction();
         $availableCountries = $courierAnnouncementJson['available_delivery_country'];
         $postCodesPL = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesPlAnnouncement,
                                                         $this->json->plPostCodeAction() );
@@ -411,7 +411,7 @@ class CourierAnnouncementController extends Controller
 
     private function generateAcceptedFileFormatForCreateBlade() {
         $jsonParserController = new JsonParserController();
-        $extensions = $jsonParserController->getCourierAnnouncementData()['accept_format_picture_file'];
+        $extensions = $jsonParserController->courierAnnouncementAction()['accept_format_picture_file'];
         $result = '';
         for ( $i = 0; $i < count( $extensions ); $i++ ) {
             if ( $i === count( $extensions ) - 1 ) {
@@ -425,7 +425,7 @@ class CourierAnnouncementController extends Controller
 
     private function generateAcceptedFileFormatForVerification() {
         $jsonParserController = new JsonParserController();
-        $extensions = $jsonParserController->getCourierAnnouncementData()['accept_format_picture_file'];
+        $extensions = $jsonParserController->courierAnnouncementAction()['accept_format_picture_file'];
         $result = '';
         for ( $i = 0; $i < count( $extensions ); $i++ ) {
             if ( $i === 0 ) {
@@ -599,7 +599,7 @@ class CourierAnnouncementController extends Controller
     }
 
     private function generateSummaryAnnouncementTitle( $request, $company ) {
-        $courierAnnouncement = $this->json->getCourierAnnouncementData();
+        $courierAnnouncement = $this->json->courierAnnouncementAction();
         $maxCargoInTitle = $courierAnnouncement[ 'max_cargo_names_in_title' ];
         $cargoNumber = $request->input('cargo_number_visible');
         $titleFront = __( 'base.courier_announcement_full_title_summary_front' );
@@ -656,7 +656,7 @@ class CourierAnnouncementController extends Controller
 
     private function generateDataForDeliveryCountryToSession() {
         $fullCountryArray = [];
-        $courierAnnouncement = $this->json->getCourierAnnouncementData();
+        $courierAnnouncement = $this->json->courierAnnouncementAction();
         $availableCountries = $courierAnnouncement['available_delivery_country'];
 
         foreach( $availableCountries as $key => $value ) {
@@ -672,9 +672,9 @@ class CourierAnnouncementController extends Controller
     private function generateMaxFileSize() {
         $maxSizeAccess = null;
         $accountType = auth()->user()->account_type;
-        $accessElements = $this->json->getCourierAnnouncementAccessElements();
+        $accessElements = $this->json->courierAnnouncementAccessElementsAction();
         if (isset($accessElements['courier_announcement_file_max_size'])) {
-            $maxSizeData = $this->json->getCourierAnnouncementData();
+            $maxSizeData = $this->json->courierAnnouncementAction();
             
             if (in_array($accountType, $accessElements['access_accounts'])) {
                 $maxSizeAccess = $maxSizeData['max_size_single_image_file_premium'];
@@ -721,9 +721,9 @@ class CourierAnnouncementController extends Controller
 
 
     private function generateCourierAnnouncementCreateFormHeader() {
-        $courierAnnouncementData = $this->json->getCourierAnnouncementData();
+        $courierAnnouncementData = $this->json->courierAnnouncementAction();
 
-        $accessElements = $this->json->getCourierAnnouncementAccessElements();
+        $accessElements = $this->json->courierAnnouncementAccessElementsAction();
 
         $cargoElementNumber = $courierAnnouncementData['premium_number_of_type_cargo'];
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik cargoElementNumber #sema_update

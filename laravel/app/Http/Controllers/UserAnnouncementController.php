@@ -29,6 +29,7 @@ class UserAnnouncementController extends Controller
     public function __construct(JsonParserController $jsonParserController) {
         $this->jsonParserController = $jsonParserController; 
         $this->announcement_json = $this->jsonParserController->getJsonData('announcement.json');
+        $this->json = $this->jsonParserController;
     }
 
     public function index() {
