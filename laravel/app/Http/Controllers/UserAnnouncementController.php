@@ -1,33 +1,37 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-// use App\Helpers\translate_helpers;
+use App\Http\Controllers\JsonParserController;
 use App\Models\UserAnnouncement;
 use App\Models\AnimalAnnouncement;
 use App\Models\HumanAnnouncement;
 use App\Models\OtherAnnouncement;
 use App\Models\PalletAnnouncement;
 use App\Models\ParcelAnnouncement;
-
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+
 class UserAnnouncementController extends Controller
 {
-    public function __construct() {
-        $this->announcement_json = app(\App\Http\Controllers\JsonParserController::class)->searchAnnouncementAction();
+    private $jsonParserController; 
 
+    public function __construct(JsonParserController $jsonParserController) {
+        $this->jsonParserController = $jsonParserController; 
+        $this->announcement_json = $this->jsonParserController->getJsonData('announcement.json');
     }
+
     public function index() {
         return view('announcement_list', [
-            'announcements' => UserAnnouncement::with( [
+            'announcements' => UserAnnouncement::with([
                 'parcelAnnouncement',
                 'humanAnnouncement',
                 'palletAnnouncement',
                 'animalAnnouncement',
                 'otherAnnouncement',
-            ] )->paginate( $this->announcement_json[ 'number_of_search_announcement_in_one_page' ] ),
+            ])->paginate($this->announcement_json['number_of_search_announcement_in_one_page']),
         ]);
     }
 

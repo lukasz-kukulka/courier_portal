@@ -20,8 +20,8 @@
     @yield('add_header')
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $menuData = $JsonParserController->menuAction();
-        $userMenuData = $JsonParserController->menuUserAction();
+        $menuData = $JsonParserController->getMenuData();
+        $userMenuData = $JsonParserController->getMenuUserData();
     @endphp
 
 </head>

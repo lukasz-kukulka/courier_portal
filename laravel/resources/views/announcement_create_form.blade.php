@@ -5,8 +5,8 @@
     {{-- <link rel="stylesheet" href="{{ asset('css/accounts_form_styles.css') }}"> --}}
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $directionsData = $JsonParserController->directionsAction();
-        $cargoData = $JsonParserController->cargoAction();
+        $directionsData = $JsonParserController->getJsonData('directions.json');
+        $cargoData = $JsonParserController->getJsonData('cargo.json');
     @endphp
 @endsection
 

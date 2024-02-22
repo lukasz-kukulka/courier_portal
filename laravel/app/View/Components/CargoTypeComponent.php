@@ -5,12 +5,13 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Http\Controllers\JsonParserController;
 
 class CargoTypeComponent extends Component
 {
-    public function __construct( $id ) {
-        $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
-        $this->currencies_options = $JsonParserController->courierAnnouncementAction()['cargo_currencies'];
+    public function __construct($id) {
+        $jsonParserController = new JsonParserController();
+        $this->currencies_options = $jsonParserController->getCourierAnnouncementData()['cargo_currencies'];
         $this->id = $id;
     }
 

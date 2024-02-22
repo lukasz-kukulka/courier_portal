@@ -1,0 +1,10 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.editor.limit.value": 20
+	}
+}
