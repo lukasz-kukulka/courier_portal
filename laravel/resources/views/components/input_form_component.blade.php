@@ -1,4 +1,3 @@
-
 <div>
     <div class="row mb-1">
         <label for="{{ $name }}" class="col-md-4 col-form-label text-md-end align-self-center">{{ __('base.'.$name) }}</label>
@@ -14,7 +13,6 @@
                     @endforeach
                 </select>
             @elseif ( $type === 'direction')
-
                 <div class="row mb-2 {{ $name }}">
                     <div class="row pl-3 alert_direction_container">
                         @if( Session::has('allDirectionData') && session('allDirectionData') === false )
@@ -32,33 +30,29 @@
                                 </option>
                             @endforeach
                         </select>
-
                     </div>
-
                     <div class="col-md-3">
-
                         @foreach ( $options as $direction )
                             <div class="direction_container_{{ $direction['name'] . "_" . $name }} {{ $direction['name'] }}">
                                 <div class="text-center"><b><label for="prefix_select_{{ $direction['name'] }}" class="col-form-label">{{ __('base.default_direction_prefix') }}</label></b>
                                     <div class="tooltip">
                                         <i class="bi bi-question-diamond-fill"></i>
-                                        <span class="tooltiptext">{{ __( 'base.prefix_explain_notes'
-                                        ) }}</span>
+                                        <span class="tooltiptext">{{ __( 'base.prefix_explain_notes') }}</span>
                                     </div>
                                 </div>
                                 <select id="prefix_select_{{ $direction['name'] . "_" . $name }}" class="prefix_select_{{ $direction['name'] . "_" . $name }} form-control @error('prefix_select_' . $direction['name'] . "_" . $name ) is-invalid @enderror" name="prefix_select_{{ $direction['name'] . "_" . $name }}" autocomplete="prefix_select_{{ $direction['name'] . "_" . $name }}">
                                     <option value="" disabled {{ old( 'prefix_select_' .  $direction['name'] . "_" . $name ) ? '' : 'selected' }}>{{ __('base.default_direction_prefix') }}</option>
-                                    @foreach ( $direction[ 'post_codes' ] as $postCode )
-                                        <option value="{{ $postCode }}" {{ old( 'prefix_select_' . $direction['name'] . "_" . $name ) == $postCode ? 'selected' : '' }}>
-                                            {{ $postCode }}
-                                        </option>
-                                    @endforeach
+                                    @if(isset($direction['post_codes']))
+                                        @foreach ( $direction[ 'post_codes' ] as $postCode )
+                                            <option value="{{ $postCode }}" {{ old( 'prefix_select_' . $direction['name'] . "_" . $name ) == $postCode ? 'selected' : '' }}>
+                                                {{ $postCode }}
+                                            </option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                         @endforeach
-
                     </div>
-
                     <div class="col-md-3 postfix_container_{{ $name }}">
                         <div class="text-center"><b><label for="postfix_select_{{ $name }}" class="col-form-label">{{ __('base.default_direction_postfix') }}</label></b>
                             <div class="tooltip">
@@ -69,7 +63,7 @@
                         <input id="postfix_select_{{ $name }}" type="text" class="form-control @error( "postfix_select_" . $name ) is-invalid @enderror" name="postfix_select_{{ $name }}" value="{{ old( "postfix_select_" . $name ) }}" autocomplete="postfix_select_{{ $name }}" maxlength="6">
                     </div>
                     <div class="col-md-4 direction_city_container_{{ $name }}">
-                        <div class="text-center"><b><label for="direction_city_{{ $name }}" class="col-form-label">{{ __('base.user_announcement_direction_city') }}</label></b>
+                        <div class="text-center"><b><label for="direction_city_{{ $name }}" class="col-form-label">{{ __('base.user_announcement_direction_city') }}</label></b></div>
                         <input id="direction_city_{{ $name }}" type="text" class="form-control @error( "direction_city_" . $name ) is-invalid @enderror" name="direction_city_{{ $name }}" value="{{ old( "direction_city_" . $name ) }}" autocomplete="direction_city_{{ $name }}" maxlength="80">
                     </div>
                 </div>

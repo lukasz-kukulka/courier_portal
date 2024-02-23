@@ -23,7 +23,6 @@
         $menuData = $JsonParserController->menuAction();
         $userMenuData = $JsonParserController->menuUserAction();
     @endphp
-
 </head>
 <body>
     <div id="app">

@@ -21,6 +21,7 @@ use App\Models\CourierAnnouncementContact;
 
 class CourierAnnouncementController extends Controller
 {
+
     public function __construct() {
         $this->json = new JsonParserController;
     }
@@ -41,18 +42,20 @@ class CourierAnnouncementController extends Controller
             'postCodesUkAnnouncement',
         ]);
 
-        $announcementTitles = $this->generateAnnouncementTitlesInList( $query->get() );
-
-        $perPage = $this->json->searchAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
+        $announcementTitles = $this->generateAnnouncementTitlesInList($query->get());
+ 
+        $perPage = $this->json->courierAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
+    
         $announcements = $query->paginate($perPage);
-
+    
         $view = view('courier_announcement_list', [
             'announcements' => $announcements,
             'announcementTitles' => $announcementTitles,
         ]);
-
+    
         return $view;
     }
+
 
     public function summary( Request $request ) {
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
@@ -85,10 +88,14 @@ class CourierAnnouncementController extends Controller
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
         $headerData = $this->generateCourierAnnouncementCreateFormHeader();
+        $directionsData = $this->json->directionsAction();
+        $cargoData = $this->json->cargoAction();
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions )
             ->with( 'contactData', $contactData )
-            ->with( 'headerData', $headerData );
+            ->with( 'headerData', $headerData )
+            ->with('directionsData', $directionsData)
+            ->with('cargoData', $cargoData); 
     }
 
     public function store(Request $request) {
@@ -620,23 +627,22 @@ class CourierAnnouncementController extends Controller
         return ( $titleFront . $companyName . $titleMid . $cargoNames . $titleEnd );
     }
 
-    private function generateAnnouncementTitlesInList( $announcements ) {
-        $allTitles = array();
-        $courierAnnouncement = $this->json->courierAnnouncementAction();
-        $maxCargoInTitle = $courierAnnouncement[ 'max_cargo_names_in_title' ];
-        $titleFront = __( 'base.courier_announcement_full_title_summary_front' );
-        $titleMid = __( 'base.courier_announcement_full_title_summary_mid' );
-
-        foreach( $announcements as $announcement ) {
-            dd($announcement);
-            $cargoNumber = count( $announcement->cargoTypeAnnouncement );
-            $titleEnd = $cargoNumber > $maxCargoInTitle ? __( 'base.courier_announcement_full_title_summary_end' ) : "";
-
+    private function generateAnnouncementTitlesInList($announcements) {
+        $allTitles = array(); 
+        $courierAnnouncement = $this->json->getJsonData('courier_announcement.json');
+        $maxCargoInTitle = $courierAnnouncement['max_cargo_names_in_title'];
+        $titleFront = __('base.courier_announcement_full_title_summary_front');
+        $titleMid = __('base.courier_announcement_full_title_summary_mid');
+    
+        foreach ($announcements as $announcement) {
+            $cargoNumber = count($announcement->cargoTypeAnnouncement);
+            $titleEnd = $cargoNumber > $maxCargoInTitle ? __('base.courier_announcement_full_title_summary_end') : "";
+    
             $cargoNames = "";
-            $companyName = UserModel::with('company')->find( $announcement->author )->company->company_name;
-
-            for( $i = 0; $i < min( $cargoNumber, $maxCargoInTitle ); $i++ ) {
-                if ( $i > 1 ) {
+            $companyName = UserModel::with('company')->find($announcement->author)->company->company_name;
+    
+            for ($i = 0; $i < min($cargoNumber, $maxCargoInTitle); $i++) {
+                if ($i > 1) {
                     $cargoNames .= ", ";
                 } else {
                     $cargoNames .= " ";
@@ -667,17 +673,26 @@ class CourierAnnouncementController extends Controller
     private function generateMaxFileSize() {
         $maxSizeAccess = null;
         $accountType = auth()->user()->account_type;
-        $accountsAccess = $this->json->courierAnnouncementAccessElementsAction()[ 'courier_announcement_file_max_size' ];
-
-        if ( in_array( $accountType, $accountsAccess[ 'access_accounts' ] ) ) {
-            $maxSizeAccess = $this->json->courierAnnouncementAction()[ 'max_size_single_image_file_premium' ];
-        } else if ( in_array( $accountType , $accountsAccess[ 'no_access_accounts' ] ) ) {
-            $maxSizeAccess = $this->json->courierAnnouncementAction()[ 'max_size_single_image_file_standard' ];
+        $accessElements = $this->json->courierAnnouncementAccessElementsAction();
+        if (isset($accessElements['courier_announcement_file_max_size'])) {
+            $maxSizeData = $this->json->courierAnnouncementAction();
+            
+            if (in_array($accountType, $accessElements['access_accounts'])) {
+                $maxSizeAccess = $maxSizeData['max_size_single_image_file_premium'];
+            } elseif (in_array($accountType, $accessElements['no_access_accounts'])) {
+                $maxSizeAccess = $maxSizeData['max_size_single_image_file_standard'];
+            } else {
+                // Obsługa sytuacji braku dostępu do danych
+                dd('ERROR generateMaxFileSize() in CourierAnnouncementController');
+            }
         } else {
-            dd( 'ERROR generateMaxFileSize() in CourierAnnouncementController' );
-            // napisać funkcje ktora bedzie wysyłała email w momencie błędu #sema_update
+            // Obsługa braku danych o maksymalnym rozmiarze pliku
+            dd('ERROR: Max file size data not found in courier_announcement_access_elements.json');
         }
 
+
+            // napisać funkcje ktora bedzie wysyłała email w momencie błędu #sema_update
+        
         return $maxSizeAccess ;
     }
 
@@ -695,8 +710,8 @@ class CourierAnnouncementController extends Controller
 
     private function generateCourierAnnouncementSummaryHeader() {
         $directions = $this->json->directionsAction();
-        $postCodesPL = $this->json->plPostCodeAction();
-        $postCodesUK = $this->json->ukPostCodeAction();
+        $postCodesPL = $this->json->getPostCodesDataByCountry('pl');
+        $postCodesUK = $this->json->getPostCodesDataByCountry('uk');
 
         return compact(
             'directions',
@@ -709,28 +724,39 @@ class CourierAnnouncementController extends Controller
     private function generateCourierAnnouncementCreateFormHeader() {
         $courierAnnouncementData = $this->json->courierAnnouncementAction();
 
+        $accessElements = $this->json->courierAnnouncementAccessElementsAction();
+
         $cargoElementNumber = $courierAnnouncementData['premium_number_of_type_cargo'];
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik cargoElementNumber #sema_update
         $dateElementNumber = $courierAnnouncementData['premium_number_of_type_date'];
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik dateElementNumber #sema_update
         $picturesNumber = $courierAnnouncementData['picture_file_input_limit_premium'];
         // dodac warunek/funkcje zeby sprawdzic czy konto jest premium czy nie i zwrocic poprawny wynik picturesNumber #sema_update
-        $postCodesPL = $this->json->plPostCodeAction();
-        $postCodesUK = $this->json->ukPostCodeAction();
-        $permDate = $this->json->courierAnnouncementAccessElementsAction()['perm_experience_date_for_premium'];
-        $pictureFileFormat = $courierAnnouncementData['accept_format_picture_file'];
-        $loginUser = auth()->user();
+        $postCodesPL = [];
+        if (isset($accessElements['post_codes']['pl'])) {
+            $postCodesPL = $this->json->getPostCodesDataByCountry('pl');
+    }
 
-        return compact(
-            'cargoElementNumber',
-            'dateElementNumber',
-            'picturesNumber',
-            'postCodesPL',
-            'postCodesUK',
-            'permDate',
-            'pictureFileFormat',
-            'loginUser'
-        );
+    $postCodesUK = [];
+    if (isset($accessElements['post_codes']['uk'])) {
+        $postCodesUK = $this->json->getPostCodesDataByCountry('uk');
+    }
+
+    $permDate = $accessElements['perm_experience_date_for_premium'];
+    $pictureFileFormat = $courierAnnouncementData['accept_format_picture_file'];
+    $loginUser = auth()->user();
+
+    return compact(
+        'cargoElementNumber',
+        'dateElementNumber',
+        'picturesNumber',
+        'postCodesPL',
+        'postCodesUK',
+        'permDate',
+        'pictureFileFormat',
+        'loginUser'
+    );
+
     }
 
     private function generateTempFolderIfDontExist() {
@@ -772,7 +798,7 @@ class CourierAnnouncementController extends Controller
     }
 
     private function generateContactData( $request ) {
-        $contactJson = $this->json->courierAnnouncementAction()[ 'contact_form_fields' ];
+        $contactJson = $this->json->getCourierAnnouncementData()[ 'contact_form_fields' ];
         $contactArray = [];
 
         foreach( $contactJson[ 'personal' ] as $field ) {
