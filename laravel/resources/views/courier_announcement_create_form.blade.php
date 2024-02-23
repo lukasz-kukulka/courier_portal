@@ -17,6 +17,7 @@
                             <form action="{{ route('courier_announcement_generator') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
                                 {{-- {{dd( $errors->all() )}} --}}
+                                {{ __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', 'courier_pro', 'courier_announcement' ) }}
                                 <div class="row mb-3">
                                     <label for="courier_announcement_name" class="col-md-4 col-form-label text-md-end">{{ __('base.courier_announcement_name' ) }}</label>
                                     <div class="col-md-6">

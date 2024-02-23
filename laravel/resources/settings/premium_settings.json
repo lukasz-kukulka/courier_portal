@@ -1,0 +1,12 @@
+{
+	"courier_announcement_file_max_size": {
+		"name": "courier_announcement_file_max_size",
+		"premium": [ "courier_pro", "standard_pro" ],
+		"standard": [ "standard", "courier" ]
+	},
+	"courier_announcement_picture_file_input_limit": {
+		"name": "courier_announcement_file_max_size",
+		"premium": [ "courier_pro", "standard_pro" ],
+		"standard": [ "standard", "courier" ]
+	}
+}
