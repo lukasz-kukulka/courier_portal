@@ -16,7 +16,7 @@
                         <div class="card-body p-2">
                             <form action="{{ route('courier_announcement_generator') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
-                                {{-- {{dd( $errors->all() )}} --}}
+                                {{-- {{dd( request() )}} --}}
                                 {{ __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', 'courier_pro', 'courier_announcement' ) }}
                                 <div class="row mb-3">
                                     <label for="courier_announcement_name" class="col-md-4 col-form-label text-md-end">{{ __('base.courier_announcement_name' ) }}</label>
@@ -197,6 +197,47 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
+                                {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
+                                {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
+                                {{-- {{dd(request())}} --}}
+                                @if( request()->input( 'images_number') != null )
+                                    <div class="courier_announcement_previously_pictures_container p-2 table-responsive">
+                                        <table class="table border border-1 ">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="1" class="text-center border-1"><p class="h3 text-center">{{ __('base.courier_announcement_previously_picrures_title')}}</p></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr class="input_courier_announcement_previosly_picture align-middle h-100">
+                                                    <td class="picture_container_summary border border-1">
+
+                                                        <div class="prev_picture_body">
+                                                            @for ( $i = 1; $i <= request()->input( 'images_number'); $i++ )
+                                                                <div class="single_prev_picture_container">
+                                                                    <div class="left_single_prev_picture_container">
+                                                                        <img class="single_prev_picture" src="{{ asset( request()->input( 'image' . $i ) ) }}" alt="{{ 'image' . $i }}">
+                                                                    </div>
+                                                                    <div class="right_single_prev_picture_container">
+                                                                        <button id="{{"delete_prev_image_" . $i }}" type="button" class="btn btn-primary">{{ __( 'base.courier_announcement_delete_prev_image_button' ) }}</button>
+                                                                        <button id="{{"restore_prev_image_" . $i }}" type="button" class="btn btn-primary">{{ __( 'base.courier_announcement_restore_prev_image_button' ) }}</button>
+                                                                    </div>
+                                                                </div>
+                                                                <p>to zdjecie bedzie usuniete pod dodaniu ogłoszenia</p>
+                                                            @endfor
+                                                        </div>
+                                                    </td>{{-- END picture_container_summary --}}
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+
+                                {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
+                                {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
+                                {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
 
                                 <div class="courier_announcement_pictures_container p-2 table-responsive">
                                     <table class="table border border-1 ">

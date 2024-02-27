@@ -433,7 +433,7 @@ return [
     "courier_announcement_full_title_summary_mid" => " zaprasza, oferujemy transport: ",
     "courier_announcement_full_title_summary_end" => ", oraz wiele więcej",
     "courier_announcement_post_codes_pl_title_summary" => "Kody pocztowe w Polsce pod jakie jeździmy",
-    "courier_announcement_post_codes_uk_title_summary" => "Kody pocztowe pod jakie jeździmy",
+    "courier_announcement_post_codes_uk_title_summary" => "Kody pocztowe w Wielkiej Brytani pod jakie jeździmy",
     "courier_announcement_poland_delivery_direction_summary" => "Kody pocztowe pod jakie jeździmy w Polsce",
     "courier_announcement_united_kingdom_delivery_direction_summary" => "Kody pocztowe pod jakie jeździmy w UK",
     "courier_announcement_aditional_info_title_summary" => "Dodatkowe informacje",
@@ -596,4 +596,7 @@ return [
     "nav_menu_user_menu_user" => "Menu",
     "courier_announcement_date_direction_name_from" => "Wyjazd z",
     "courier_announcement_date_direction_name_to" => "Do",
+    "courier_announcement_previously_picrures_title" => "Poprzednio dodane zdjęcia",
+    "courier_announcement_delete_prev_image_button" => "Usuń obraz",
+    "courier_announcement_restore_prev_image_button" => "Przywróć obraz",
 ];

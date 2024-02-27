@@ -13,14 +13,20 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.courier_announcement_summary_title') }}</div>
                         <div class="card-body">
-                            <form action="#" method="POST" id="user_announcement_summary">
+                            <form action="#" method="POST" id="courier_announcement_summary">
                                 @csrf
-                                @foreach(request()->all() as $key => $value)
-                                  @if ( $key != 'files' )
-                                    {{-- <p>{{ $key }}: {{ print_r($value, true) }}</p> --}}
-                                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $value }}">
-                                  @endif
+                                {{-- {{ dd( request() ) }} --}}
+                                <input type="hidden" name="images_number" id="images_number" value="{{ count( $imagesLinks ) }}">
+                                @foreach ( $imagesLinks as $key => $link )
+                                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $link }}">
                                 @endforeach
+
+                                @foreach ( request()->all() as $key => $value )
+                                    @if ( $key != 'files' )
+                                        <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $value }}">
+                                    @endif
+                                @endforeach
+
                                 <div class="info_summary_container">
                                     <p class="h3 text-center">{{ __( 'base.courier_announcement_show_info_summary' ) }}</p>
                                 </div>
@@ -68,24 +74,12 @@
                                             </thead>
                                             <tbody>
                                                 <div class="courier_announcement_date_summary_container text-center">
-                                                    @foreach( $headerData['directions'] as $dir )
-                                                    {{-- {{dd($dir)}} --}}
-                                                            {{ $isFirstElement = false }}
-                                                            <tr class="{{ 'direction_container_' . $dir['name'] }}">
-                                                                <th scope="row" class="col-3">{{ $dir[ 'print_name' ] }}</th>
-                                                                <td class="col-9">
-                                                                    @php
-                                                                        for ( $i = 1; $i <= request()->input( 'date_number_visible' ); $i++ ) {
-                                                                            if ( ( request()->input( "date_directions_select_" . $i ) ) == $dir[ 'print_name' ] ) {
-                                                                                $comma = $isFirstElement ? ", " : "";
-                                                                                $dateInput = request()->input( 'date_input_' . $i );
-                                                                                $dateDescription = ( request()->input( 'date_description_' . $i ) != "" ? "( " . request()->input( 'date_description_' . $i ) . " )" : "" );
-                                                                                $isFirstElement = true;
-                                                                                echo( $comma . $dateInput . $dateDescription );
-                                                                            }
-                                                                        }
-                                                                    @endphp
-                                                                    <input type="hidden" name="{{ "is_empty_" . $dir['name'] }}" id="{{ "is_empty_" . $dir['name'] }}" value="{{ $isFirstElement === false ? "false" : "true" }}">
+                                                    @php $iterator = 1 @endphp
+                                                    @foreach( $deliveryDates as $dates )
+                                                            <tr>
+                                                                <th scope="row" class="col-1">{{ $iterator++ }}</th>
+                                                                <td class="col-11">
+                                                                    {{ $dates }}
                                                                 </td>
                                                             </tr>
 
@@ -96,57 +90,54 @@
                                     </div> {{-- END dates_summary_container --}}
 
                                     <div class="full_postcodes_data_containers_summary">
-                                        @foreach ( $countryPostCodesData as $country )
-                                        <div class="postcodes_{{ $country[ 'country_name' ] }}_summary_container border border 1">
-                                            <div class="postcodes_{{ $country[ 'country_name' ] }}_title_container">
-                                                <p class="h3 text-center">{{ __( "base.courier_announcement_" . $country[ 'translate_text' ] . "_summary" ) }}</p>
-                                            </div>
-                                            <div class="postcodes_separate_{{ $country[ 'country_name' ] }}_data_container">
-                                                <p class="postcodes_separate_data">
-                                                    @php
-                                                        $postCodeArray = null;
-                                                        if( $country[ 'country_name' ] === 'pl' ) {
-                                                            $postCodeArray = $headerData['postCodesPL'];
-                                                        } else {
-                                                            $postCodeArray = $headerData['postCodesUK'];
-                                                        }
-                                                        for( $i = 1; $i <= count( $postCodeArray ); $i++ ) {
-                                                            $current = $postCodeArray[ $i ];
-                                                            if ( request()->input( $current ) !== "0" ) {
-                                                                echo( '<button type="button" class="btn btn-outline-dark postcode_button_summary">' . $current . '</button>' );
-                                                            }
-                                                        }
-                                                    @endphp
-                                                </p>
-                                            </div>
-                                        </div>
+                                        {{-- {{ dd( $postCodes )}} --}}
+                                        @foreach( $postCodes as $key => $value )
+                                            <table class="table border border-1 ">
+                                                <thead>
+                                                    <tr class="postcodes_{{ $key }}_title_container">
+                                                        <th colspan="2" class="text-center border-1 h3"><p class="h3 text-center">{{ __( "base.courier_announcement_post_codes_" . $key . "_title_summary" ) }}</p></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-center">
+                                                    <tr><th>
+                                                        @foreach( $value as $postCode )
+                                                            <button type="button" class="btn btn-outline-dark postcode_button_summary">{{ $postCode }}</button>
+                                                        @endforeach
+                                                    </th></tr>
+                                                </tbody>
+                                            </table>
                                         @endforeach
                                     </div>{{-- END full_postcodes_data_containers_summary --}}
 
                                     <div class="additional_description_summary_container">
                                         @php $descriptionData = request()->input( 'additional_description_input', null ); @endphp
                                         @if( $descriptionData !== null )
-                                            <div class="aditional_description_summary_title border border-1">
-                                                <p class="h3 text-center">{{ __( 'base.courier_announcement_aditional_info_title_summary' ) }}</p>
-                                            </div>
-                                            <div class="additional_description_summary_data border border-1">
-                                                @php
-
-                                                    if ( $descriptionData !== "" || $descriptionData !== null ) {
-                                                        echo ( '<p>' . $descriptionData . '</p>' );
-                                                    }
-                                                @endphp
-                                            </div>
+                                            <table class="table border border-1 ">
+                                                <thead>
+                                                    <tr class="postcodes_{{ $key }}_title_container">
+                                                        <th colspan="2" class="text-center border-1 h3"><p class="h3 text-center">{{ __( 'base.courier_announcement_aditional_info_title_summary' ) }}</p></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-center">
+                                                    <tr><th>
+                                                        @php
+                                                            if ( $descriptionData !== "" || $descriptionData !== null ) {
+                                                                echo ( '<p>' . $descriptionData . '</p>' );
+                                                            }
+                                                        @endphp
+                                                    </th></tr>
+                                                </tbody>
+                                            </table>
                                         @endif
                                     </div>{{-- END aditional_description_summary_container --}}
-                                    <div class="picture_container_summary" >
+                                    <div class="picture_container_summary border border-1" >
                                         @if ( count( $imagesLinks ) )
                                             <div class="picture_title">
                                                 <p class="h3 text-center">{{ __( 'base.courier_announcement_pictures_title_summary' ) }}</p>
                                             </div>
                                             <div class="picture_body">
                                                 @foreach ( $imagesLinks as $link )
-                                                    <img src="{{ asset( $link ) }}" alt="aaaa">
+                                                    <img class="single_picture_summary" src="{{ asset( $link ) }}" alt="aaaa">
                                                 @endforeach
                                             </div>
                                         @endif

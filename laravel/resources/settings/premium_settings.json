@@ -1,6 +1,6 @@
 {
-	"courier_announcement_file_max_size": {
-		"name": "courier_announcement_file_max_size",
+	"courier_announcement_max_size_single_image_file": {
+		"name": "courier_announcement_max_size_single_image_file",
 		"premium": [ "courier_pro", "standard_pro" ],
 		"standard": [ "standard", "courier" ]
 	},
@@ -8,5 +8,16 @@
 		"name": "courier_announcement_file_max_size",
 		"premium": [ "courier_pro", "standard_pro" ],
 		"standard": [ "standard", "courier" ]
+	},
+	"courier_announcement_number_of_type_cargo": {
+		"name": "courier_announcement_number_of_type_cargo",
+		"premium": [ "courier_pro", "standard_pro" ],
+		"standard": [ "standard", "courier" ]
+	},
+	"courier_announcement_number_of_type_date": {
+		"name": "courier_announcement_number_of_type_date",
+		"premium": [ "courier_pro", "standard_pro" ],
+		"standard": [ "standard", "courier" ]
 	}
+	
 }

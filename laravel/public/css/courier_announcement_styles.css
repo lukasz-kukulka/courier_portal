@@ -190,6 +190,7 @@
 .picture_body {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .one_line_contact {
@@ -224,4 +225,42 @@
 
 [class*="_post_codes_single_container"], .all_post_codes_container {
     display: none;
+}
+
+.single_picture_summary {
+    padding: 5px;
+    margin: 5px;
+}
+
+.prev_picture_body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.single_prev_picture_container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* opcjonalnie dodaj margines między zdjęciami */
+}
+
+.left_single_prev_picture_container {
+    flex: 0 0 auto; /* Zatrzymaj zmianę rozmiaru, szerokość auto */
+}
+
+.right_single_prev_picture_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 10px; /* opcjonalnie dodaj odstęp między przyciskami */
+}
+
+.single_prev_picture {
+    max-width: 200px; /* ustaw maksymalną szerokość */
+    max-height: 200px; /* ustaw maksymalną wysokość */
+    /* dodaj inne style według potrzeb */
+}
+
+.right_single_prev_picture_container button {
+    margin-bottom: 10px; /* Dodanie marginesu między przyciskami */
 }

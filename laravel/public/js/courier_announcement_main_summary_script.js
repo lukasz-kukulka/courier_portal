@@ -1,5 +1,5 @@
 function submitFormAfterSummary(action) {
-    var form = document.getElementById("user_announcement_summary");
+    var form = document.getElementById("courier_announcement_summary");
     var route = "";
 
     if (action === "confirm") {
