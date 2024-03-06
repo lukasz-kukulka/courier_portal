@@ -253,10 +253,10 @@ class UserAnnouncementController extends Controller
         $animalArray = $this->generateAnimalRequestSummaryData( $announcement->animalAnnouncement );
         $humanArray = $this->generateHumanRequestSummaryData( $announcement->humanAnnouncement );
         $otherArray = $this->generateOtherRequestSummaryData( $announcement->otherAnnouncement );
-        return array_merge( $parcelArray, $palletArray, $animalArray, $humanArray, $otherArray );;
+        return array_merge( $parcelArray, $palletArray, $animalArray, $humanArray, $otherArray );
     }
 
-    public function cargoDataGenerator(Request $request) {
+    public function cargoDataGenerator( Request $request ) {
         $allDirectionData = $this->validateIsSetAllDirectionData( $request );
         $isZeroItems = $this->validateIsZeroItems( $request );
         $validator = $this->validator( $request->all() );
@@ -266,8 +266,8 @@ class UserAnnouncementController extends Controller
         if ($validator->fails() || $directionValidator->fails() || $isZeroItems || $allDirectionData === false ) {
             return redirect()
                 ->back()
-                ->withErrors($validator)
-                ->withErrors($directionValidator)
+                ->withErrors( $validator )
+                ->withErrors( $directionValidator )
                 ->withInput()
                 ->with( 'allDirectionData', $allDirectionData )
                 ->with( 'isZeroItems', $isZeroItems );

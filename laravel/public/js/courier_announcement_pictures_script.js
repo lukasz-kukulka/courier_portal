@@ -162,7 +162,118 @@ function generateVariableIfAddedFiles(form) {
     form.appendChild(errorPictureInfo);
 }
 
+function registerListenerForPrevPicturesButtons() {
+    let delButtons = document.querySelectorAll( '[class*="delete_prev_image_"]' );
+    let resButtons = document.querySelectorAll( '[class*="restore_prev_image_"]' );
+
+    delButtons.forEach(function ( button ) {
+        button.addEventListener( "click", function () {
+            var elementNumber = extractElementNumber( button, 'delete_prev_image_' );
+            var delButton = document.getElementById( 'restore_prev_image_' + elementNumber );
+            exchangeButtonsProperties( button, delButton );
+            switchIfImagesIsForDelete( true, elementNumber );
+            changeValueForDeleteOldImages( true, elementNumber );
+        });
+    });
+
+    resButtons.forEach(function ( button ) {
+        button.addEventListener( "click", function () {
+            var elementNumber = extractElementNumber( button, 'restore_prev_image_' );
+            var resButton = document.getElementById( 'delete_prev_image_' + elementNumber );
+            exchangeButtonsProperties( button, resButton );
+            switchIfImagesIsForDelete( false, elementNumber );
+            changeValueForDeleteOldImages( false, elementNumber );
+        });
+    });
+}
+
+function extractElementNumber( element, extractName ) {
+    var name = element.className;
+    var match = name.match( new RegExp( extractName + '(\\d+)') );
+    return match[ 1 ];
+}
+
+function changeSingleImageButtons( button, clickButtonName, visibleButtonName ) {
+    var buttonClassName = button.className;
+    var match = buttonClassName.match( new RegExp( clickButtonName + '(\\d+)') );
+
+    var buttonNumber = parseInt( match[ 1 ] );
+    var resButton = document.getElementById( visibleButtonName + buttonNumber.toString() );
+}
+
+function exchangeButtonsProperties( firstButton, secondButton ) {
+    firstButton.classList.remove('btn-primary');
+    firstButton.classList.add('btn-secondary');
+    firstButton.disabled = true;
+
+    secondButton.classList.remove('btn-secondary');
+    secondButton.classList.add('btn-primary');
+    secondButton.disabled = false;
+}
+
+// function switchIfImagesIsForDelete( isForDelete, number ) {
+//     let note = document.querySelector( '.image_will_be_delete_note_' + number );
+//     let rectangle = document.querySelector( '.delete_image_background_' + number );
+
+//     if( isForDelete == true ) {
+//         rectangle.classList.add('delete_image_background_show_after');
+//         note.style.display = 'block';
+//     } else {
+//         rectangle.classList.remove('delete_image_background_show_after');
+//         note.style.display = 'none';
+//     }
+// }
+
+// function changeValueForDeleteOldImages( isForDelete, number ) {
+//     let image = document.querySelector( '.old_image_link_' + number );
+//     if ( isForDelete == true ) {
+//         image.value = 'isForDelete';
+//     } else {
+//         image.value = 'noDelete';
+//     }
+// }
+
+function switchIfImagesIsForDelete( isForDelete, number ) {
+    let note = document.querySelector( '.image_will_be_delete_note_' + number );
+    let rectangle = document.querySelector( '.delete_image_background_' + number );
+    switchVisibleRectangleForDeletePicture( isForDelete, rectangle, note );
+}
+
+function switchVisibleRectangleForDeletePicture( isForDelete, rectangle, note ) {
+    if( isForDelete == true ) {
+        rectangle.classList.add('delete_image_background_show_after');
+        note.style.display = 'block';
+    } else {
+        rectangle.classList.remove('delete_image_background_show_after');
+        note.style.display = 'none';
+    }
+}
+
+function checkDefaultDeleteImageSettings() {
+    for( i = 1; ; i++) {
+        let image = document.querySelector( '.old_image_info_' + i );
+        let note = document.querySelector( '.image_will_be_delete_note_' + i );
+        let rectangle = document.querySelector( '.delete_image_background_' + i );
+        if ( rectangle == null ) {
+            break;
+        }
+        isForDelete = image.value == 'isForDelete' ? true : false;
+        switchVisibleRectangleForDeletePicture(isForDelete, rectangle, note );
+    }
+}
+
+function changeValueForDeleteOldImages( isForDelete, number ) {
+    let image = document.querySelector( '.old_image_info_' + number );
+    if ( isForDelete == true ) {
+        image.value = 'isForDelete';
+    } else {
+        image.value = 'noDelete';
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     addListenerForAddPicturesFile();
     addListenerForSubmitButtonAndAddFilesArray();
+    registerListenerForPrevPicturesButtons();
+    checkDefaultDeleteImageSettings();
 });

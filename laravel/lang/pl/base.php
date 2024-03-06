@@ -599,4 +599,6 @@ return [
     "courier_announcement_previously_picrures_title" => "Poprzednio dodane zdjęcia",
     "courier_announcement_delete_prev_image_button" => "Usuń obraz",
     "courier_announcement_restore_prev_image_button" => "Przywróć obraz",
+    "courier_announcement_image_will_be_delete_note" => "To zdjecie bedzie usuniete pod dodaniu ogłoszenia",
+    "courier_announcement_image_number_error_message" => "Liczba zdjęć nie może przekroczyć wartości ",
 ];

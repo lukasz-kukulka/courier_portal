@@ -169,7 +169,7 @@
 
                                 <div class="bottom_summary container row">
                                     <div class="button_back_announcement_summary col-3 d-flex justify-content-start">
-                                        <button type="button" class="btn btn-primary" onclick="submitFormAfterSummary('edit')" data-action="edit" data_route="{{ route('courier_announcement.editCreation') }}">{{ __( 'base.courier_announcement_back_to_edit' ) }}</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitFormAfterSummary('edit')" data-action="edit" data_route="{{ route('courier_announcement.create') }}">{{ __( 'base.courier_announcement_back_to_edit' ) }}</button>
                                     </div>
                                     <div class="experience_announcement_date col-6 text-center">
                                         @if ( request()->input( 'experience_for_premium_date' ) !== "1" )

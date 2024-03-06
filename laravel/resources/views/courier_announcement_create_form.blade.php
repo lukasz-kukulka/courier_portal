@@ -16,8 +16,24 @@
                         <div class="card-body p-2">
                             <form action="{{ route('courier_announcement_generator') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
-                                {{-- {{dd( request() )}} --}}
-                                {{ __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', 'courier_pro', 'courier_announcement' ) }}
+                                <div class="text-center row mb-3 error_picture_number is-invalid" role="alert" style="display: block;">
+                                    @error('all_pictures_number')
+                                        <button type="submit" class="btn btn-danger text-light"><strong>{{$message}}</strong></button>
+                                    @enderror
+                                </div>
+                                @if ($errors->any())
+                                        {{-- {{ dd(request()) }} --}}
+                                @endif
+                                @if( request()->input( 'images_number' ) )
+
+                                    <input type="hidden" name="images_number" id="images_number" value="{{ request()->input( 'images_number' ) }}">
+                                    @for ( $i = 1; $i <= request()->input( 'images_number' ); $i++ )
+                                        @php $key = array_search( request()->input( 'image' . $i ), request()->all() ) @endphp
+                                        <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ request()->input( 'image' . $i ) }}">
+                                        <p></p>
+                                    @endfor
+
+                                @endif
                                 <div class="row mb-3">
                                     <label for="courier_announcement_name" class="col-md-4 col-form-label text-md-end">{{ __('base.courier_announcement_name' ) }}</label>
                                     <div class="col-md-6">
@@ -200,8 +216,8 @@
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
-                                {{-- {{dd(request())}} --}}
-                                @if( request()->input( 'images_number') != null )
+
+                                @if( request()->input( 'images_number') != null || old( 'images_number' ) != null )
                                     <div class="courier_announcement_previously_pictures_container p-2 table-responsive">
                                         <table class="table border border-1 ">
                                             <thead>
@@ -213,19 +229,31 @@
 
                                                 <tr class="input_courier_announcement_previosly_picture align-middle h-100">
                                                     <td class="picture_container_summary border border-1">
-
                                                         <div class="prev_picture_body">
-                                                            @for ( $i = 1; $i <= request()->input( 'images_number'); $i++ )
-                                                                <div class="single_prev_picture_container">
-                                                                    <div class="left_single_prev_picture_container">
-                                                                        <img class="single_prev_picture" src="{{ asset( request()->input( 'image' . $i ) ) }}" alt="{{ 'image' . $i }}">
+                                                            @php $imagesNumber = old( 'images_number', request()->input( 'images_number' ) ) @endphp
+                                                            @for ( $i = 1; $i <= $imagesNumber; $i++ )
+                                                                <div class="{{ 'delete_image_background_' . $i }}">
+                                                                    <div class="single_prev_picture_container border border-1">
+                                                                        <div class="top_single_prev_picture_container">
+                                                                            <div class="left_single_prev_picture_container">
+                                                                                @php $link = asset( old( 'image' . $i, request()->input( 'image' . $i ) ) ) @endphp
+                                                                                {{-- {{ dd( $link  ) }} --}}
+                                                                                <img class="single_prev_picture" src="{{ $link }}" alt="{{ 'image' . $i }}">
+                                                                            </div>
+                                                                            <div class="right_single_prev_picture_container">
+                                                                                <button id="{{"delete_prev_image_" . $i }}" type="button" class="{{"delete_prev_image_" . $i }} btn btn-primary">{{ __( 'base.courier_announcement_delete_prev_image_button' ) }}</button>
+                                                                                <button disabled id="{{"restore_prev_image_" . $i }}" type="button" class="{{"restore_prev_image_" . $i }} btn btn-secondary">{{ __( 'base.courier_announcement_restore_prev_image_button' ) }}</button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="bottom_single_prev_picture_container">
+                                                                            <p class="{{ 'image_will_be_delete_note_' . $i }}">{{ __( 'base.courier_announcement_image_will_be_delete_note' ) }}</p>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="right_single_prev_picture_container">
-                                                                        <button id="{{"delete_prev_image_" . $i }}" type="button" class="btn btn-primary">{{ __( 'base.courier_announcement_delete_prev_image_button' ) }}</button>
-                                                                        <button id="{{"restore_prev_image_" . $i }}" type="button" class="btn btn-primary">{{ __( 'base.courier_announcement_restore_prev_image_button' ) }}</button>
-                                                                    </div>
+                                                                    <input class="{{ 'old_image_link_' . $i }}" type="hidden" name="{{ 'old_image_' . $i }}" value="{{ old( 'old_image_' . $i, request()->input( 'image' . $i ) ) }}">
+                                                                    <input class="{{ 'old_image_info_' . $i }}" type="hidden" name="{{ 'old_image_info_' . $i }}" value="{{ old( 'old_image_info_' . $i, 'noDelete' ) }}">
+                                                                    <p>{{ old( old( 'old_image_' . $i, request()->input( 'image' . $i ) ), 'noDelete' ) }}</p>
+                                                                    <p>{{ old( 'old_image_' . $i, request()->input( 'image' . $i ) ) }}</p>
                                                                 </div>
-                                                                <p>to zdjecie bedzie usuniete pod dodaniu ogłoszenia</p>
                                                             @endfor
                                                         </div>
                                                     </td>{{-- END picture_container_summary --}}
@@ -234,6 +262,7 @@
                                         </table>
                                     </div>
                                 @endif
+                                <input class="test" type="hidden" name="test.test.test" value="test.test.test">
 
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}

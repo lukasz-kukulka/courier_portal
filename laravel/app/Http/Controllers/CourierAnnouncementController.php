@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -77,20 +78,31 @@ class CourierAnnouncementController extends Controller
     }
 
     public function summary( Request $request ) {
-        //dd( 'summary', $request->file() );
+        // dd( 'summary controller',$request->all() );
+        // dd( count( $request->file('files') ) );
+        $prevImagesLinks = $this->generatePrevLinksArrayForImages( $request );
+        $request->merge( ['all_pictures_number' => '' . count( $prevImagesLinks ) + $this->getFilesNumber( $request ) ] );
+        // dd( $prevImagesLinks );
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
         $request->session()->forget('files');
         $request->flash();
 
-        $this->validateAllRequestData( $request );
+        // session()->put('_old_input.all_pictures_number', '' . count( $prevImagesLinks ) + $filesNumber );
+        // dd($request);
+        $this->validateAllRequestData( $request);
+        // $numberImagesIsCorrect = $this->validateImagesNumber( $request, count( $prevImagesLinks )  );
+        //dd($validator);
+        // if ( $validator->fails() || $numberImagesIsCorrect == false ) {
+        //     return redirect()->back()->withErrors( $validator )->withInput();
+        // }
         $this->generateImagesFolderIfDontExist();
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
         $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ) );
-        // $request->files->replace();
+        $allImagesLinks = array_merge( $imagesLinks, $prevImagesLinks );
+            // dd($allImagesLinks);
         $allPostCodesSummary = $this->generateAllPostCodesSummary( $request );
-        // $headerData = $this->generateCourierAnnouncementSummaryHeader( $request );
         $directions = $this->json->directionsAction();
         $contactData = $this->generateContactData( $request );
         $deliveryDates = $this->generateDeliveryDates( $request );
@@ -99,11 +111,21 @@ class CourierAnnouncementController extends Controller
                         ->with( 'countryPostCodesData', $countryData)
                         ->with( 'userAndCompany', $company )
                         ->with( 'directions', $directions )
-                        ->with( 'imagesLinks', $imagesLinks )
+                        ->with( 'imagesLinks', $allImagesLinks )
                         ->with( 'postCodes', $allPostCodesSummary )
                         ->with( 'contactData', $contactData )
                         ->with( 'deliveryDates', $deliveryDates );
     }
+
+    // private function validateDirectionsField( $request ) {
+    //     $validator = Validator::make($request->all(), [
+    //         'postfix_select_post_code_sending' =>                        [ 'required', 'max:6' ],
+    //         'direction_city_post_code_sending' =>                        [ 'required', 'max:80' ],
+    //         'postfix_select_post_code_receiving' =>                      [ 'required', 'max:6' ],
+    //         'direction_city_post_code_receiving' =>                      [ 'required', 'max:80' ],
+    //     ], $this->generateErrorsMessages() );
+    //     return $validator;
+    // }
 
     public function addAnnouncementConfirmation() {
         return view( 'courier_announcement_confirmation_info' );
@@ -379,22 +401,22 @@ class CourierAnnouncementController extends Controller
 
     public function edit(string $id) { }
 
-    public function editCreation( Request $request ) {
-        // dd( $request );
-        session()->put('_old_input', $request->all() );
-        $company = UserModel::with('company')->find( auth()->user()->id );
-        $extensions = $this->generateAcceptedFileFormatForCreateBlade();
-        $contactData = $this->generateDataForContact( $company );
-        $headerData = $this->generateCourierAnnouncementCreateFormHeader();
-        $directionsData = $this->json->directionsAction();
-        $cargoData = $this->json->cargoAction();
-        return view( 'courier_announcement_create_form' )
-            ->with( 'extensions', $extensions )
-            ->with( 'contactData', $contactData )
-            ->with( 'headerData', $headerData )
-            ->with('directionsData', $directionsData)
-            ->with('cargoData', $cargoData);
-    }
+    // public function editCreation( Request $request ) {
+    //     // dd( 'editCreation', $request );
+    //     // session()->put('_old_input', $request->all() );
+    //     $company = UserModel::with('company')->find( auth()->user()->id );
+    //     $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+    //     $contactData = $this->generateDataForContact( $company );
+    //     $headerData = $this->generateCourierAnnouncementCreateFormHeader();
+    //     $directionsData = $this->json->directionsAction();
+    //     $cargoData = $this->json->cargoAction();
+    //     return view( 'courier_announcement_create_form' )
+    //         ->with( 'extensions', $extensions )
+    //         ->with( 'contactData', $contactData )
+    //         ->with( 'headerData', $headerData )
+    //         ->with('directionsData', $directionsData)
+    //         ->with('cargoData', $cargoData);
+    // }
 
     public function update(Request $request, string $id) {
                 // $courierAnnouncement = CourierAnnouncement::with([
@@ -509,18 +531,29 @@ class CourierAnnouncementController extends Controller
     }
 
     private function validateAllRequestData( $request ) {
+        // dd($request->all());
+        $loginUser = Auth::user();
         $rules = $this->generateAllCargoRules( $request );
-        $request->validate( $rules );
+        $messages = [
+            'all_pictures_number.lte' => __( 'base.courier_announcement_image_number_error_message' ) . __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', $loginUser->account_type, 'courier_announcement' ),
+        ];
+        $request->validate( $rules, $messages );
+
+        // $validator = Validator::make($request->all(), $rules, $messages);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()->withInput( $request->all() );
+        // }
     }
 
     private function generateAllCargoRules( $request ) {
         $rules = [];
+        $loginUser = Auth::user();
 
         $nameRules[ "courier_announcement_name" ] = 'required';
+        $nameRules[ "all_pictures_number" ] = 'lte:' . __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', $loginUser->account_type, 'courier_announcement' );
         $cargoRules = $this->generateCargoValidationRules( $request );
         $dateRules = $this->generateDateValidationRules( $request );
-        // $postCodesUKRules = $this->generatePostCodeUKValidationRules( $request, $this->json->ukPostCodeAction() );
-        // $postCodesPLRules = $this->generatePostCodePLValidationRules( $request, $this->json->plPostCodeAction() );
         $postCodesRules = $this->generateAllPostCodesValidationRules( $request );
         $experienceDate = $this->generateExperienceDateRules( $request );
         $imagesRules = $this->generateImagesValidationRules( $request->file('files') );
@@ -770,6 +803,27 @@ class CourierAnnouncementController extends Controller
             }
         }
         return $pathsArray;
+    }
+
+    private function generatePrevLinksArrayForImages( $request ) {
+        $linksArray = [];
+        $filesNumber = $this->getFilesNumber( $request );
+        for( $i = 1; ; $i++ ) {
+            $isForDelete = $request->input( 'old_image_info_' . $i );
+            $value = $request->input( 'old_image_' . $i );
+            if ( $value == null ) {
+                break;
+            }
+            if( $isForDelete == 'noDelete' ) {
+                $linksArray[ 'image'. $filesNumber + $i ] = $value;
+            }
+        }
+
+        return $linksArray;
+    }
+
+    private function getFilesNumber( $request ) {
+        return is_null($request->file('files')) ? 0 : count($request->file('files'));
     }
 
     // private function generateCourierAnnouncementSummaryHeader() {
