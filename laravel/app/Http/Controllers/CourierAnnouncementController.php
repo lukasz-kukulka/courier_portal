@@ -19,6 +19,7 @@ use App\Models\CourierTravelDate;
 use App\Models\PostCodePl;
 use App\Models\PostCodeUk;
 use App\Models\CourierAnnouncementContact;
+use App\Models\CourierAnnouncementAdditionalDirections;
 
 class CourierAnnouncementController extends Controller
 {
@@ -78,17 +79,24 @@ class CourierAnnouncementController extends Controller
     }
 
     public function summary( Request $request ) {
+        //dd($request);
         // dd( 'summary controller',$request->all() );
         // dd( count( $request->file('files') ) );
-        $prevImagesLinks = $this->generatePrevLinksArrayForImages( $request );
-        $request->merge( ['all_pictures_number' => '' . count( $prevImagesLinks ) + $this->getFilesNumber( $request ) ] );
-        // dd( $prevImagesLinks );
+        $prevImagesLinks = $this->generatePrevLinksArrayForEdit( $request );
+        $prevImagesLinksSummary = $this->generatePrevLinksArrayForSummary( $request );
+        $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ), count( $prevImagesLinks ) );
+        $allImagesLinks = array_merge( $imagesLinks, $prevImagesLinksSummary );
+        $allOldImagesLinks = array_merge( $imagesLinks, $prevImagesLinks );
+        //dd( $imagesLinks, $prevImagesLinks );
+        $request->merge( ['all_pictures_number' => '' . count( $allImagesLinks ) ] );
+        // $request->merge( ['all_old_pictures_number' => '' . count( $allOldImagesLinks ) ] );
+        // dd( $allOldImagesLinks, $imagesLinks );
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
         $request->session()->forget('files');
         $request->flash();
 
         // session()->put('_old_input.all_pictures_number', '' . count( $prevImagesLinks ) + $filesNumber );
-        // dd($request);
+        //dd($request);
         $this->validateAllRequestData( $request);
         // $numberImagesIsCorrect = $this->validateImagesNumber( $request, count( $prevImagesLinks )  );
         //dd($validator);
@@ -99,9 +107,8 @@ class CourierAnnouncementController extends Controller
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
-        $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ) );
-        $allImagesLinks = array_merge( $imagesLinks, $prevImagesLinks );
-            // dd($allImagesLinks);
+
+        //dd( $imagesLinks, $prevImagesLinks );
         $allPostCodesSummary = $this->generateAllPostCodesSummary( $request );
         $directions = $this->json->directionsAction();
         $contactData = $this->generateContactData( $request );
@@ -112,6 +119,7 @@ class CourierAnnouncementController extends Controller
                         ->with( 'userAndCompany', $company )
                         ->with( 'directions', $directions )
                         ->with( 'imagesLinks', $allImagesLinks )
+                        ->with( 'oldImagesLinks', $allOldImagesLinks )
                         ->with( 'postCodes', $allPostCodesSummary )
                         ->with( 'contactData', $contactData )
                         ->with( 'deliveryDates', $deliveryDates );
@@ -132,6 +140,7 @@ class CourierAnnouncementController extends Controller
     }
 
     public function create( Request $request ) {
+        //dd( $request );
         $company = UserModel::with('company')->find( auth()->user()->id );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
@@ -147,25 +156,27 @@ class CourierAnnouncementController extends Controller
     }
 
     public function store(Request $request) {
-        $data = $request->all();
-        dd( 'store()', $data );
+        //$data = $request->all();
+        // dd( 'store()', $request);
+        // $postCodes = $this->generateDirectionsPostcodesArray();
+        // dd( $postCodes );
+        // $this->storeImages( $data, 66 );
         $courierAnnouncement = new CourierAnnouncement( [
-            'name' =>                                   $data[ 'courier_announcement_name' ],
-            'description' =>                            $data[ 'additional_description_input' ],
-            'experience_date' =>                        $this->getExperienceAnnouncementDate(
-                                                            $data[ 'experience_announcement_date_input' ],
-                                                            $data[ 'experience_for_premium_date' ]
-                                                        ),
+            'name' =>                   $request->input( 'courier_announcement_name' ),
+            'description' =>            $request->input( 'additional_description_input' ),
+            'experience_date' =>        $this->getExperienceAnnouncementDate(
+                                            $request->input( 'experience_announcement_date_input' ),
+                                            $request->input( 'experience_for_premium_date' )
+                                        ),
         ] );
         $userId = auth()->id();
         $courierAnnouncement->authorUser()->associate( $userId );
         $courierAnnouncement->save();
-        $this->storeContactData( $request, $courierAnnouncement->id);
-        $this->storeImages( $courierAnnouncement->id);
-        $this->storeCargos( $request, $courierAnnouncement->id);
-        $this->storeDates( $request, $courierAnnouncement->id);
-        $this->storePostCodesPL( $request, $courierAnnouncement->id);
-        $this->storePostCodesUK( $request, $courierAnnouncement->id);
+        $this->storeContactData( $request, $courierAnnouncement->id );
+        $this->storeImages( $request, $courierAnnouncement->id );
+        $this->storeCargos( $request, $courierAnnouncement->id );
+        $this->storeDates( $request, $courierAnnouncement->id );
+        $this->storeAllPostCodes( $request, $courierAnnouncement->id );
 
         return $this->addAnnouncementConfirmation();
     }
@@ -189,32 +200,50 @@ class CourierAnnouncementController extends Controller
         $date->save();
     }
 
-    private function storeImages( $announcementID ) {
+    private function storeImages( $request, $announcementID ) {
         $filePath = $this->generateImagesFilesPath();
         $tempPath = $this->generateImagesTempFilesPath();
-        $folderPath = storage_path( 'app' . DIRECTORY_SEPARATOR . $tempPath );
-        $fileNames = collect(File::files($folderPath))->map->getRelativePathname();
-        $allNewFilePaths = [];
-
-        foreach( $fileNames as $file ) {
-            $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $file;
-            $newFilePath = $filePath . DIRECTORY_SEPARATOR . $file;
+        for( $i = 1; $i <= $request->input( 'all_pictures_number' ); $i++ ) {
+            $fileName = basename( $request->input( 'image' . $i ) );
+            $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $fileName;
+            $newFilePath = $filePath . DIRECTORY_SEPARATOR . $fileName;
             $isSuccessStoreFile = Storage::move( $oldFilePath, $newFilePath );
-            $filePathForDataBase = 'storage/' . $this->generateImagesFilesPath( '/', false ) . '/' . $file;
-            $allNewFilePaths[ $file ] = $filePathForDataBase;
             if( !$isSuccessStoreFile ) {
-                dd( 'ERROR storeImages() in CourierAnnouncementController' );
+                dd( $isSuccessStoreFile, 'ERROR storeImages() in CourierAnnouncementController', ltrim($tempPath, '\\'), $newFilePath );
+
             }
-        }
-        //dd( $allNewFilePaths );
-        foreach( $allNewFilePaths as $fileKey => $fileLink ) {
             $images = new CourierAnnouncementImages ( [
-                'image_name' =>                      $fileKey,
-                'image_link' =>                      $fileLink,
+                'image_name' =>                      $fileName,
+                'image_link' =>                      $newFilePath,
             ] );
             $images->announcementId()->associate( $announcementID );
             $images->save();
         }
+        // $tempPath = $this->generateImagesTempFilesPath();
+        // $folderPath = storage_path( 'app' . DIRECTORY_SEPARATOR . $tempPath );
+        // $fileNames = collect(File::files($folderPath))->map->getRelativePathname();
+        // $allNewFilePaths = [];
+
+        // foreach( $fileNames as $file ) {
+        //     $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $file;
+        //     $newFilePath = $filePath . DIRECTORY_SEPARATOR . $file;
+        //     dd( $oldFilePath, $newFilePath );
+        //     $isSuccessStoreFile = Storage::move( $oldFilePath, $newFilePath );
+        //     $filePathForDataBase = 'storage/' . $this->generateImagesFilesPath( '/', false ) . '/' . $file;
+        //     $allNewFilePaths[ $file ] = $filePathForDataBase;
+        //     if( !$isSuccessStoreFile ) {
+        //         dd( 'ERROR storeImages() in CourierAnnouncementController' );
+        //     }
+        // }
+
+        // foreach( $allNewFilePaths as $fileKey => $fileLink ) {
+        //     $images = new CourierAnnouncementImages ( [
+        //         'image_name' =>                      $fileKey,
+        //         'image_link' =>                      $fileLink,
+        //     ] );
+        //     $images->announcementId()->associate( $announcementID );
+        //     $images->save();
+        // }
     }
 
     private function checkIfLastCargoIsEmpty( Request $request, $lastIndex ) {
@@ -260,6 +289,7 @@ class CourierAnnouncementController extends Controller
             $cargo->save();
         }
     }
+
     private function storeDates( Request $request, $announcementID ) {
         $dateElementsNumber = $request->input( 'date_number_visible' );
         if ( $this->checkIfLastDateIsEmpty( $request, $dateElementsNumber ) ) {
@@ -268,32 +298,53 @@ class CourierAnnouncementController extends Controller
 
         for ( $i = 1; $i <= $dateElementsNumber; $i++ ) {
             $date = new CourierTravelDate ( [
-                'direction' =>                      $request->input( 'date_directions_select_' . $i ),
-                'date' =>                           $request->input( 'date_input_' . $i ),
-                'description' =>                    $request->input( 'date_description_' . $i ),
+                'dir_from' =>                      $request->input( 'from_date_directions_select_' . $i ),
+                'dir_to' =>                        $request->input( 'to_date_directions_select_' . $i ),
+                // tutaj dodac czy w danej dacie sa dodatkowe postkody jezeli takowe sie pojawia
+                // 'additional_dir' =>                $request->input( 'date_directions_select_' . $i ),
+                'date' =>                          $request->input( 'date_input_' . $i ),
+                'description' =>                   $request->input( 'date_description_' . $i ),
             ] );
             $date->announcementId()->associate( $announcementID );
             $date->save();
+            // umiescic tutaj funkcje zapisywania do bazy dodatkowych postkodow jezeli takowe sie pojawia
         }
     }
 
-    private function storePostCodesPL( Request $request, $announcementID ) {
+    private function storeAllPostCodes( $request, $announcementID ) {
+        $allPostCodes = $this->generateDirectionsPostcodesArray();
+        // w tej funkcji umiescic dodatkowy case jezeli pojawia sie dodatkowe kierunki
+        foreach( $allPostCodes as $key => $postCodesArray ) {
+            switch ( $key ) {
+                case 'pl':
+                    $this->storePostCodesPL( $request, $postCodesArray, $announcementID );
+                    break;
+                case 'uk':
+                    $this->storePostCodesUK( $request, $postCodesArray, $announcementID );
+                    break;
+                default:
+                    dd( 'ERROR in storeAllPostCodes()');
+                    break;
+            }
+        }
+    }
+
+    private function storePostCodesPL( $request, $postCodesArray, $announcementID ) {
         $postCodesArray = [];
-        dd( 'dodac funkcje to store dla wszystkich postkodów');
-        // foreach ( $this->json->plPostCodeAction() as $postCode ) {
-        //     if ( $request->input( $postCode ) === $postCode ) {
-        //         $postCodesArray[ $postCode ] = 1;
-        //     } else {
-        //         $postCodesArray[ $postCode ] = 0;
-        //     }
-        // }
+        foreach ( $this->json->plPostCodeAction() as $postCode ) {
+            if ( $request->input( $postCode ) === $postCode ) {
+                $postCodesArray[ $postCode ] = 1;
+            } else {
+                $postCodesArray[ $postCode ] = 0;
+            }
+        }
 
         $postCodesPL = new PostCodePl ( $postCodesArray );
         $postCodesPL->announcementId()->associate( $announcementID );
         $postCodesPL->save();
     }
 
-    private function storePostCodesUK( Request $request, $announcementID ) {
+    private function storePostCodesUK( $request, $postCodesArray, $announcementID ) {
         $postCodesArray = [];
         foreach ( $this->json->ukPostCodeAction() as $postCode ) {
             if ( $request->input( $postCode ) === $postCode ) {
@@ -793,9 +844,9 @@ class CourierAnnouncementController extends Controller
         return $fullCountryArray;
     }
 
-    private function generateLinksForImages( $files, $tempPath ) {
+    private function generateLinksForImages( $files, $tempPath, $iteratorBegin ) {
         $pathsArray = [];
-        $iterator = 1;
+        $iterator = $iteratorBegin + 1;
         if( $files !== null && count( $files ) > 0 ) {
             foreach( $files as $file ) {
                 $pathsArray[ 'image' . $iterator ] = Storage::url( $tempPath . '/' .$file->hashName() );
@@ -805,9 +856,24 @@ class CourierAnnouncementController extends Controller
         return $pathsArray;
     }
 
-    private function generatePrevLinksArrayForImages( $request ) {
+    private function generatePrevLinksArrayForEdit( $request ) {
         $linksArray = [];
-        $filesNumber = $this->getFilesNumber( $request );
+        for( $i = 1; ; $i++ ) {
+            //$isForDelete = $request->input( 'old_image_info_' . $i );
+            $value = $request->input( 'old_image_' . $i );
+            if ( $value == null ) {
+                break;
+            }
+            //if( $isForDelete == 'noDelete' ) {
+            $linksArray[ 'image'. $i ] = $value;
+            //}
+        }
+
+        return $linksArray;
+    }
+
+    private function generatePrevLinksArrayForSummary( $request ) {
+        $linksArray = [];
         for( $i = 1; ; $i++ ) {
             $isForDelete = $request->input( 'old_image_info_' . $i );
             $value = $request->input( 'old_image_' . $i );
@@ -815,7 +881,7 @@ class CourierAnnouncementController extends Controller
                 break;
             }
             if( $isForDelete == 'noDelete' ) {
-                $linksArray[ 'image'. $filesNumber + $i ] = $value;
+                $linksArray[ 'summary_image'. $i ] = $value;
             }
         }
 

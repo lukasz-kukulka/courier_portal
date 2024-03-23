@@ -258,6 +258,11 @@ function checkDefaultDeleteImageSettings() {
             break;
         }
         isForDelete = image.value == 'isForDelete' ? true : false;
+        if( isForDelete ) {
+            let delButtons = document.querySelector( '.delete_prev_image_' + i );
+            let resButtons = document.querySelector( '.restore_prev_image_' + i );
+            exchangeButtonsProperties( delButtons, resButtons );
+        }
         switchVisibleRectangleForDeletePicture(isForDelete, rectangle, note );
     }
 }

@@ -10,7 +10,9 @@ return new class extends Migration
         Schema::create('courier_announcement_travel_dates_archive', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('courier_announcement_id'); // klucz obcy
-            $table->string('direction');
+            $table->string('dir_from');
+            $table->string('dir_to');
+            $table->boolean( 'additional_dir' )->default( false );
             $table->date('date');
             $table->string('description')->nullable();
             $table->timestamps();

@@ -15,18 +15,47 @@
                         <div class="card-body">
                             <form action="#" method="POST" id="courier_announcement_summary">
                                 @csrf
-                                {{-- {{ dd( request() ) }} --}}
-                                <input type="hidden" name="images_number" id="images_number" value="{{ count( $imagesLinks ) }}">
-                                @foreach ( $imagesLinks as $key => $link )
-                                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $link }}">
-                                @endforeach
-
                                 @foreach ( request()->all() as $key => $value )
                                     @if ( $key != 'files' )
                                         <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $value }}">
                                     @endif
                                 @endforeach
-
+                                {{-- {{ dd( request() ) }} --}}
+                                {{-- <p>{{ count( $imagesLinks ) }}</p> --}}
+                                {{-- <input type="hidden" name="images_number" id="images_number" value="{{ count( $imagesLinks ) }}"> --}}
+                                {{-- @foreach ( $imagesLinks as $key => $link )
+                                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $link }}">
+                                    <p><small>{{ $key }} -> {{ $link }}</small></p>
+                                @endforeach --}}
+                                {{-- @foreach ( request()->all() as $key => $value )
+                                    @if ( $key != 'files' )
+                                        <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $value }}">
+                                    @endif
+                                @endforeach --}}
+                                @foreach ( $oldImagesLinks as $key => $link )
+                                    <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $link }}">
+                                    <p><small>{{ $key }} -> {{ $link }}</small></p>
+                                @endforeach
+                                {{-- @foreach ( request()->all() as $key => $value )
+                                    @if ( $key == 'old_image_1' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_2' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_3' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_4' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_5' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_6' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_7' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_8' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_9' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                    @if ( $key == 'old_image_10' ) <p><small>{{ $key }} = {{ $value }} </small></p> @endif
+                                @endforeach --}}
+                                {{-- @foreach ( request()->all() as $key => $value )
+                                    @if ( $key != 'files' )
+                                        <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ $value }}">
+                                    @endif
+                                @endforeach --}}
+                                <input type="hidden" name="images_number" id="images_number" value="{{ count( $imagesLinks ) }}">
+                                <input type="hidden" name="old_summmary_images_number" id="old_summmary_images_number" value="{{ count( $oldImagesLinks ) }}">
+                                {{-- {{dd( $imagesLinks, request()->all() )}} --}}
                                 <div class="info_summary_container">
                                     <p class="h3 text-center">{{ __( 'base.courier_announcement_show_info_summary' ) }}</p>
                                 </div>

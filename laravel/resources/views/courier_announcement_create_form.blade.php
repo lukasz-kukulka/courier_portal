@@ -21,19 +21,20 @@
                                         <button type="submit" class="btn btn-danger text-light"><strong>{{$message}}</strong></button>
                                     @enderror
                                 </div>
-                                @if ($errors->any())
-                                        {{-- {{ dd(request()) }} --}}
-                                @endif
-                                @if( request()->input( 'images_number' ) )
+                                {{-- {{ dd(request()) }} --}}
+                                {{-- @if ($errors->any())
+                                        {{ dd(request()) }}
+                                @endif --}}
+                                {{-- @if( old( 'images_number' ) )
 
-                                    <input type="hidden" name="images_number" id="images_number" value="{{ request()->input( 'images_number' ) }}">
+                                    <input type="hidden" name="images_number" id="images_number" value="{{ old( 'images_number' ) }}">
                                     @for ( $i = 1; $i <= request()->input( 'images_number' ); $i++ )
                                         @php $key = array_search( request()->input( 'image' . $i ), request()->all() ) @endphp
                                         <input type="hidden" name="{{ $key }}" id="{{ $key }}" value="{{ request()->input( 'image' . $i ) }}">
                                         <p></p>
                                     @endfor
 
-                                @endif
+                                @endif --}}
                                 <div class="row mb-3">
                                     <label for="courier_announcement_name" class="col-md-4 col-form-label text-md-end">{{ __('base.courier_announcement_name' ) }}</label>
                                     <div class="col-md-6">
@@ -216,8 +217,11 @@
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
-
-                                @if( request()->input( 'images_number') != null || old( 'images_number' ) != null )
+                                @php $imagesNumber = request()->input( 'old_summmary_images_number' ) @endphp
+                                @if ($errors->any())
+                                    @php $imagesNumber = old( 'old_images_number', request()->input( 'old_images_number' ) ) @endphp
+                                @endif
+                                @if( $imagesNumber != null )
                                     <div class="courier_announcement_previously_pictures_container p-2 table-responsive">
                                         <table class="table border border-1 ">
                                             <thead>
@@ -230,14 +234,16 @@
                                                 <tr class="input_courier_announcement_previosly_picture align-middle h-100">
                                                     <td class="picture_container_summary border border-1">
                                                         <div class="prev_picture_body">
-                                                            @php $imagesNumber = old( 'images_number', request()->input( 'images_number' ) ) @endphp
+
                                                             @for ( $i = 1; $i <= $imagesNumber; $i++ )
                                                                 <div class="{{ 'delete_image_background_' . $i }}">
                                                                     <div class="single_prev_picture_container border border-1">
                                                                         <div class="top_single_prev_picture_container">
                                                                             <div class="left_single_prev_picture_container">
-                                                                                @php $link = asset( old( 'image' . $i, request()->input( 'image' . $i ) ) ) @endphp
-                                                                                {{-- {{ dd( $link  ) }} --}}
+                                                                                @php $link = asset( request()->input( 'image' . $i ) ) @endphp
+                                                                                @if ($errors->any())
+                                                                                    @php $link = asset( old( 'old_image_' . $i, request()->input( 'old_image_' . $i ) ) ) @endphp
+                                                                                @endif
                                                                                 <img class="single_prev_picture" src="{{ $link }}" alt="{{ 'image' . $i }}">
                                                                             </div>
                                                                             <div class="right_single_prev_picture_container">
@@ -249,12 +255,23 @@
                                                                             <p class="{{ 'image_will_be_delete_note_' . $i }}">{{ __( 'base.courier_announcement_image_will_be_delete_note' ) }}</p>
                                                                         </div>
                                                                     </div>
-                                                                    <input class="{{ 'old_image_link_' . $i }}" type="hidden" name="{{ 'old_image_' . $i }}" value="{{ old( 'old_image_' . $i, request()->input( 'image' . $i ) ) }}">
+                                                                    @if ($errors->any())
+                                                                        <input class="{{ 'old_image_link_' . $i }}" type="hidden" name="{{ 'old_image_' . $i }}" value="{{ old( 'old_image_' . $i, request()->input( 'image' . $i ) ) }}">
+                                                                        {{-- <input class="{{ 'old_image_info_' . $i }}" type="hidden" name="{{ 'old_image_info_' . $i }}" value="{{ old( 'old_image_info_' . $i, 'noDelete' ) }}"> --}}
+                                                                    @else
+                                                                        <input class="{{ 'old_image_link_' . $i }}" type="hidden" name="{{ 'old_image_' . $i }}" value="{{ request()->input( 'image' . $i ) }}">
+                                                                        {{-- <input class="{{ 'old_image_info_' . $i }}" type="hidden" name="{{ 'old_image_info_' . $i }}" value="noDelete"> --}}
+                                                                    @endif
                                                                     <input class="{{ 'old_image_info_' . $i }}" type="hidden" name="{{ 'old_image_info_' . $i }}" value="{{ old( 'old_image_info_' . $i, 'noDelete' ) }}">
-                                                                    <p>{{ old( old( 'old_image_' . $i, request()->input( 'image' . $i ) ), 'noDelete' ) }}</p>
-                                                                    <p>{{ old( 'old_image_' . $i, request()->input( 'image' . $i ) ) }}</p>
+{{--
+                                                                    <p><small>OLD -> {{ old( 'old_image_info_' . $i, 'noDelete' ) }} => {{ old( 'old_image_' . $i, request()->input( 'image' . $i ) ) }}</small></p>
+                                                                    <p><small>NEW {{ request()->input( 'old_image_info_' . $i ) }} => {{ request()->input( 'image' . $i ) }}</small></p>
+                                                                    <small></small>
+                                                                    <p>------------------------------------------------</p> --}}
+
                                                                 </div>
                                                             @endfor
+                                                            <input class="old_images_number" type="hidden" name="old_images_number" value="{{ $imagesNumber }}">
                                                         </div>
                                                     </td>{{-- END picture_container_summary --}}
                                                 </tr>
@@ -262,8 +279,82 @@
                                         </table>
                                     </div>
                                 @endif
-                                <input class="test" type="hidden" name="test.test.test" value="test.test.test">
+                                {{-- <input class="test" type="hidden" name="test.test.test" value="test.test.test">
+                                @foreach( request()->all() as $key => $value )
+                                @if ( $key == 'image1' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image2' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image3' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image4' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image5' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image6' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image7' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image8' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image9' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image10' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image11' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'image12' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_1' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_2' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_3' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_4' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_5' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_6' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_7' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_8' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_9' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_10' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_11' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'old_image_12' ) <p>{{ $key }} = {{ $value }} </p> @endif --}}
 
+{{--
+
+                                @if ( $key == 'images_number' ) <p>{{ $key }} = {{ $value }} </p> @endif
+                                @if ( $key == 'all_pictures_number' ) <p>{{ $key }} = {{ $value }} </p> @endif
+
+                                @endforeach
+                                <p>INFO: {{ old( 'old_image_info_1', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_2', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_3', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_4', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_5', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_6', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_7', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_8', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_9', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_10', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_11', 'noDelete' ) }}</p>
+                                <p>INFO: {{ old( 'old_image_info_12', 'noDelete' ) }}</p>
+                                <p>OLD ========{{ old( 'images_number', request()->input( 'images_number' ) ) }}</p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_1' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_2' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_3' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_4' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_5' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_6' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_7' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_8' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_9' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_10' ) }} </p>
+                                <p>{{ 'old_image' }} = {{ old( 'old_image_11' ) }} </p>
+
+                                <p>{{ 'image' }} = {{ old( 'image1' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image2' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image3' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image4' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image5' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image6' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image7' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image8' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image9' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image10' ) }} </p>
+                                <p>{{ 'image' }} = {{ old( 'image11' ) }} </p> --}}
+                                {{-- @if(session()->hasOldInput())
+                                    <ul>
+                                        @foreach(old() as $key => $value)
+                                            <li>{{ $key }}: {{ $value }}</li>
+                                        @endforeach
+                                    </ul>
+                                @endif --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
