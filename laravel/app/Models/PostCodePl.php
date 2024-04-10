@@ -22,11 +22,7 @@ class PostCodePl extends Model
             'courier_announcement_id'
         ];
         $json = app(\App\Http\Controllers\JsonParserController::class)->plPostCodeAction();
-        //dd($json);
-        //$all_postcodes = json_decode($json, true);
-        //dd($this->fillable);
         $this->fillable = array_merge($this->fillable, array_values( $json ) );
-        //dd($this->fillable);
     }
 
     public function announcementId() {

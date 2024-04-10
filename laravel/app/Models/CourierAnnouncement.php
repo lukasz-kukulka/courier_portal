@@ -39,4 +39,19 @@ class CourierAnnouncement extends Model
     public function contactAnnouncement() {
         return $this->hasOne( CourierAnnouncementContact::class, 'courier_announcement_id' );
     }
+
+    public function additionalPostCodes() {
+        return $this->hasOne( CourierAnnouncementAdditionalDirections::class, 'courier_announcement_id' );
+    }
+
+    public function delete() {
+        $this->cargoTypeAnnouncement()->delete();
+        $this->cargoTypeAnnouncement()->delete();
+        $this->imageAnnouncement()->delete();
+        $this->dateAnnouncement()->delete();
+        $this->postCodesPlAnnouncement()->delete();
+        $this->postCodesUkAnnouncement()->delete();
+        $this->contactAnnouncement()->delete();
+        return parent::delete();
+    }
 }

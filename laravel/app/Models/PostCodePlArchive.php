@@ -11,8 +11,8 @@ class PostCodePlArchive extends Model
     protected $table = 'post_codes_pl_archive';
 
     public function __construct(array $attributes = []) {
-        parent::__construct($attributes);
         $this->addColumnsFromJson();
+        parent::__construct($attributes);
     }
 
     public function addColumnsFromJson() {
@@ -20,11 +20,11 @@ class PostCodePlArchive extends Model
             'courier_announcement_id'
         ];
         $json = app(\App\Http\Controllers\JsonParserController::class)->plPostCodeAction();
-        $all_postcodes = json_decode($json, true);
-        $this->fillable = array_merge($this->fillable, array_keys( $all_postcodes ) );
+        // $all_postcodes = json_decode($json, true);
+        $this->fillable = array_merge($this->fillable, array_keys( $json ) );
     }
 
-    public function courierAnnouncement() {
+    public function announcementId() {
         return $this->belongsTo( CourierAnnouncementArchive::class, 'courier_announcement_id' );
     }
 }

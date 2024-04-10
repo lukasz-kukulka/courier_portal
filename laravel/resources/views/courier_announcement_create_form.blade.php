@@ -16,6 +16,13 @@
                         <div class="card-body p-2">
                             <form action="{{ route('courier_announcement_generator') }}" method="POST" id="courier_announcement_form" enctype="multipart/form-data">
                                 @csrf
+
+                                @php $editModeOn = isset($editMode) @endphp
+                                <input type="hidden" name="edit_mode_on" id="edit_mode_on" value="{{ old( "edit_mode_on", $editModeOn ) }}">
+                                @if ( $editModeOn == true )
+                                    <input type="hidden" name="announcement_number" id="announcement_number" value="{{ old( "announcement_number", $announcementNumber ) }}">
+                                @endif
+
                                 <div class="text-center row mb-3 error_picture_number is-invalid" role="alert" style="display: block;">
                                     @error('all_pictures_number')
                                         <button type="submit" class="btn btn-danger text-light"><strong>{{$message}}</strong></button>
@@ -217,7 +224,7 @@
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
                                 {{-- ////////////////////////////////////////////////////////////////////////////////////////////////////////// --}}
-                                @php $imagesNumber = request()->input( 'old_summmary_images_number' ) @endphp
+                                @php $imagesNumber = request()->input( 'old_summary_images_number' ) @endphp
                                 @if ($errors->any())
                                     @php $imagesNumber = old( 'old_images_number', request()->input( 'old_images_number' ) ) @endphp
                                 @endif

@@ -13,6 +13,10 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.courier_announcement_summary_title') }}</div>
                         <div class="card-body">
+                            {{-- {{ dd( request() )}} --}}
+                            {{-- @if ( request()->input( 'edit_mode_on') == true )
+                            {{ dd( request() )}}
+                            @endIf --}}
                             <form action="#" method="POST" id="courier_announcement_summary">
                                 @csrf
                                 @foreach ( request()->all() as $key => $value )
@@ -54,7 +58,7 @@
                                     @endif
                                 @endforeach --}}
                                 <input type="hidden" name="images_number" id="images_number" value="{{ count( $imagesLinks ) }}">
-                                <input type="hidden" name="old_summmary_images_number" id="old_summmary_images_number" value="{{ count( $oldImagesLinks ) }}">
+                                <input type="hidden" name="old_summary_images_number" id="old_summary_images_number" value="{{ count( $oldImagesLinks ) }}">
                                 {{-- {{dd( $imagesLinks, request()->all() )}} --}}
                                 <div class="info_summary_container">
                                     <p class="h3 text-center">{{ __( 'base.courier_announcement_show_info_summary' ) }}</p>
@@ -206,8 +210,14 @@
                                         @endif
                                     </div>
                                     <div class="button_confirm_announcement_summary col-3 d-flex justify-content-end">
-                                        <button type="button" class="btn btn-primary" onclick="submitFormAfterSummary('confirm')" data-action="confirm" data_route="{{ route('courier_announcement.store') }}">{{ __( 'base.add_announcement_button' ) }}</button>
+                                        @if ( request()->input( 'edit_mode_on') == true )
+                                            <button type="button" class="btn btn-primary" onclick="submitFormAfterSummary('confirm')" data-action="confirm" data_route="{{ route('courier_announcement.updateEdit') }}">{{ __( 'base.add_announcement_button' ) }}</button>
+                                        @else
+                                            <button type="button" class="btn btn-primary" onclick="submitFormAfterSummary('confirm')" data-action="confirm" data_route="{{ route('courier_announcement.store') }}">{{ __( 'base.add_announcement_button' ) }}</button>
+                                        @endIf
                                     </div>
+
+
                                 </div> {{-- END bottom_summary --}}
                             </form>
                         </div>

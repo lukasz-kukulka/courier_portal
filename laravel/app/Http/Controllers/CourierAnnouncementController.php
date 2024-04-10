@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
@@ -21,6 +22,15 @@ use App\Models\PostCodeUk;
 use App\Models\CourierAnnouncementContact;
 use App\Models\CourierAnnouncementAdditionalDirections;
 
+use App\Models\CourierAnnouncementArchive;
+use App\Models\CargoTypesArchive;
+use App\Models\CourierAnnouncementImagesArchive;
+use App\Models\CourierTravelDateArchive;
+use App\Models\PostCodePlArchive;
+use App\Models\PostCodeUkArchive;
+use App\Models\CourierAnnouncementContactArchive;
+use App\Models\CourierAnnouncementAdditionalDirectionsArchive;
+
 class CourierAnnouncementController extends Controller
 {
 
@@ -36,18 +46,17 @@ class CourierAnnouncementController extends Controller
     }
 
     public function index() {
-        $query = CourierAnnouncement::with([
+        $query = CourierAnnouncement::with( [
             'cargoTypeAnnouncement',
             'imageAnnouncement',
             'dateAnnouncement',
             'postCodesPlAnnouncement',
             'postCodesUkAnnouncement',
-        ]);
-
+            'contactAnnouncement',
+            'additionalPostCodes'
+        ] );
         $announcementTitles = $this->generateAnnouncementTitlesInList($query->get());
-
         $perPage = $this->json->courierAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
-
         $announcements = $query->paginate($perPage);
 
         $view = view('courier_announcement_list', [
@@ -79,36 +88,22 @@ class CourierAnnouncementController extends Controller
     }
 
     public function summary( Request $request ) {
-        //dd($request);
-        // dd( 'summary controller',$request->all() );
-        // dd( count( $request->file('files') ) );
         $prevImagesLinks = $this->generatePrevLinksArrayForEdit( $request );
         $prevImagesLinksSummary = $this->generatePrevLinksArrayForSummary( $request );
         $imagesLinks = $this->generateLinksForImages( $request->file('files'), $this->generateImagesTempFilesPath( '/' ), count( $prevImagesLinks ) );
         $allImagesLinks = array_merge( $imagesLinks, $prevImagesLinksSummary );
         $allOldImagesLinks = array_merge( $imagesLinks, $prevImagesLinks );
-        //dd( $imagesLinks, $prevImagesLinks );
         $request->merge( ['all_pictures_number' => '' . count( $allImagesLinks ) ] );
-        // $request->merge( ['all_old_pictures_number' => '' . count( $allOldImagesLinks ) ] );
-        // dd( $allOldImagesLinks, $imagesLinks );
         $request->session()->flashInput( $request->input() ); // zamiana post na sesje
         $request->session()->forget('files');
         $request->flash();
 
-        // session()->put('_old_input.all_pictures_number', '' . count( $prevImagesLinks ) + $filesNumber );
-        //dd($request);
         $this->validateAllRequestData( $request);
-        // $numberImagesIsCorrect = $this->validateImagesNumber( $request, count( $prevImagesLinks )  );
-        //dd($validator);
-        // if ( $validator->fails() || $numberImagesIsCorrect == false ) {
-        //     return redirect()->back()->withErrors( $validator )->withInput();
-        // }
         $this->generateImagesFolderIfDontExist();
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
-
-        //dd( $imagesLinks, $prevImagesLinks );
+        //dd( $allImagesLinks, $allOldImagesLinks );
         $allPostCodesSummary = $this->generateAllPostCodesSummary( $request );
         $directions = $this->json->directionsAction();
         $contactData = $this->generateContactData( $request );
@@ -139,8 +134,17 @@ class CourierAnnouncementController extends Controller
         return view( 'courier_announcement_confirmation_info' );
     }
 
+    public function addAnnouncementEditConfirmation() {
+        return view( 'courier_announcement_edit_confirmation_info' );
+    }
+
+    public function addAnnouncementDeleteConfirmation() {
+        return view( 'courier_announcement_delete_confirmation_info' );
+    }
+
     public function create( Request $request ) {
         //dd( $request );
+
         $company = UserModel::with('company')->find( auth()->user()->id );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
@@ -151,11 +155,12 @@ class CourierAnnouncementController extends Controller
             ->with( 'extensions', $extensions )
             ->with( 'contactData', $contactData )
             ->with( 'headerData', $headerData )
-            ->with('directionsData', $directionsData)
-            ->with('cargoData', $cargoData);
+            ->with( 'directionsData', $directionsData )
+            ->with( 'cargoData', $cargoData );
     }
 
     public function store(Request $request) {
+        // dd( $request );
         //$data = $request->all();
         // dd( 'store()', $request);
         // $postCodes = $this->generateDirectionsPostcodesArray();
@@ -181,6 +186,160 @@ class CourierAnnouncementController extends Controller
         return $this->addAnnouncementConfirmation();
     }
 
+    // private function flattenArray($array) {
+    //     $result = [];
+    //     dd($array);
+    //     foreach ( $array as $key => $value ) {
+    //         if ( is_array($value) ) {
+    //             $result = array_merge($result, $this->flattenArray( $value, $key . '_' ) );
+    //         } else {
+    //             $result[ $key ] = $value;
+    //         }
+    //     }
+    //     dd($result);
+    //     return $result;
+    // }
+
+    private function generateDataForEdit( $id ) {
+        $baseAnnouncementArray = [];
+        $announcementObject = $this->getCourierAnnouncementWithRelations( $id );
+        $announcement = $announcementObject->toArray();
+        // $announcement = $fullAnnouncementData->toArray();
+
+        $baseAnnouncementArray[ 'courier_announcement_name' ] = $announcement[ 'name' ];
+        $baseAnnouncementArray[ 'author' ] = $announcement[ 'author' ];
+        $baseAnnouncementArray[ 'description' ] = $announcement[ 'description' ];
+        $baseAnnouncementArray[ 'experience_date' ] = $announcement[ 'experience_date' ];
+
+        $baseAnnouncementArray[ 'experience_announcement_date_input' ] = $announcement[ 'experience_date' ];
+        if ( $announcement[ 'experience_date' ] == null  ) {
+            $baseAnnouncementArray[ 'experience_for_premium_date' ] = true;
+        }
+        $baseAnnouncementArray[ 'cargo_number_visible' ] = count( $announcement[ 'cargo_type_announcement' ] );
+        $baseAnnouncementArray[ 'date_number_visible' ] = count( $announcement[ 'date_announcement' ] );
+
+        $imagesNumber = count( $announcement[ 'image_announcement' ] );
+        $baseAnnouncementArray[ 'old_summary_images_number' ] = $imagesNumber;
+        $baseAnnouncementArray[ 'images_number' ] = $imagesNumber;
+        $baseAnnouncementArray[ 'old_images_number' ] = $imagesNumber;
+
+        $cargoArray = $this->generateDataForEditCargo( $announcement[ 'cargo_type_announcement' ] );
+        $imageArray = $this->generateDataForEditImage( $announcement[ 'image_announcement' ] );
+        $dateArray = $this->generateDataForEditDate( $announcement[ 'date_announcement' ] );
+        $postCodesArray = $this->generateDataForEditPostCode( $announcement );
+        $contactArray = $this->generateDataForEditContact( $announcement[ 'contact_announcement' ] );
+        $additionalPostCodesArray = $this->generateDataForEditAdditionalPostCode( $announcement[ 'additional_post_codes' ] );
+
+         //dd( $baseAnnouncementArray, $announcement );
+        return array_merge( $baseAnnouncementArray, $cargoArray, $imageArray, $dateArray, $postCodesArray, $contactArray, $additionalPostCodesArray );
+    }
+
+    private function generateDataForEditCargo( $data ) {
+        $cargoArray = [];
+
+        foreach( $data as $key => $value ) {
+            $cargoArray[ 'cargo_name_' . ( $key + 1 ) ] = $value[ 'cargo_name' ];
+            $cargoArray[ 'cargo_description_' . ( $key + 1 ) ] = $value[ 'cargo_description' ];
+            $cargoArray[ 'cargo_price_' . ( $key + 1 ) ] = $value[ 'cargo_price' ];
+            $cargoArray[ 'select_currency_' . ( $key + 1 ) ] = $value[ 'currency' ];
+        }
+
+        return $cargoArray;
+    }
+
+    private function generateDataForEditImage( $data ) {
+        $imageArray = [];
+
+        foreach( $data as $key => $value ) {
+            $imageArray[ 'image' . ( $key + 1 ) ] = $value[ 'image_link' ];
+        }
+
+        return $imageArray;
+    }
+
+    private function generateDataForEditDate( $data ) {
+        $dateArray = [];
+
+        foreach( $data as $key => $value ) {
+            $dateArray[ 'from_date_directions_select_' . ( $key + 1 ) ] = $value[ 'dir_from' ];
+            $dateArray[ 'to_date_directions_select_' . ( $key + 1 ) ] = $value[ 'dir_to' ];
+            $dateArray[ 'date_input_' . ( $key + 1 ) ] = $value[ 'date' ];
+            $dateArray[ 'date_description_' . ( $key + 1 ) ] = $value[ 'description' ];
+        }
+
+        return $dateArray;
+    }
+
+    private function generateDataForEditPostCode( $data ) {
+        $postCodeArray = [];
+        $directions = $this->json->directionsAction();
+        foreach( $directions as $dir ) {
+            $direction = $dir[ 'name' ];
+            $directionPostCodes = $this->json->getPostCodes( $direction );
+
+            foreach( $directionPostCodes as $postCode ) {
+                $postCodeArray[ $postCode ] = $data[ 'post_codes_' . $direction . '_announcement' ][ 0 ][ $postCode ];
+            }
+        }
+        return $postCodeArray;
+    }
+
+    private function generateDataForEditContact( $data ) {
+        $contactArray = [];
+
+        $contactArray[ 'contact_detail_name' ] = $data[ 'name' ];
+        $contactArray[ 'contact_detail_surname' ] = $data[ 'surname' ];
+        $contactArray[ 'contact_detail_company' ] = $data[ 'company' ];
+        $contactArray[ 'contact_detail_street' ] = $data[ 'street' ];
+        $contactArray[ 'contact_detail_city' ] = $data[ 'city' ];
+        $contactArray[ 'contact_detail_post_code' ] = $data[ 'post_code' ];
+        $contactArray[ 'contact_detail_country' ] = $data[ 'country' ];
+        $contactArray[ 'contact_detail_telephone_number' ] = $data[ 'telephone_number' ];
+        $contactArray[ 'contact_detail_additional_telephone_number' ] = $data[ 'additional_telephone_number' ];
+        $contactArray[ 'contact_detail_email' ] = $data[ 'email' ];
+        $contactArray[ 'contact_detail_website' ] = $data[ 'website' ];
+        return $contactArray;
+    }
+
+    private function generateDataForEditRequest( $editData ) {
+        $requestArray = [];
+
+        $requestArray[ 'old_summary_images_number' ] = $editData[ 'old_summary_images_number' ];
+        for( $i = 1; $i <= $requestArray[ 'old_summary_images_number' ]; $i++ ) {
+            $requestArray[ 'image' . $i ] = $editData[ 'image' . $i ];
+        }
+
+        for( $i = 1; $i <= $requestArray[ 'old_summary_images_number' ]; $i++ ) {
+            $requestArray[ 'old_image_' . $i ] = $editData[ 'image' . $i ];
+        }
+
+        return $requestArray;
+    }
+
+    private function generateDataForEditAdditionalPostCode( $data ) {
+        $additionalPostCodeArray = [];
+
+        return $additionalPostCodeArray;
+    }
+
+    private function getCourierAnnouncementWithRelations( $id ) {
+        $announcement = CourierAnnouncement::with( [
+            'cargoTypeAnnouncement',
+            'imageAnnouncement',
+            'dateAnnouncement',
+            'postCodesPlAnnouncement',
+            'postCodesUkAnnouncement',
+            'contactAnnouncement',
+            'additionalPostCodes'
+        ] )->findOrFail( $id );
+
+        //$this->generateDataForEdit( $announcement );
+
+
+
+        return $announcement;
+    }
+
     private function getExperienceAnnouncementDate( $date, $checkboxDate ) {
         if ( $checkboxDate !== null ) {
             return null;
@@ -201,49 +360,38 @@ class CourierAnnouncementController extends Controller
     }
 
     private function storeImages( $request, $announcementID ) {
+
         $filePath = $this->generateImagesFilesPath();
         $tempPath = $this->generateImagesTempFilesPath();
-        for( $i = 1; $i <= $request->input( 'all_pictures_number' ); $i++ ) {
-            $fileName = basename( $request->input( 'image' . $i ) );
-            $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $fileName;
-            $newFilePath = $filePath . DIRECTORY_SEPARATOR . $fileName;
-            $isSuccessStoreFile = Storage::move( $oldFilePath, $newFilePath );
-            if( !$isSuccessStoreFile ) {
-                dd( $isSuccessStoreFile, 'ERROR storeImages() in CourierAnnouncementController', ltrim($tempPath, '\\'), $newFilePath );
-
+        //dd( $request );
+        for( $i = 1; $i <= $request->input( 'old_summary_images_number' ); $i++ ) {
+            if ( $request->input( 'old_image_info_' . $i ) == 'isForDelete' ) {
+                //dd( $i );
+                continue;
             }
+            //dd( $i );
+            $path = $request->input( 'image' . $i );
+            $fileName = basename( $path );
+            $newFilePath = $path;
+            if ( Str::startsWith( $path , '//storage//') ) {
+                $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $fileName;
+                $newFilePath = $filePath . DIRECTORY_SEPARATOR . $fileName;
+                $isSuccessStoreFile = Storage::move( $oldFilePath, $newFilePath );
+                if( !$isSuccessStoreFile ) {
+                    dd( $isSuccessStoreFile, 'ERROR storeImages() in CourierAnnouncementController', ltrim($tempPath, '\\'), $newFilePath );
+                }
+            }
+
             $images = new CourierAnnouncementImages ( [
                 'image_name' =>                      $fileName,
                 'image_link' =>                      $newFilePath,
             ] );
             $images->announcementId()->associate( $announcementID );
             $images->save();
+            // if( $i > 2){
+            //     dd('tu');
+            // }
         }
-        // $tempPath = $this->generateImagesTempFilesPath();
-        // $folderPath = storage_path( 'app' . DIRECTORY_SEPARATOR . $tempPath );
-        // $fileNames = collect(File::files($folderPath))->map->getRelativePathname();
-        // $allNewFilePaths = [];
-
-        // foreach( $fileNames as $file ) {
-        //     $oldFilePath = $tempPath . DIRECTORY_SEPARATOR . $file;
-        //     $newFilePath = $filePath . DIRECTORY_SEPARATOR . $file;
-        //     dd( $oldFilePath, $newFilePath );
-        //     $isSuccessStoreFile = Storage::move( $oldFilePath, $newFilePath );
-        //     $filePathForDataBase = 'storage/' . $this->generateImagesFilesPath( '/', false ) . '/' . $file;
-        //     $allNewFilePaths[ $file ] = $filePathForDataBase;
-        //     if( !$isSuccessStoreFile ) {
-        //         dd( 'ERROR storeImages() in CourierAnnouncementController' );
-        //     }
-        // }
-
-        // foreach( $allNewFilePaths as $fileKey => $fileLink ) {
-        //     $images = new CourierAnnouncementImages ( [
-        //         'image_name' =>                      $fileKey,
-        //         'image_link' =>                      $fileLink,
-        //     ] );
-        //     $images->announcementId()->associate( $announcementID );
-        //     $images->save();
-        // }
     }
 
     private function checkIfLastCargoIsEmpty( Request $request, $lastIndex ) {
@@ -359,14 +507,12 @@ class CourierAnnouncementController extends Controller
     }
 
     public function show( string $id ) {
-        $courierAnnouncement = CourierAnnouncement::findOrFail($id);
-        //$user = UserModel::findOrFail($courierAnnouncement->author);
-        $courierAnnouncementCollection = new Collection( [$courierAnnouncement] );
-        $announcementTitle = $this->generateAnnouncementTitlesInList( $courierAnnouncementCollection );
-        $cargo = $courierAnnouncementCollection[0]->cargoTypeAnnouncement;
-        $dates = $courierAnnouncementCollection[0]->dateAnnouncement;
-        $directionsPostCodes = $this->getPostCodesAndDirections( $courierAnnouncement );
-        $images= $this->getImagesLinks( $courierAnnouncementCollection[0]->imageAnnouncement );
+        $courierAnnouncement = $this->getCourierAnnouncementWithRelations( $id );
+        $allPostCodes = $this->generatePostCodesFromDataBase( $courierAnnouncement );
+        $announcementTitle = $this->generateAnnouncementTitlesInList( [ $courierAnnouncement ] );
+        $cargo = $courierAnnouncement->cargoTypeAnnouncement;
+        $dates = $courierAnnouncement->dateAnnouncement;
+        $images= $this->getImagesLinks( $courierAnnouncement->imageAnnouncement );
         $readyDates = $this->generateDates( $dates );
 
         return view( 'courier_announcement_single_show', [] )
@@ -374,46 +520,46 @@ class CourierAnnouncementController extends Controller
                     ->with( 'announcementTitle', $announcementTitle[0] )
                     ->with( 'cargo', $cargo )
                     ->with( 'dates', $readyDates )
-                    ->with( 'directions', $directionsPostCodes )
+                    ->with( 'postCodes', $allPostCodes )
                     ->with( 'images', $images );
     }
 
-    private function getPostCodesFromDataBase( $data, $postCodesJson ) {
-        $postCodeArray = [];
+    // private function getPostCodesFromDataBase( $data, $postCodesJson ) {
+    //     $postCodeArray = [];
 
-        if( count($data) === 0 ) {
-            return [];
-        }
+    //     if( count($data) === 0 ) {
+    //         return [];
+    //     }
 
-        foreach( $postCodesJson as $postCode ) {
-            if( $data[0][$postCode] === 1 ) {
-                $postCodeArray[ $postCode ] = $postCode;
-            }
-        }
-        return $postCodeArray;
-    }
+    //     foreach( $postCodesJson as $postCode ) {
+    //         if( $data[0][$postCode] === 1 ) {
+    //             $postCodeArray[ $postCode ] = $postCode;
+    //         }
+    //     }
+    //     return $postCodeArray;
+    // }
 
-    private function getPostCodesAndDirections( $courierAnnouncement ) {
-        $array = [];
-        $courierAnnouncementJson = $this->json->courierAnnouncementAction();
-        $availableCountries = $courierAnnouncementJson['available_delivery_country'];
-        dd( 'dodac funkcje to store dla wszystkich postkodów');
-        // $postCodesPL = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesPlAnnouncement,
-        //                                                 $this->json->plPostCodeAction() );
-        // $postCodesUK = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesUkAnnouncement,
-        //                                                 $this->json->ukPostCodeAction() );
+    // private function getPostCodesAndDirections( $courierAnnouncement ) {
+    //     $array = [];
+    //     $courierAnnouncementJson = $this->json->courierAnnouncementAction();
+    //     $availableCountries = $courierAnnouncementJson['available_delivery_country'];
+    //     dd( 'dodac funkcje to store dla wszystkich postkodów');
+    //     // $postCodesPL = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesPlAnnouncement,
+    //     //                                                 $this->json->plPostCodeAction() );
+    //     // $postCodesUK = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesUkAnnouncement,
+    //     //                                                 $this->json->ukPostCodeAction() );
 
-        // if( !empty( $postCodesPL ) ) {
-        //     $array[ $availableCountries[ 'pl' ] ] = $postCodesPL;
-        // }
+    //     // if( !empty( $postCodesPL ) ) {
+    //     //     $array[ $availableCountries[ 'pl' ] ] = $postCodesPL;
+    //     // }
 
-        // if( !empty( $postCodesUK ) ) {
-        //     $array[ $availableCountries[ 'uk' ] ] = $postCodesUK;
-        // }
+    //     // if( !empty( $postCodesUK ) ) {
+    //     //     $array[ $availableCountries[ 'uk' ] ] = $postCodesUK;
+    //     // }
 
-        return $array;
+    //     return $array;
 
-    }
+    // }
 
     private function getImagesLinks( $data ) {
         if ( count( $data ) === 0 ) {
@@ -430,71 +576,133 @@ class CourierAnnouncementController extends Controller
 
     private function generateDates( $dates ) {
         $array = [];
-
-
+        $iterator = 0;
         foreach( $dates as $date ) {
-            if( !isset( $array[ $date->direction ] ) ) {
-                $array[ $date->direction ] = '';
-            }
+            $array[ $iterator ] = $date[ 'date' ];
+            $array[ $iterator ] .= ':  ';
+            $array[ $iterator ] .= __( 'base.direction_print_full_name_' . $date[ 'dir_from' ] );
+            $array[ $iterator ] .= ' -> ';
+            $array[ $iterator ] .= __( 'base.direction_print_full_name_' . $date[ 'dir_to' ] );
 
-            if( $array[ $date->direction ] !== '' ) {
-                $array[ $date->direction ] .= ', ';
+            if ( $date[ 'description' ] != null ) {
+                $array[ $iterator ] .= ' ( ';
+                $array[ $iterator ] .= $date[ 'description' ];
+                $array[ $iterator ] .= ' )';
             }
-            $array[ $date->direction ] .= $date->date;
-
-            if( $date->description !== null ) {
-                $array[ $date->direction ] .= '( ' . $date->description . ' )';
-            }
+            $iterator++;
         }
 
         return $array;
     }
 
-    public function edit(string $id) { }
-
-    // public function editCreation( Request $request ) {
-    //     // dd( 'editCreation', $request );
-    //     // session()->put('_old_input', $request->all() );
-    //     $company = UserModel::with('company')->find( auth()->user()->id );
-    //     $extensions = $this->generateAcceptedFileFormatForCreateBlade();
-    //     $contactData = $this->generateDataForContact( $company );
-    //     $headerData = $this->generateCourierAnnouncementCreateFormHeader();
-    //     $directionsData = $this->json->directionsAction();
-    //     $cargoData = $this->json->cargoAction();
-    //     return view( 'courier_announcement_create_form' )
-    //         ->with( 'extensions', $extensions )
-    //         ->with( 'contactData', $contactData )
-    //         ->with( 'headerData', $headerData )
-    //         ->with('directionsData', $directionsData)
-    //         ->with('cargoData', $cargoData);
-    // }
-
-    public function update(Request $request, string $id) {
-                // $courierAnnouncement = CourierAnnouncement::with([
-        //     'cargoTypeAnnouncement',
-        //     'imageAnnouncement',
-        //     'dateAnnouncement',
-        //     'postCodesPlAnnouncement',
-        //     'postCodesUkAnnouncement',
-        // ])->find( $id );
-        // // dd( $courierAnnouncement->cargoTypeAnnouncement );
-
-        // return view( 'courier_announcement_single_show' )
-        //                 ->with( '$courierAnnouncement', $courierAnnouncement );
+    public function edit( Request $request, string $id ) {
+        //dd( 'edit', $id );
+        //$fullAnnouncement = $this->getCourierAnnouncementWithRelations( $id );
+        $editData = $this->generateDataForEdit( $id );
+        // dd( $editData );
+        $company = UserModel::with('company')->find( auth()->user()->id );
+        $extensions = $this->generateAcceptedFileFormatForCreateBlade();
+        $contactData = $this->generateDataForContact( $company );
+        $headerData = $this->generateCourierAnnouncementCreateFormHeader();
+        $directionsData = $this->json->directionsAction();
+        $cargoData = $this->json->cargoAction();
+        session()->put('_old_input', $editData );
+        $request->merge( $this->generateDataForEditRequest( $editData ) );
+        return view( 'courier_announcement_create_form' )
+            ->with( 'extensions', $extensions )
+            ->with( 'contactData', $contactData )
+            ->with( 'headerData', $headerData )
+            ->with( 'directionsData', $directionsData )
+            ->with( 'editMode', true )
+            ->with( 'announcementNumber', $id )
+            ->with( 'cargoData', $cargoData);
     }
 
-    public function destroy(string $id) {
-                // $courierAnnouncement = CourierAnnouncement::with([
-        //     'cargoTypeAnnouncement',
-        //     'imageAnnouncement',
-        //     'dateAnnouncement',
-        //     'postCodesPlAnnouncement',
-        //     'postCodesUkAnnouncement',
-        // ])->find( $id );
-        // // dd( $courierAnnouncement->cargoTypeAnnouncement );
+    public function updateEdit( Request $request ) {
+        $fullAnnouncement = $this->getCourierAnnouncementWithRelations( $request->input( 'announcement_number' ) );
+        $fullAnnouncement->cargoTypeAnnouncement()->delete();
+        $fullAnnouncement->imageAnnouncement()->delete();
+        $fullAnnouncement->dateAnnouncement()->delete();
+        $fullAnnouncement->postCodesPlAnnouncement()->delete();
+        $fullAnnouncement->postCodesUkAnnouncement()->delete();
+        $fullAnnouncement->contactAnnouncement()->delete();
+        $fullAnnouncement->additionalPostCodes()->delete();
+        $fullAnnouncement->save();
+        $this->storeContactData( $request, $fullAnnouncement->id );
+        $this->storeImages( $request, $fullAnnouncement->id );
+        $this->storeCargos( $request, $fullAnnouncement->id );
+        $this->storeDates( $request, $fullAnnouncement->id );
+        $this->storeAllPostCodes( $request, $fullAnnouncement->id );
 
-        // return view( 'courier_announcement_single_show' )
-        //                 ->with( '$courierAnnouncement', $courierAnnouncement );
+        return $this->addAnnouncementEditConfirmation();
+    }
+
+    public function destroy( string $id ) {
+        //dodac do archiwum
+        $this->storeFullAnnouncementArchive( $id );
+
+        $fullAnnouncement = $this->getCourierAnnouncementWithRelations( $id );
+        $fullAnnouncement->delete();
+
+        return $this->addAnnouncementDeleteConfirmation();
+    }
+
+    private function storeFullAnnouncementArchive( $id ) {
+        $fullCourierAnnouncement = $this->getCourierAnnouncementWithRelations( $id );
+        $courierAnnouncement = new CourierAnnouncementArchive( $fullCourierAnnouncement->getAttributes() );
+        $courierAnnouncement->save();
+
+        $this->storeContactDataArchive( $fullCourierAnnouncement->dateAnnouncement[ 0 ], $id );
+        $this->storeImagesArchive( $fullCourierAnnouncement->imageAnnouncement, $id );
+        $this->storeCargosArchive( $fullCourierAnnouncement->cargoTypeAnnouncement, $id );
+        $this->storeDatesArchive( $fullCourierAnnouncement->dateAnnouncement, $id );
+        $this->storePostCodesPLArchive( $fullCourierAnnouncement->postCodesPlAnnouncement[ 0 ], $id );
+        $this->storePostCodesUKArchive( $fullCourierAnnouncement->postCodesUkAnnouncement[ 0 ], $id );
+    }
+
+    private function storeContactDataArchive( $data, $id ) {
+        //dd($data[ 0 ]);
+        $contactArchive = new CourierAnnouncementContactArchive ( $data->getAttributes()  );
+        $contactArchive->announcementId()->associate( $id );
+        $contactArchive->save();
+    }
+
+    private function storeImagesArchive( $data, $id ) {
+        foreach( $data as $image ) {
+            $imageArchive = new CourierAnnouncementImagesArchive ( $image->getAttributes()  );
+            $imageArchive->announcementId()->associate( $id );
+            $imageArchive->save();
+        }
+    }
+
+    private function storeCargosArchive( $data, $id ) {
+        foreach( $data as $cargo ) {
+            $cargoArchive = new CargoTypesArchive ( $cargo->getAttributes()  );
+            $cargoArchive->announcementId()->associate( $id );
+            $cargoArchive->save();
+        }
+    }
+
+    private function storeDatesArchive( $data, $id ) {
+        foreach( $data as $date ) {
+            $dateArchive = new CourierTravelDateArchive ( $date->getAttributes()  );
+            $dateArchive->announcementId()->associate( $id );
+            // dd( $dateArchive );
+            $dateArchive->save();
+        }
+    }
+
+    private function storePostCodesPLArchive( $data, $id ) {
+        // dd($data);
+        $PostCodesArchive = new PostCodePlArchive ( $data->getAttributes()  );
+        $PostCodesArchive->announcementId()->associate( $id );
+        $PostCodesArchive->save();
+    }
+
+    private function storePostCodesUKArchive( $data, $id ) {
+        $PostCodesArchive = new PostCodeUkArchive ( $data->getAttributes()  );
+        $PostCodesArchive->announcementId()->associate( $id );
+        $PostCodesArchive->save();
     }
 
     private function generateDataForContact( $data ) {
@@ -589,12 +797,6 @@ class CourierAnnouncementController extends Controller
             'all_pictures_number.lte' => __( 'base.courier_announcement_image_number_error_message' ) . __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', $loginUser->account_type, 'courier_announcement' ),
         ];
         $request->validate( $rules, $messages );
-
-        // $validator = Validator::make($request->all(), $rules, $messages);
-
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withInput( $request->all() );
-        // }
     }
 
     private function generateAllCargoRules( $request ) {
@@ -888,9 +1090,9 @@ class CourierAnnouncementController extends Controller
         return $linksArray;
     }
 
-    private function getFilesNumber( $request ) {
-        return is_null($request->file('files')) ? 0 : count($request->file('files'));
-    }
+    // private function getFilesNumber( $request ) {
+    //     return is_null($request->file('files')) ? 0 : count($request->file('files'));
+    // }
 
     // private function generateCourierAnnouncementSummaryHeader() {
     //     $directions = $this->json->directionsAction();
@@ -1003,6 +1205,19 @@ class CourierAnnouncementController extends Controller
         }
 
         return $contactArray;
+    }
+
+    private function generatePostCodesFromDataBase( $announcement ) {
+        $directions = [];
+        foreach ( $this->json->directionsAction() as $dir ) {
+            $directions[ $dir[ 'name' ] ] = [];
+            foreach( $announcement[ 'postCodes' . $dir[ 'request_name' ] . 'Announcement' ][ 0 ]->getAttributes() as $key => $value ) {
+                if ( $value != null && $key != 'id' && $key != 'courier_announcement_id' && $key != 'created_at' && $key != 'updated_at' ) {
+                    $directions[ $dir[ 'name' ] ][ $key ] = $value;
+                }
+            }
+        }
+        return $directions;
     }
 
     private $json = null;

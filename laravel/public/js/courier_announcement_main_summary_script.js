@@ -86,12 +86,17 @@ function deleteEmptyDateFormFields(form) {
     iterator = 1;
 
     while (true) {
-        const directionsInput = form.querySelector(
-            "#date_directions_select_" + iterator.toString()
+        const directionsInputFrom = form.querySelector(
+            "#from_date_directions_select_" + iterator.toString()
         );
-        if (directionsInput === null) {
+
+        if ( directionsInputFrom === null ) {
             break;
         }
+
+        const directionsInputTo = form.querySelector(
+            "#to_date_directions_select_" + iterator.toString()
+        );
         const dateInput = form.querySelector(
             "#date_input_" + iterator.toString()
         );
@@ -103,19 +108,20 @@ function deleteEmptyDateFormFields(form) {
         );
 
         const directionIsEmpty =
-            directionsInput.value === null ||
-            directionsInput.value === "" ||
-            directionsInput.value === "default_direction";
+            directionsInputFrom.value === null ||
+            directionsInputFrom.value === "" ||
+            directionsInputFrom.value === "default_direction";
         const dateIsEmpty = dateInput.value === null || dateInput.value === "";
         const descriptionIsEmpty =
             descriptionInput.value === null || descriptionInput.value === "";
         isElementToDelete =
             directionIsEmpty && dateIsEmpty && descriptionIsEmpty;
-
+        // console.log( dateInput, descriptionInput, directionIsEmpty, dateIsEmpty, descriptionIsEmpty );
         if (isElementToDelete) {
-            directionsInput.parentNode.removeChild(directionsInput);
-            dateInput.parentNode.removeChild(dateInput);
-            descriptionInput.parentNode.removeChild(descriptionInput);
+            directionsInputFrom.parentNode.removeChild( directionsInputFrom );
+            directionsInputTo.parentNode.removeChild( directionsInputTo );
+            dateInput.parentNode.removeChild( dateInput );
+            descriptionInput.parentNode.removeChild( descriptionInput );
         }
         iterator++;
     }

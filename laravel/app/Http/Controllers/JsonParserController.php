@@ -56,7 +56,7 @@ class JsonParserController extends Controller
         return $this->getJsonData('announcement');
     }
 
-    public function getPostCodes($direction) {
+    public function getPostCodes( $direction ) {
         $variableName = 'post_codes_' . $direction;
         return $this->getJsonData($variableName);
     }
