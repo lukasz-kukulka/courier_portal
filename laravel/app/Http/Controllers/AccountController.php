@@ -30,7 +30,7 @@ class AccountController extends Controller
     public function index() {}
 
     public function create() {
-        $accountData = $this->json->getJsonData('accounts.json');
+        $accountData = $this->json->getJsonData('accounts');
         return view('accounts.account_register')
             ->with('accountData', $accountData);
     }
@@ -57,7 +57,7 @@ class AccountController extends Controller
 
     public function edit( ) {
         //dd( "edit" );
-        $accountData = $this->json->getJsonData('accounts.json');
+        $accountData = $this->json->getJsonData('accounts');
         return view('accounts.edit_account')
                     ->with( 'accountData', $accountData )
                     ->with( 'accountType', auth()->user()->account_type );

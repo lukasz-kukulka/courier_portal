@@ -10,7 +10,7 @@ class CargoTypesArchive extends Model
     use HasFactory;
     protected $table = 'cargo_types_archive';
     protected $fillable = [
-        'courier_announcement_id', 'cargo_name', 'cargo_price', 'cargo_description'
+        'courier_announcement_id', 'cargo_name', 'cargo_price', 'cargo_description', 'currency'
     ];
     public function announcementId() {
         return $this->belongsTo( CourierAnnouncementArchive::class, 'courier_announcement_id' );

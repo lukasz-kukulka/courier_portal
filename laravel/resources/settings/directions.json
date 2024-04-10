@@ -2,6 +2,7 @@
     "pl" : {
         "name": "pl",
         "print_name": "PL",
+        "request_name": "Pl",
         "print_full_name": "base.direction_print_full_name_pl",
         "unicode": "&#127477&#127473",
         "image_path" : "images/pl_flag.jpg"
@@ -9,6 +10,7 @@
     "uk" : {
         "name": "uk",
         "print_name": "UK",
+        "request_name": "Uk",
         "print_full_name": "base.direction_print_full_name_uk",
         "unicode": "&#127468&#127463",
         "image_path" : "images/uk_flag.jpg"

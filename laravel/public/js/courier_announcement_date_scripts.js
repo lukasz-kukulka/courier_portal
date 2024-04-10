@@ -1,7 +1,7 @@
 function addNewDateButton() {
     var button = document.querySelector(".add_date_component_btn");
     button.addEventListener("click", function (event) {
-        setAddNewDateButtonVisible(true, true);
+        setAddNewDateButtonVisible(true, true, true);
         if (date.currentDateIndex < date.maxDateIndex) {
             date.currentDateIndex++;
             const dateComponent = document.querySelector(
@@ -30,17 +30,16 @@ function deleteAnyDateButton() {
         '[class^="date_delete_btn_"]'
     );
     deleteButtons.forEach(function (button) {
-        button.addEventListener("click", function (event) {
+        button.addEventListener("click", function ( event ) {
             var buttonClass = button.className;
             var match = buttonClass.match(/date_delete_btn_(\d+)/);
-            if (date.maxDateIndex > parseInt(match[1])) {
-                for (
-                    var i = parseInt(match[1]);
-                    i <= date.currentDateIndex;
-                    i++
-                ) {
-                    var dateDirection = document.querySelector(
-                        "#date_directions_select_" + (i + 1).toString()
+            if ( date.maxDateIndex > parseInt( match[ 1 ] ) ) {
+                for ( var i = parseInt( match[ 1 ] ); i <= date.currentDateIndex; i++ ) {
+                    var dateDirectionFrom = document.querySelector(
+                        "#from_date_directions_select_" + (i + 1).toString()
+                    ).value;
+                    var dateDirectionTo = document.querySelector(
+                        "#to_date_directions_select_" + (i + 1).toString()
                     ).value;
                     var dateInput = document.querySelector(
                         "#date_input_" + (i + 1).toString()
@@ -50,8 +49,11 @@ function deleteAnyDateButton() {
                     ).value;
 
                     document.querySelector(
-                        "#date_directions_select_" + i.toString()
-                    ).value = dateDirection;
+                        "#from_date_directions_select_" + i.toString()
+                    ).value = dateDirectionFrom;
+                    document.querySelector(
+                        "#to_date_directions_select_" + i.toString()
+                    ).value = dateDirectionTo;
                     document.querySelector(
                         "#date_input_" + i.toString()
                     ).value = dateInput;
@@ -73,15 +75,19 @@ function deleteAnyDateButton() {
 
 function accessForAddNextElementToDate() {
     for (let index = 1; index <= date.maxDateIndex; index++) {
-        var dateDirection = document.querySelector(
-            "#date_directions_select_" + index.toString()
+        var dateDirectionFrom = document.querySelector(
+            "#from_date_directions_select_" + index.toString()
+        );
+        var dateDirectionTo = document.querySelector(
+            "#to_date_directions_select_" + index.toString()
         );
         var dateInput = document.querySelector(
             "#date_input_" + index.toString()
         );
 
-        dateDirection.addEventListener("input", function () {
-            if (this.value == "default_direction") {
+        dateDirectionFrom.addEventListener("input", function () {
+            var object = this;
+            if ( object.value == "default_direction" ) {
                 date.directionIsSet = false;
                 for (
                     let visible_item_index = date.currentDateIndex - 1;
@@ -89,7 +95,7 @@ function accessForAddNextElementToDate() {
                     visible_item_index--
                 ) {
                     const dateDirectionTemp = document.querySelector(
-                        "#date_directions_select_" +
+                        "#from_date_directions_select_" +
                             visible_item_index.toString()
                     );
                     if (dateDirectionTemp.value != "default_direction") {
@@ -98,26 +104,47 @@ function accessForAddNextElementToDate() {
                     }
                 }
             } else {
-                date.directionIsSet = true;
+                date.directionFromIsSet = true;
+                setAllDirectionSelectorChange( object )
+                setVisiblePostCodes();
             }
-            setAddNewDateButtonVisible(date.directionIsSet, date.dateIsSet);
+            setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
         });
 
-        dateInput.addEventListener("input", function () {
-            if (this.value == "") {
-                date.dateIsSet = false;
+        dateDirectionTo.addEventListener("input", function () {
+            var object = this;
+            if ( object.value == "default_direction" ) {
+                date.directionIsSet = false;
                 for (
                     let visible_item_index = date.currentDateIndex - 1;
                     visible_item_index >= 1;
                     visible_item_index--
                 ) {
+                    const dateDirectionTemp = document.querySelector(
+                        "#to_date_directions_select_" +
+                            visible_item_index.toString()
+                    );
+                    if (dateDirectionTemp.value != "default_direction") {
+                        nameInfoIsVisible = true;
+                        break;
+                    }
+                }
+            } else {
+                date.directionToIsSet = true;
+                setAllDirectionSelectorChange( object );
+                setVisiblePostCodes();
+            }
+            setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
+        });
+
+        dateInput.addEventListener("input", function () {
+            if (this.value == "") {
+                date.dateIsSet = false;
+                for ( let visible_item_index = date.currentDateIndex - 1; visible_item_index >= 1; visible_item_index-- ) {
                     const dateInputTemp = document.querySelector(
                         "#date_input_" + visible_item_index.toString()
                     );
-                    if (
-                        dateInputTemp.value != "" &&
-                        validateConditionsDate(dateInputTemp.value)
-                    ) {
+                    if ( dateInputTemp.value != "" && validateConditionsDate(dateInputTemp.value) ) {
                         nameInfoIsVisible = true;
                         break;
                     }
@@ -129,7 +156,7 @@ function accessForAddNextElementToDate() {
                     date.dateIsSet = false;
                 }
             }
-            setAddNewDateButtonVisible(date.directionIsSet, date.dateIsSet);
+            setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet );
         });
     }
 }
@@ -148,9 +175,9 @@ function validateConditionsDate(formDate) {
     }
 }
 
-function setAddNewDateButtonVisible(inputDirection, inputDate) {
+function setAddNewDateButtonVisible( inputDirectionFrom, inputDirectionTo, inputDate ) {
     var addButton = document.querySelector(".add_date_component_btn");
-    if (inputDirection == true && inputDate == true) {
+    if ( inputDirectionFrom == true && inputDirectionTo == true && inputDate == true) {
         addButton.style.opacity = 1.0;
         addButton.style.pointerEvents = "auto";
     } else {
@@ -160,21 +187,21 @@ function setAddNewDateButtonVisible(inputDirection, inputDate) {
 }
 
 function checkLastDateItem() {
-    var dateDirection = document.querySelector(
-        "#date_directions_select_" + date.currentDateIndex.toString()
+    var dateDirectionFrom = document.querySelector(
+        "#from_date_directions_select_" + date.currentDateIndex.toString()
+    );
+    var dateDirectionTo = document.querySelector(
+        "#to_date_directions_select_" + date.currentDateIndex.toString()
     );
     var dateInput = document.querySelector(
         "#date_input_" + date.currentDateIndex.toString()
     );
-    if (
-        dateInput.value == "" &&
-        (dateDirection.value == "default_direction" ||
-            dateDirection.value == "" ||
-            dateDirection.value == null)
-    ) {
-        setAddNewDateButtonVisible(false, false);
+    if ( dateInput.value == "" &&
+        (dateDirectionFrom.value == "default_direction" || dateDirectionFrom.value == "" || dateDirectionFrom.value == null ) &&
+        (dateDirectionTo.value == "default_direction" || dateDirectionTo.value == "" || dateDirectionTo.value == null ) ) {
+        setAddNewDateButtonVisible(false, false, false);
     } else {
-        setAddNewDateButtonVisible(true, true);
+        setAddNewDateButtonVisible(true, true, true);
     }
 }
 
@@ -215,41 +242,87 @@ function setVisibleDateComponents() {
 }
 
 function setDateDataAfterValidation(index) {
-    var dateDirection = document.querySelector(
-        "#date_directions_select_" + index.toString()
-    );
+    var dateDirectionFrom = document.querySelector( "#from_date_directions_select_" + index.toString() );
+    var dateDirectionTo = document.querySelector( "#to_date_directions_select_" + index.toString() );
     var dateInput = document.querySelector("#date_input_" + index.toString());
 
-    if (
-        dateInput.value != null &&
-        dateInput.value != "" &&
-        validateConditionsDate(dateInput.value)
-    ) {
+    if ( dateInput.value != null && dateInput.value != "" && validateConditionsDate(dateInput.value) ) {
         date.dateIsSet = true;
     } else {
         date.dateIsSet = false;
     }
 
-    if (
-        dateDirection.value != "default_direction" &&
-        dateDirection.value != "" &&
-        dateDirection.value != null
-    ) {
-        date.dateDirection = true;
+    if ( dateDirectionFrom.value != "default_direction" && dateDirectionFrom.value != "" && dateDirectionFrom.value != null ) {
+        date.directionFromIsSet = true;
     } else {
-        date.dateDirection = false;
+        date.directionFromIsSet = false;
     }
 
-    setAddNewDateButtonVisible(date.dateDirection, date.dateIsSet);
+    if ( dateDirectionTo.value != "default_direction" && dateDirectionTo.value != "" && dateDirectionTo.value != null ) {
+        date.directionToIsSet = true;
+    } else {
+        date.directionToIsSet = false;
+    }
 
-    // setCurrencyAndPriceInfoVisible( cargo.priceInfoIsVisible, cargo.currencyInfoIsVisible, index );
+    setAddNewDateButtonVisible( date.directionFromIsSet, date.directionToIsSet, date.dateIsSet);
+}
+
+function setVisiblePostCodes() {
+    for( key in allDirectionsCall ) {
+        if ( allDirectionsCall.hasOwnProperty(key) && allDirectionsCall[ key ] != 0 ) {
+            if( date.allPostCodesIsContainerIsVisible == false ) {
+                date.allPostCodesIsContainerIsVisible = true;
+                var allDirectionDivSelector = document.querySelector( ".all_post_codes_container" );
+                allDirectionDivSelector.style.display = 'block';
+            }
+
+            var singlePostCodeContainerTitle = document.querySelector( "." + key + "_post_codes_single_container_title" );
+            var singlePostCodeContainerBody = document.querySelector( "." + key + "_post_codes_single_container_body" );
+
+            singlePostCodeContainerTitle.style.display = 'table-row';
+            singlePostCodeContainerBody.style.display = 'table-row';
+
+        }
+        else if ( allDirectionsCall.hasOwnProperty(key) && allDirectionsCall[ key ] == 0 ) {
+            var singlePostCodeContainerTitle = document.querySelector( "." + key + "_post_codes_single_container_title" );
+            var singlePostCodeContainerBody = document.querySelector( "." + key + "_post_codes_single_container_body" );
+
+            singlePostCodeContainerTitle.style.display = 'none';
+            singlePostCodeContainerBody.style.display = 'none';
+            clearUnvisibleCheckbox( key );
+            makeDefaultBorderColor();
+        }
+    }
+}
+
+function setAllDirectionSelectorChange( object ) {
+    if ( allDirectionsCall.hasOwnProperty( object.dataset.previousValue ) ) {
+        allDirectionsCall[ object.dataset.previousValue ]--;
+    }
+    object.dataset.previousValue = object.value;
+    allDirectionsCall[ object.value ]++;
+}
+
+function clearUnvisibleCheckbox( direction ) {
+    var allPostCodeCheckboxes = document.querySelectorAll( '[id^="post_code_checkbox_' + key + '"]' );
+
+    allPostCodeCheckboxes.forEach( function( checkbox ) {
+        checkbox.checked = false;
+        console.log( checkbox );
+        var name = checkbox.id;
+        var matchPostfix = name.match(/post_code_checkbox_(.+)/);
+        const button = document.querySelector(
+            ".post_code_button_" + matchPostfix[1] );
+        button.classList.remove("btn-info");
+        button.classList.add("btn-secondary");
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     var addDateButton = document.querySelector(".add_date_component_btn");
     date.defaultDateButtonText = addDateButton.innerHTML;
     editDateVisibleNumberBeforeFormSend();
-    setAddNewDateButtonVisible(false, false);
+    setAddNewDateButtonVisible(false, false, false);
     addNewDateButton();
     deleteAnyDateButton();
     accessForAddNextElementToDate();

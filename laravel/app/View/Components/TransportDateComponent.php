@@ -11,7 +11,7 @@ class TransportDateComponent extends Component
 {
     public function __construct($id) {
         $jsonParserController = app(JsonParserController::class);
-        $this->directions = $jsonParserController->getJsonData('directions.json');
+        $this->directions = $jsonParserController->getJsonData('directions');
         $this->id = $id;
     }
 

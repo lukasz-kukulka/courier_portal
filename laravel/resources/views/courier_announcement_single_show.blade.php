@@ -12,7 +12,7 @@
                 <div class="card-header"><strong>{{ $announcementTitle }}</strong></div>
                 <div class="card-body">
                     <div class="announcement_title">
-
+                        {{-- {{ dd( get_defined_vars() ) }} --}}
                     </div> {{-- END announcement_title --}}
                     <div class="announcement_prices">
                         <table class="table table-sm border border-1 table-striped">
@@ -48,31 +48,34 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{-- {{dd( $dates )}} --}}
                                 @foreach( $dates as $key => $value )
                                     <tr class="align-middle">
-                                        <td class="col-3"><strong>{{ $key }}</strong></td>
-                                        <td class="col-9">{{ $value }}</td>
+                                        <td class="col-1"><strong>{{ $key + 1 }}</strong></td>
+                                        <td class="col-11">{{ $value }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div> {{-- END announcement_directions_dates --}}
 
-                    <div class="all_post_codes_container">
-                        @foreach( $directions as $key => $value )
+                    <div class="all_post_codes_container_for_single">
+
+                        @foreach( $postCodes as $key => $value )
                             <div class="single_post_code postcodes_{{ $key }}_summary_container">
                                 <table class="table table-sm border border-1">
                                     <thead>
                                         <tr class="background_colour_header_singl table-info">
                                             <td colspan="3">
-                                                <p class="h3 text-center">{{ __( "base.courier_announcement_" . $key . "_summary" ) }}</p>
+                                                <p class="h3 text-center">{{ __( "base.courier_announcement_post_codes_" . $key . "_title_summary" ) }}</p>
                                             </td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr class="">
-                                            @foreach( $value as $postCode )
-                                                <td><button type="button" class="btn btn-outline-dark postcode_button_summary"> {{ $postCode }} </button></td>
+                                            @foreach( $value as $key => $postCode )
+
+                                                <td><button type="button" class="btn btn-outline-dark postcode_button_summary"> {{ $key }} </button></td>
                                             @endforeach
                                         </tr>
                                     </tbody>

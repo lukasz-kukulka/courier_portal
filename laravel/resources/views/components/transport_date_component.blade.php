@@ -2,14 +2,27 @@
 <tr class="date_component_{{ $id }} align-middle h-100">
     <th scope="row" class="h3">{{ $id }}</th>
     <td>
-        <div class="directions_container">
-            <input type="hidden" name="date_directions_select_{{ $id }}" value="{{ old("date_directions_select_" . $id) !== null ? old("date_directions_select_" . $id) : "default_direction" }}" value="{{ old( "date_directions_select_" . $id  ) }}">
-            <select id="date_directions_select_{{ $id }}" name="date_directions_select_{{ $id }}" class="form-group form-control @error( "date_directions_select_" . $id ) is-invalid @enderror">
+        <div class="from_directions_container">
+            <input type="hidden" name="from_date_directions_select_{{ $id }}" value="{{ old("from_date_directions_select_" . $id) !== null ? old("from_date_directions_select_" . $id) : "default_direction" }}">
+            <select id="from_date_directions_select_{{ $id }}" name="from_date_directions_select_{{ $id }}" class="form-group form-control @error( "from_date_directions_select_" . $id ) is-invalid @enderror">
                 {{-- <option value="default_direction" disabled selected>{{ __('base.default_date_direction_option')}}</option> --}}
-                <option value="{{ old("date_directions_select_" . $id) != "default_direction" ? old("date_directions_select_" . $id) : "default_direction" }}" disabled selected>{{ old("date_directions_select_" . $id) != "default_direction" && old("date_directions_select_" . $id) != null && old("date_directions_select_" . $id) != "" ? old("date_directions_select_" . $id) : __('base.default_date_direction_option') }}</option>
+                <option value="{{ old("from_date_directions_select_" . $id) != "default_direction" ? old("from_date_directions_select_" . $id) : "default_direction" }}" disabled selected>{{ old("from_date_directions_select_" . $id) != "default_direction" && old("from_date_directions_select_" . $id) != null && old("from_date_directions_select_" . $id) != "" ? $directions[ old("from_date_directions_select_" . $id) ]['print_name'] : __('base.default_date_direction_option') }}</option>
 
                 @foreach ( $directions as $direction )
-                    <option value="{{ $direction[ 'print_name' ] }}">{{ $direction['print_name'] }}</option>
+                    <option value="{{ $direction[ 'name' ] }}">{{ $direction['print_name'] }}</option>
+                @endforeach
+            </select>
+        </div>
+    </td>
+    <td>
+        <div class="to_directions_container">
+            <input type="hidden" name="to_date_directions_select_{{ $id }}" value="{{ old("to_date_directions_select_" . $id) !== null ? old("to_date_directions_select_" . $id) : "default_direction" }}">
+            <select id="to_date_directions_select_{{ $id }}" name="to_date_directions_select_{{ $id }}" class="form-group form-control @error( "to_date_directions_select_" . $id ) is-invalid @enderror">
+                {{-- <option value="default_direction" disabled selected>{{ __('base.default_date_direction_option')}}</option> --}}
+                <option value="{{ old("to_date_directions_select_" . $id) != "default_direction" ? old("to_date_directions_select_" . $id) : "default_direction" }}" disabled selected>{{ old("to_date_directions_select_" . $id) != "default_direction" && old("to_date_directions_select_" . $id) != null && old("to_date_directions_select_" . $id) != "" ? $directions[ old("to_date_directions_select_" . $id) ]['print_name'] : __('base.default_date_direction_option') }}</option>
+
+                @foreach ( $directions as $direction )
+                    <option value="{{ $direction[ 'name' ] }}">{{ $direction['print_name'] }}</option>
                 @endforeach
             </select>
         </div>
