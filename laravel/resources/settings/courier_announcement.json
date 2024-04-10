@@ -4,11 +4,11 @@
     "premium_number_of_type_date" : 100,
     "standard_number_of_type_date" : 5,
     "cargo_currencies": [ "£", "zł", "€" ],
-    "picture_file_input_limit_standard": 1,
-    "picture_file_input_limit_premium": 10,
+    "standard_picture_file_input_limit": 1,
+    "premium_picture_file_input_limit": 10,
     "accept_format_picture_file": [ "jpg", "jpeg", "png", "bmp" ],
-    "max_size_single_image_file_standard": "2048",
-    "max_size_single_image_file_premium": "10240 ",
+    "standard_max_size_single_image_file": "2048",
+    "premium_max_size_single_image_file": "10240 ",
     "max_cargo_names_in_title": 3,
     "available_delivery_country": {
         "pl": "poland_delivery_direction",
@@ -18,5 +18,6 @@
         "prefix_name": "contact_detail_",
         "personal": ["name", "surname", "email", "telephone_number", "additional_telephone_number"],
         "company": ["company", "street", "city", "post_code", "country", "website"]
-    }
+    },
+    "number_of_search_courier_announcement_in_one_page": 10
 }

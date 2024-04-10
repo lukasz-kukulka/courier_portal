@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\JsonParserController;
 use Illuminate\Database\Eloquent\Collection;
 // use App\Helpers\translate_helpers;
 use App\Models\UserAnnouncement;
@@ -17,23 +19,28 @@ use App\Models\HumanAnnouncementArchive;
 use App\Models\OtherAnnouncementArchive;
 use App\Models\PalletAnnouncementArchive;
 use App\Models\ParcelAnnouncementArchive;
-
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+
 class UserAnnouncementController extends Controller
 {
-    public function __construct() {
-        $this->json = app(\App\Http\Controllers\JsonParserController::class);
+    private $jsonParserController;
+    private $announcement_json;
+    public function __construct(JsonParserController $jsonParserController) {
+        $this->jsonParserController = $jsonParserController;
+        $this->announcement_json = $this->jsonParserController->getJsonData('announcement');
+        $this->json = $this->jsonParserController;
     }
+
     public function index() {
         return view('announcement_list', [
-            'announcements' => UserAnnouncement::with( [
+            'announcements' => UserAnnouncement::with([
                 'parcelAnnouncement',
                 'humanAnnouncement',
                 'palletAnnouncement',
                 'animalAnnouncement',
                 'otherAnnouncement',
-            ] )->paginate( $this->json->searchAnnouncementAction()[ 'number_of_search_announcement_in_one_page' ] ),
+            ] )->paginate($this->announcement_json['number_of_search_announcement_in_one_page']),
         ]);
     }
 
@@ -75,6 +82,7 @@ class UserAnnouncementController extends Controller
     }
 
     public function store(Request $request) {
+        //dodac validator do danych #sema_update
         $announcementData = json_decode($request->announcement_data, true);
         $announcement = $this->getUserAnnouncementObject( $request->title, $announcementData );
         if ( !$request[ 'is_edit_mode' ] ) {
@@ -245,10 +253,10 @@ class UserAnnouncementController extends Controller
         $animalArray = $this->generateAnimalRequestSummaryData( $announcement->animalAnnouncement );
         $humanArray = $this->generateHumanRequestSummaryData( $announcement->humanAnnouncement );
         $otherArray = $this->generateOtherRequestSummaryData( $announcement->otherAnnouncement );
-        return array_merge( $parcelArray, $palletArray, $animalArray, $humanArray, $otherArray );;
+        return array_merge( $parcelArray, $palletArray, $animalArray, $humanArray, $otherArray );
     }
 
-    public function cargoDataGenerator(Request $request) {
+    public function cargoDataGenerator( Request $request ) {
         $allDirectionData = $this->validateIsSetAllDirectionData( $request );
         $isZeroItems = $this->validateIsZeroItems( $request );
         $validator = $this->validator( $request->all() );
@@ -258,8 +266,8 @@ class UserAnnouncementController extends Controller
         if ($validator->fails() || $directionValidator->fails() || $isZeroItems || $allDirectionData === false ) {
             return redirect()
                 ->back()
-                ->withErrors($validator)
-                ->withErrors($directionValidator)
+                ->withErrors( $validator )
+                ->withErrors( $directionValidator )
                 ->withInput()
                 ->with( 'allDirectionData', $allDirectionData )
                 ->with( 'isZeroItems', $isZeroItems );

@@ -9,8 +9,10 @@ use App\Http\Controllers\CustomUserController;
 
 class AccountController extends Controller
 {
-    function __construct() {
-        $this->json = new JsonParserController;
+    private $json;
+
+    function __construct(JsonParserController $jsonParserController) {
+        $this->json = $jsonParserController;
     }
 
     public function registerAccount() {
@@ -28,9 +30,9 @@ class AccountController extends Controller
     public function index() {}
 
     public function create() {
-        $accountData = $this->json->accountAction();
+        $accountData = $this->json->getJsonData('accounts');
         return view('accounts.account_register')
-                    ->with( 'accountData', $accountData );
+            ->with('accountData', $accountData);
     }
 
     public function store( Request $request ) {
@@ -55,7 +57,7 @@ class AccountController extends Controller
 
     public function edit( ) {
         //dd( "edit" );
-        $accountData = $this->json->accountAction();
+        $accountData = $this->json->getJsonData('accounts');
         return view('accounts.edit_account')
                     ->with( 'accountData', $accountData )
                     ->with( 'accountType', auth()->user()->account_type );
@@ -71,5 +73,4 @@ class AccountController extends Controller
 
     public function destroy(string $id) {}
 
-    private $json = null;
 }
