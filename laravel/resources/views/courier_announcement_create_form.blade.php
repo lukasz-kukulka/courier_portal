@@ -475,8 +475,7 @@
 <script src="{{ asset('js/courier_announcement_pictures_script.js') }}" ></script>
 
 <script src="{{ asset('js/courier_announcement_main_script.js') }}"
-    >
-</script>
+    ></script>
 
 
 @endsection
