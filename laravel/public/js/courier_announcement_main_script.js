@@ -55,8 +55,20 @@ function clearContactData() {
     }
 }
 
+function subscribeCloseInfo() {
+    // window.addEventListener('beforeunload', function(event) {
+    //     event.preventDefault();
+    //     event.returnValue = '';
+    //     var decision = confirm("Czy na pewno chcesz opuścić tę stronę?");
+    //     if (decision === false) {
+    //         event.preventDefault();
+    //     }
+    // });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     subscribeContactButtons();
     setActionForDateExperience();
     setExperienceDateCheckboxFromPrevData();
+    subscribeCloseInfo();
 });

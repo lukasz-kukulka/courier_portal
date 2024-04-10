@@ -122,6 +122,26 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="contact_container border border-1">
+                        <table class="table table-sm border border-1 additional_info_table_single">
+                            <thead>
+                                <tr class="table-info contact_header">
+                                    <td colspan="2">
+                                        <p class="h3 text-center">{{ __( 'base.announcement_contact_title' ) }}</p>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center contact_body"><td>
+                                    @foreach ( $contactDetails as $key => $value )
+                                        @if ( $value != null )
+                                            <p><strong>{{ __( 'base.' . $key ) . ': ' . $value  }}</strong></p>
+                                        @endif
+                                    @endforeach
+                                </td></tr>
+                            </tbody>
+                        </table>
+                    </div>
                     {{-- <div class="contact_container border border-1">
                         <table class="table table-sm border border-1 contact_table_single">
                             <thead>

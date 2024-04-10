@@ -514,12 +514,14 @@ class CourierAnnouncementController extends Controller
         $dates = $courierAnnouncement->dateAnnouncement;
         $images= $this->getImagesLinks( $courierAnnouncement->imageAnnouncement );
         $readyDates = $this->generateDates( $dates );
-
+        $contactDetails = $this->generateContactForView( $courierAnnouncement->contactAnnouncement );
+        // dd( $courierAnnouncement->contactAnnouncement );
         return view( 'courier_announcement_single_show', [] )
                     ->with( 'announcement', $courierAnnouncement->first() )
                     ->with( 'announcementTitle', $announcementTitle[0] )
                     ->with( 'cargo', $cargo )
                     ->with( 'dates', $readyDates )
+                    ->with( 'contactDetails', $contactDetails )
                     ->with( 'postCodes', $allPostCodes )
                     ->with( 'images', $images );
     }
@@ -1218,6 +1220,24 @@ class CourierAnnouncementController extends Controller
             }
         }
         return $directions;
+    }
+
+    private function generateContactForView( $data ) {
+        $contactArray = [];
+
+        $contactArray[ 'name' ] = $data[ 'name' ];
+        $contactArray[ 'surname' ] = $data[ 'surname' ];
+        $contactArray[ 'company' ] = $data[ 'company' ];
+        $contactArray[ 'street' ] = $data[ 'street' ];
+        $contactArray[ 'city' ] = $data[ 'city' ];
+        $contactArray[ 'post_code' ] = $data[ 'post_code' ];
+        $contactArray[ 'country' ] = $data[ 'country' ];
+        $contactArray[ 'telephone_number' ] = $data[ 'telephone_number' ];
+        $contactArray[ 'additional_telephone_number' ] = $data[ 'additional_telephone_number' ];
+        $contactArray[ 'email' ] = $data[ 'email' ];
+        $contactArray[ 'website' ] = $data[ 'website' ];
+
+        return $contactArray;
     }
 
     private $json = null;
