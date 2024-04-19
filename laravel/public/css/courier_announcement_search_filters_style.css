@@ -1,0 +1,90 @@
+/* .filter_table tbody {
+    display: none;
+} */
+.filters_container_body {
+    display: none;
+}
+
+.post_codes_from_filter_title, .post_codes_to_filter_title, .date_filter_title {
+    margin: 0px;
+}
+
+.post_codes_from_filter_title_right, .post_codes_to_filter_title_right, .date_filter_title_right {
+    text-align: right;
+}
+
+.post_codes_from_filter_title_left, .post_codes_to_filter_title_left, .date_filter_title_left {
+    padding-left: 10px;
+}
+
+.filters_container_head {
+    margin-bottom: 5px;
+}
+
+.filters_container_head_left, .filters_container_head_right {
+    display: flex;
+    justify-content: center;
+}
+
+.post_codes_from_filter_body, .post_codes_to_filter_body, .date_filter_body {
+    display: block;
+    padding-left: 10px;
+}
+
+.directions_button_container {
+    display: inline-block;
+    margin: 5px;
+}
+
+.post_codes_from_filter_title_right_expand, .post_codes_to_filter_title_right_expand, .date_filter_title_right_expand {
+    color: rgb(98, 195, 0);
+}
+
+.post_codes_from_filter_title_right_fold, .post_codes_to_filter_title_right_fold, .date_filter_title_right_fold {
+    color: rgb(255, 0, 0);
+}
+
+[class^="post_codes_from_container_"], [class^="post_codes_to_container_"]  {
+    display: none;
+}
+
+[class^="direction_button_"] {
+    opacity: 0.5;
+}
+
+.all_direction_from_container, .all_postcodes_from_container, .all_direction_to_container, .all_postcodes_to_container, .post_codes_to_filter_body {
+    display: flex;
+    justify-content: center;
+}
+
+.custom_date_container {
+    margin-bottom: 10px;
+    margin-top: 5px;
+    display: none;
+}
+
+.all_dates_container {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#filters_form {
+    width: 100%;
+    margin: 0px;
+}
+
+.submit_filter_button_container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+    align-content: flex-start;
+    margin: 10px 0 10px 0;
+}
+
+.filters_no_results_announcement {
+    text-align: center;
+    color: red;
+}
+

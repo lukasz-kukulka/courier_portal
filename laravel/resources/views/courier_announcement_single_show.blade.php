@@ -19,7 +19,7 @@
                             <thead>
                                 <tr class="text-center table-info">
                                     <td colspan="4">
-                                        <p class="h3 text-center">{{ __( 'base.courier_announcement_cargo_type_title_summary' ) }}</p>
+                                        <p class="h3 text-center"><i class="bi bi-cash"> </i>{{ __( 'base.courier_announcement_cargo_type_title_summary' ) }} <i class="bi bi-cash"> </i></p>
                                     </td>
                                 </tr>
                             </thead>
@@ -43,7 +43,7 @@
                             <thead>
                                 <tr class="text-center table-info">
                                     <td colspan="3">
-                                        <p class="h3 text-center">{{ __( 'base.courier_announcement_date_title_summary' ) }}</p>
+                                        <p class="h3 text-center"><i class="bi bi-calendar-date"></i> {{ __( 'base.courier_announcement_date_title_summary' ) }} <i class="bi bi-calendar-date"></i></p>
                                     </td>
                                 </tr>
                             </thead>
@@ -67,7 +67,7 @@
                                     <thead>
                                         <tr class="background_colour_header_singl table-info">
                                             <td colspan="3">
-                                                <p class="h3 text-center">{{ __( "base.courier_announcement_post_codes_" . $key . "_title_summary" ) }}</p>
+                                                <p class="h3 text-center"><i class="bi bi-signpost-split"></i> {{ __( "base.courier_announcement_post_codes_" . $key . "_title_summary" ) }} <i class="bi bi-signpost-split"></i></p>
                                             </td>
                                         </tr>
                                     </thead>
@@ -88,7 +88,7 @@
                             <thead>
                                 <tr class="background_colour_header_singl table-info additional_info_header">
                                     <td colspan="3">
-                                        <p class="h3 text-center">{{ __( 'base.courier_announcement_aditional_info_title_summary' ) }}</p>
+                                        <p class="h3 text-center"><i class="bi bi-info-circle"></i> {{ __( 'base.courier_announcement_aditional_info_title_summary' ) }} <i class="bi bi-info-circle"></i></p>
                                     </td>
                                 </tr>
                             </thead>
@@ -104,7 +104,7 @@
                             <thead>
                                 <tr class="table-info gallery_header">
                                     <td colspan="3">
-                                        <p class="h3 text-center">{{ __( 'base.courier_announcement_gallery_title_summary' ) }}</p>
+                                        <p class="h3 text-center"><i class="bi bi-image"></i> {{ __( 'base.courier_announcement_gallery_title_summary' ) }} <i class="bi bi-image"></i></p>
                                     </td>
                                 </tr>
                             </thead>
@@ -127,7 +127,7 @@
                             <thead>
                                 <tr class="table-info contact_header">
                                     <td colspan="2">
-                                        <p class="h3 text-center">{{ __( 'base.announcement_contact_title' ) }}</p>
+                                        <p class="h3 text-center"><i class="bi bi-person-bounding-box"></i> {{ __( 'base.announcement_contact_title' ) }} <i class="bi bi-person-bounding-box"></i></p>
                                     </td>
                                 </tr>
                             </thead>
