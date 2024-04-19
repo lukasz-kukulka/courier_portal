@@ -136,6 +136,9 @@ use App\Http\Controllers\CustomUserController;
     Route::post('courier_announcement_update', [CourierAnnouncementController::class, 'updateEdit'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
         ->name('courier_announcement.updateEdit');
+    Route::post('courier_announcement.searchFiltersSummary', [CourierAnnouncementController::class, 'searchFiltersSummary'])
+        ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
+        ->name('courier_announcement.searchFiltersSummary');
     // Route::get('courier_announcement_index', [CourierAnnouncementController::class, 'index'])
     //     ->middleware(['auth', 'verified', 'account_check:courier_pro,courier,standard,standard_pro'])
     //     ->name('courier_announcement.index');
