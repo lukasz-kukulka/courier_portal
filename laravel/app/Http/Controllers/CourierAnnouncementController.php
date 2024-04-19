@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -45,8 +46,8 @@ class CourierAnnouncementController extends Controller
         return $this->summary( $request );
     }
 
-    public function index() {
-        $query = CourierAnnouncement::with( [
+    private function getAllAnnouncements() {
+        return CourierAnnouncement::with( [
             'cargoTypeAnnouncement',
             'imageAnnouncement',
             'dateAnnouncement',
@@ -55,13 +56,69 @@ class CourierAnnouncementController extends Controller
             'contactAnnouncement',
             'additionalPostCodes'
         ] );
-        $announcementTitles = $this->generateAnnouncementTitlesInList($query->get());
+    }
+
+    private function getAnnouncementWithFilters( $filtersData ) {
+        $query = $this->getAllAnnouncements();
+        $allDirections = $this->json->directionsAction();
+        if ( array_key_exists( 'direction_from', $filtersData ) ) {
+            $query->whereHas('dateAnnouncement', function ( $query ) use ( $filtersData ) {
+                $query->where( 'dir_from', $filtersData[ 'direction_from' ] );
+            });
+            if ( array_key_exists('post_codes_from', $filtersData ) ) {
+                foreach ( $filtersData[ 'post_codes_from' ] as $key => $value ) {
+                    $query->whereHas('postCodes' . $allDirections[ $filtersData[ 'direction_from' ] ][ 'request_name' ] . 'Announcement', function ( $query ) use ( $key, $value ) {
+                        $query->where( $key, $value );
+                    });
+                }
+            }
+        }
+
+        if ( array_key_exists( 'direction_to', $filtersData ) ) {
+            $query->whereHas('dateAnnouncement', function ( $query ) use ( $filtersData ) {
+                $query->where( 'dir_to', $filtersData[ 'direction_to' ] );
+            });
+
+            if ( array_key_exists( 'post_codes_to', $filtersData ) ) {
+                foreach ( $filtersData[ 'post_codes_to' ] as $key => $value ) {
+                    $query->whereHas('postCodes' . $allDirections[ $filtersData[ 'direction_to' ] ][ 'request_name' ] . 'Announcement', function ( $query ) use ( $key, $value ) {
+                        $query->where( $key, $value );
+                    });
+                }
+            }
+        }
+
+        if ( array_key_exists( 'start_date', $filtersData) || array_key_exists('end_date', $filtersData ) ) {
+            $query->whereHas('dateAnnouncement', function ( $query ) use ( $filtersData ) {
+                $query->where( 'date', '>=', $filtersData[ 'start_date' ] )
+                      ->where( 'date', '<=', $filtersData[ 'end_date' ] );
+            });
+        }
+
+        return $query;
+    }
+
+    public function index( $filtersData = [] ) {
+        $hasFilters = count( $filtersData ) != 0 ? true : false;
+        $query = null;
+        if ( $hasFilters ) {
+            $query = $this->getAnnouncementWithFilters( $filtersData );
+        } else {
+            $query = $this->getAllAnnouncements();
+        }
+
+        $announcementTitles = $this->generateAnnouncementTitlesInList( $query->get() );
         $perPage = $this->json->courierAnnouncementAction()['number_of_search_courier_announcement_in_one_page'];
-        $announcements = $query->paginate($perPage);
+        $fullDirections = $this->generateDirectionsPostcodesArray();
+        $announcements = $query->paginate( $perPage );
+        $directions = $this->json->directionsAction();
 
         $view = view('courier_announcement_list', [
             'announcements' => $announcements,
             'announcementTitles' => $announcementTitles,
+            'hasFilters' => $hasFilters,
+            'fullDirections' => $fullDirections,
+            'directions' => $directions,
         ]);
 
         return $view;
@@ -85,6 +142,53 @@ class CourierAnnouncementController extends Controller
             $dates[] = $singleDate;
         }
         return $dates;
+    }
+
+    public function searchFiltersSummary( Request $request) {
+        $filters = $this->generateDataForFilters( $request );
+        return $this->index( $filters );
+    }
+
+    private function generateDataForFilters( $request ) {
+        $filtersDataArray = [];
+        $directionFrom = $request->input( 'post_codes_from_filter_body_direction' );
+        $directionTo = $request->input( 'post_codes_to_filter_body_direction' );
+        $postCodesFrom = [];
+        $postCodesTo = [];
+        foreach ( $request->all() as $key => $value ) {
+            $searchFieldPostCodesFrom = 'name_post_code_from_checkbox_' . $directionFrom . '_';
+            $searchFieldPostCodesTo = 'name_post_code_to_checkbox_' . $directionTo . '_';
+
+            if ( !$request->has('name_all_dates_checkbox') ) {
+                $filtersDataArray[ 'start_date' ] = Carbon::createFromFormat( 'Y-m-d', $request->input( 'name_date_field' ) )->subDays( $request->input( 'name_days_before' ) )->toDateString();
+                $filtersDataArray[ 'end_date' ] = Carbon::createFromFormat( 'Y-m-d', $request->input( 'name_date_field' ) )->addDays( $request->input( 'name_days_after' ) )->toDateString();
+            }
+
+            if ( strpos( $key, $searchFieldPostCodesFrom ) === 0 ) {
+                $postCodesFrom[ str_replace( $searchFieldPostCodesFrom, '', $key ) ] = 1;
+            }
+
+            if ( strpos( $key, $searchFieldPostCodesTo) === 0 ) {
+                $postCodesTo[ str_replace( $searchFieldPostCodesTo, '', $key ) ] = 1;
+            }
+        }
+        if ( $directionFrom != null ) {
+            $filtersDataArray[ 'direction_from' ] = $directionFrom;
+        }
+
+        if ( $directionTo != null ) {
+            $filtersDataArray[ 'direction_to' ] = $directionTo;
+        }
+
+        if ( count( $postCodesFrom ) > 0 ) {
+            $filtersDataArray[ 'post_codes_from' ] = $postCodesFrom;
+        }
+
+        if ( count( $postCodesTo ) > 0 ) {
+            $filtersDataArray[ 'post_codes_to' ] = $postCodesTo;
+        }
+
+        return $filtersDataArray;
     }
 
     public function summary( Request $request ) {
@@ -1010,14 +1114,18 @@ class CourierAnnouncementController extends Controller
         $courierAnnouncement = $this->json->getJsonData('courier_announcement');
         $maxCargoInTitle = $courierAnnouncement['max_cargo_names_in_title'];
         $titleFront = __('base.courier_announcement_full_title_summary_front');
+        $titleFrontPersonal = __('base.courier_announcement_full_title_summary_front_personal');
         $titleMid = __('base.courier_announcement_full_title_summary_mid');
+        $titleMidPersonal = __('base.courier_announcement_full_title_summary_mid_personal');
 
         foreach ($announcements as $announcement) {
             $cargoNumber = count($announcement->cargoTypeAnnouncement);
             $titleEnd = $cargoNumber > $maxCargoInTitle ? __('base.courier_announcement_full_title_summary_end') : "";
 
             $cargoNames = "";
-            $companyName = UserModel::with('company')->find($announcement->author)->company->company_name;
+            //$companyName = UserModel::with('company')->find($announcement->author)->company->company_name;
+            $companyName = UserModel::with('company')->find($announcement->author)?->company?->company_name;
+            $userName = UserModel::find($announcement->author)->name;
 
             for ($i = 0; $i < min($cargoNumber, $maxCargoInTitle); $i++) {
                 if ($i > 1) {
@@ -1027,8 +1135,11 @@ class CourierAnnouncementController extends Controller
                 }
                 $cargoNames .= $announcement->cargoTypeAnnouncement[ $i ]->cargo_name;
             }
-
-            $allTitles[] = ( $titleFront . $companyName . $titleMid . $cargoNames . $titleEnd );
+            if ( $companyName == null ) {
+                $allTitles[] = ( $titleFrontPersonal . $userName . $titleMidPersonal . $cargoNames . $titleEnd );
+            } else {
+                $allTitles[] = ( $titleFront . $companyName . $titleMid . $cargoNames . $titleEnd );
+            }
         }
         return $allTitles;
     }
@@ -1239,6 +1350,7 @@ class CourierAnnouncementController extends Controller
 
         return $contactArray;
     }
+
 
     private $json = null;
     private $personalMainFolderImages = 'personal_images';
