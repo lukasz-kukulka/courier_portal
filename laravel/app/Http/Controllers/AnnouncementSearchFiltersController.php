@@ -74,11 +74,10 @@ class AnnouncementSearchFiltersController extends Controller {
     public function getUserAnnouncementAfterFiltered( $query, $filtersData ) {
         $filteredAnnouncements = $query;
         $json = new JsonParserController;
-        // $allDirections = $json->directionsAction();
-        //dd( $filteredAnnouncements );
         $filteredAnnouncements = $this->getDirectionsAndPostCodesUserFilteredData( $filteredAnnouncements, $filtersData );
         $filteredAnnouncements = $this->getUserDateFilteredData( $filteredAnnouncements, $filtersData );
         $filteredAnnouncements = $this->getCargoTypesFilteredData( $filteredAnnouncements, $filtersData, $json->cargoAction()[ 'cargo_types' ] );
+        $filteredAnnouncements = $this->getPersonalAnnouncementFilteredData( $filteredAnnouncements, $filtersData );
 
         return $filteredAnnouncements;
     }
@@ -167,7 +166,7 @@ class AnnouncementSearchFiltersController extends Controller {
     }
 
     private function getPersonalAnnouncementFilteredData( $query, $filtersData ) {
-        if ( array_key_exists( 'direction_from', $filtersData ) ) {
+        if ( array_key_exists( 'user_announcements', $filtersData ) ) {
             $query->where( 'author', $filtersData[ 'user_announcements' ] );
         }
 
