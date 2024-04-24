@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\UserModel;
 
 use App\Http\Controllers\JsonParserController;
+use App\Http\Controllers\AnnouncementSearchFiltersController;
 
 use App\Models\CourierAnnouncement;
 use App\Models\CargoTypes;
@@ -58,51 +60,12 @@ class CourierAnnouncementController extends Controller
         ] );
     }
 
-    private function getAnnouncementWithFilters( $filtersData ) {
-        $query = $this->getAllAnnouncements();
-        $allDirections = $this->json->directionsAction();
-        if ( array_key_exists( 'direction_from', $filtersData ) ) {
-            $query->whereHas('dateAnnouncement', function ( $query ) use ( $filtersData ) {
-                $query->where( 'dir_from', $filtersData[ 'direction_from' ] );
-            });
-            if ( array_key_exists('post_codes_from', $filtersData ) ) {
-                foreach ( $filtersData[ 'post_codes_from' ] as $key => $value ) {
-                    $query->whereHas('postCodes' . $allDirections[ $filtersData[ 'direction_from' ] ][ 'request_name' ] . 'Announcement', function ( $query ) use ( $key, $value ) {
-                        $query->where( $key, $value );
-                    });
-                }
-            }
-        }
-
-        if ( array_key_exists( 'direction_to', $filtersData ) ) {
-            $query->whereHas('dateAnnouncement', function ( $query ) use ( $filtersData ) {
-                $query->where( 'dir_to', $filtersData[ 'direction_to' ] );
-            });
-
-            if ( array_key_exists( 'post_codes_to', $filtersData ) ) {
-                foreach ( $filtersData[ 'post_codes_to' ] as $key => $value ) {
-                    $query->whereHas('postCodes' . $allDirections[ $filtersData[ 'direction_to' ] ][ 'request_name' ] . 'Announcement', function ( $query ) use ( $key, $value ) {
-                        $query->where( $key, $value );
-                    });
-                }
-            }
-        }
-
-        if ( array_key_exists( 'start_date', $filtersData) || array_key_exists('end_date', $filtersData ) ) {
-            $query->whereHas('dateAnnouncement', function ( $query ) use ( $filtersData ) {
-                $query->where( 'date', '>=', $filtersData[ 'start_date' ] )
-                      ->where( 'date', '<=', $filtersData[ 'end_date' ] );
-            });
-        }
-
-        return $query;
-    }
-
     public function index( $filtersData = [] ) {
         $hasFilters = count( $filtersData ) != 0 ? true : false;
         $query = null;
         if ( $hasFilters ) {
-            $query = $this->getAnnouncementWithFilters( $filtersData );
+            $filersController =  new AnnouncementSearchFiltersController();
+            $query = $filersController->getCourierAnnouncementAfterFiltered( $this->getAllAnnouncements(), $filtersData );
         } else {
             $query = $this->getAllAnnouncements();
         }
@@ -119,9 +82,14 @@ class CourierAnnouncementController extends Controller
             'hasFilters' => $hasFilters,
             'fullDirections' => $fullDirections,
             'directions' => $directions,
+            'filtersData' => $filtersData,
         ]);
 
         return $view;
+    }
+
+    public function indexForSingleUser( ) {
+        return $this->index( [ 'user_announcements' => auth()->id() ] );
     }
 
     private function generateDeliveryDates( $request ) {
@@ -145,50 +113,14 @@ class CourierAnnouncementController extends Controller
     }
 
     public function searchFiltersSummary( Request $request) {
-        $filters = $this->generateDataForFilters( $request );
+        $filters = [];
+        if ( array_key_exists( 'page', $request->query() ) && $request->query()[ 'page' ] ) {
+            $filters = Session::get( 'filtersData' );
+        } else {
+            $filersController =  new AnnouncementSearchFiltersController();
+            $filters = $filersController->getFiltersData( $request );
+        }
         return $this->index( $filters );
-    }
-
-    private function generateDataForFilters( $request ) {
-        $filtersDataArray = [];
-        $directionFrom = $request->input( 'post_codes_from_filter_body_direction' );
-        $directionTo = $request->input( 'post_codes_to_filter_body_direction' );
-        $postCodesFrom = [];
-        $postCodesTo = [];
-        foreach ( $request->all() as $key => $value ) {
-            $searchFieldPostCodesFrom = 'name_post_code_from_checkbox_' . $directionFrom . '_';
-            $searchFieldPostCodesTo = 'name_post_code_to_checkbox_' . $directionTo . '_';
-
-            if ( !$request->has('name_all_dates_checkbox') ) {
-                $filtersDataArray[ 'start_date' ] = Carbon::createFromFormat( 'Y-m-d', $request->input( 'name_date_field' ) )->subDays( $request->input( 'name_days_before' ) )->toDateString();
-                $filtersDataArray[ 'end_date' ] = Carbon::createFromFormat( 'Y-m-d', $request->input( 'name_date_field' ) )->addDays( $request->input( 'name_days_after' ) )->toDateString();
-            }
-
-            if ( strpos( $key, $searchFieldPostCodesFrom ) === 0 ) {
-                $postCodesFrom[ str_replace( $searchFieldPostCodesFrom, '', $key ) ] = 1;
-            }
-
-            if ( strpos( $key, $searchFieldPostCodesTo) === 0 ) {
-                $postCodesTo[ str_replace( $searchFieldPostCodesTo, '', $key ) ] = 1;
-            }
-        }
-        if ( $directionFrom != null ) {
-            $filtersDataArray[ 'direction_from' ] = $directionFrom;
-        }
-
-        if ( $directionTo != null ) {
-            $filtersDataArray[ 'direction_to' ] = $directionTo;
-        }
-
-        if ( count( $postCodesFrom ) > 0 ) {
-            $filtersDataArray[ 'post_codes_from' ] = $postCodesFrom;
-        }
-
-        if ( count( $postCodesTo ) > 0 ) {
-            $filtersDataArray[ 'post_codes_to' ] = $postCodesTo;
-        }
-
-        return $filtersDataArray;
     }
 
     public function summary( Request $request ) {
@@ -207,7 +139,6 @@ class CourierAnnouncementController extends Controller
         $countryData = $this->generateDataForDeliveryCountryToSession();
         $company = UserModel::with('company')->find( auth()->user()->id );
         $summaryTitle = $this->generateSummaryAnnouncementTitle( $request, $company );
-        //dd( $allImagesLinks, $allOldImagesLinks );
         $allPostCodesSummary = $this->generateAllPostCodesSummary( $request );
         $directions = $this->json->directionsAction();
         $contactData = $this->generateContactData( $request );
@@ -224,16 +155,6 @@ class CourierAnnouncementController extends Controller
                         ->with( 'deliveryDates', $deliveryDates );
     }
 
-    // private function validateDirectionsField( $request ) {
-    //     $validator = Validator::make($request->all(), [
-    //         'postfix_select_post_code_sending' =>                        [ 'required', 'max:6' ],
-    //         'direction_city_post_code_sending' =>                        [ 'required', 'max:80' ],
-    //         'postfix_select_post_code_receiving' =>                      [ 'required', 'max:6' ],
-    //         'direction_city_post_code_receiving' =>                      [ 'required', 'max:80' ],
-    //     ], $this->generateErrorsMessages() );
-    //     return $validator;
-    // }
-
     public function addAnnouncementConfirmation() {
         return view( 'courier_announcement_confirmation_info' );
     }
@@ -247,8 +168,6 @@ class CourierAnnouncementController extends Controller
     }
 
     public function create( Request $request ) {
-        //dd( $request );
-
         $company = UserModel::with('company')->find( auth()->user()->id );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
@@ -264,12 +183,6 @@ class CourierAnnouncementController extends Controller
     }
 
     public function store(Request $request) {
-        // dd( $request );
-        //$data = $request->all();
-        // dd( 'store()', $request);
-        // $postCodes = $this->generateDirectionsPostcodesArray();
-        // dd( $postCodes );
-        // $this->storeImages( $data, 66 );
         $courierAnnouncement = new CourierAnnouncement( [
             'name' =>                   $request->input( 'courier_announcement_name' ),
             'description' =>            $request->input( 'additional_description_input' ),
@@ -290,25 +203,10 @@ class CourierAnnouncementController extends Controller
         return $this->addAnnouncementConfirmation();
     }
 
-    // private function flattenArray($array) {
-    //     $result = [];
-    //     dd($array);
-    //     foreach ( $array as $key => $value ) {
-    //         if ( is_array($value) ) {
-    //             $result = array_merge($result, $this->flattenArray( $value, $key . '_' ) );
-    //         } else {
-    //             $result[ $key ] = $value;
-    //         }
-    //     }
-    //     dd($result);
-    //     return $result;
-    // }
-
     private function generateDataForEdit( $id ) {
         $baseAnnouncementArray = [];
         $announcementObject = $this->getCourierAnnouncementWithRelations( $id );
         $announcement = $announcementObject->toArray();
-        // $announcement = $fullAnnouncementData->toArray();
 
         $baseAnnouncementArray[ 'courier_announcement_name' ] = $announcement[ 'name' ];
         $baseAnnouncementArray[ 'author' ] = $announcement[ 'author' ];
@@ -334,7 +232,6 @@ class CourierAnnouncementController extends Controller
         $contactArray = $this->generateDataForEditContact( $announcement[ 'contact_announcement' ] );
         $additionalPostCodesArray = $this->generateDataForEditAdditionalPostCode( $announcement[ 'additional_post_codes' ] );
 
-         //dd( $baseAnnouncementArray, $announcement );
         return array_merge( $baseAnnouncementArray, $cargoArray, $imageArray, $dateArray, $postCodesArray, $contactArray, $additionalPostCodesArray );
     }
 
@@ -437,10 +334,6 @@ class CourierAnnouncementController extends Controller
             'additionalPostCodes'
         ] )->findOrFail( $id );
 
-        //$this->generateDataForEdit( $announcement );
-
-
-
         return $announcement;
     }
 
@@ -467,13 +360,10 @@ class CourierAnnouncementController extends Controller
 
         $filePath = $this->generateImagesFilesPath();
         $tempPath = $this->generateImagesTempFilesPath();
-        //dd( $request );
         for( $i = 1; $i <= $request->input( 'old_summary_images_number' ); $i++ ) {
             if ( $request->input( 'old_image_info_' . $i ) == 'isForDelete' ) {
-                //dd( $i );
                 continue;
             }
-            //dd( $i );
             $path = $request->input( 'image' . $i );
             $fileName = basename( $path );
             $newFilePath = $path;
@@ -492,9 +382,6 @@ class CourierAnnouncementController extends Controller
             ] );
             $images->announcementId()->associate( $announcementID );
             $images->save();
-            // if( $i > 2){
-            //     dd('tu');
-            // }
         }
     }
 
@@ -619,7 +506,6 @@ class CourierAnnouncementController extends Controller
         $images= $this->getImagesLinks( $courierAnnouncement->imageAnnouncement );
         $readyDates = $this->generateDates( $dates );
         $contactDetails = $this->generateContactForView( $courierAnnouncement->contactAnnouncement );
-        // dd( $courierAnnouncement->contactAnnouncement );
         return view( 'courier_announcement_single_show', [] )
                     ->with( 'announcement', $courierAnnouncement->first() )
                     ->with( 'announcementTitle', $announcementTitle[0] )
@@ -629,43 +515,6 @@ class CourierAnnouncementController extends Controller
                     ->with( 'postCodes', $allPostCodes )
                     ->with( 'images', $images );
     }
-
-    // private function getPostCodesFromDataBase( $data, $postCodesJson ) {
-    //     $postCodeArray = [];
-
-    //     if( count($data) === 0 ) {
-    //         return [];
-    //     }
-
-    //     foreach( $postCodesJson as $postCode ) {
-    //         if( $data[0][$postCode] === 1 ) {
-    //             $postCodeArray[ $postCode ] = $postCode;
-    //         }
-    //     }
-    //     return $postCodeArray;
-    // }
-
-    // private function getPostCodesAndDirections( $courierAnnouncement ) {
-    //     $array = [];
-    //     $courierAnnouncementJson = $this->json->courierAnnouncementAction();
-    //     $availableCountries = $courierAnnouncementJson['available_delivery_country'];
-    //     dd( 'dodac funkcje to store dla wszystkich postkodów');
-    //     // $postCodesPL = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesPlAnnouncement,
-    //     //                                                 $this->json->plPostCodeAction() );
-    //     // $postCodesUK = $this->getPostCodesFromDataBase( $courierAnnouncement->postCodesUkAnnouncement,
-    //     //                                                 $this->json->ukPostCodeAction() );
-
-    //     // if( !empty( $postCodesPL ) ) {
-    //     //     $array[ $availableCountries[ 'pl' ] ] = $postCodesPL;
-    //     // }
-
-    //     // if( !empty( $postCodesUK ) ) {
-    //     //     $array[ $availableCountries[ 'uk' ] ] = $postCodesUK;
-    //     // }
-
-    //     return $array;
-
-    // }
 
     private function getImagesLinks( $data ) {
         if ( count( $data ) === 0 ) {
@@ -702,10 +551,7 @@ class CourierAnnouncementController extends Controller
     }
 
     public function edit( Request $request, string $id ) {
-        //dd( 'edit', $id );
-        //$fullAnnouncement = $this->getCourierAnnouncementWithRelations( $id );
         $editData = $this->generateDataForEdit( $id );
-        // dd( $editData );
         $company = UserModel::with('company')->find( auth()->user()->id );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
@@ -744,7 +590,6 @@ class CourierAnnouncementController extends Controller
     }
 
     public function destroy( string $id ) {
-        //dodac do archiwum
         $this->storeFullAnnouncementArchive( $id );
 
         $fullAnnouncement = $this->getCourierAnnouncementWithRelations( $id );
@@ -767,7 +612,6 @@ class CourierAnnouncementController extends Controller
     }
 
     private function storeContactDataArchive( $data, $id ) {
-        //dd($data[ 0 ]);
         $contactArchive = new CourierAnnouncementContactArchive ( $data->getAttributes()  );
         $contactArchive->announcementId()->associate( $id );
         $contactArchive->save();
@@ -793,13 +637,11 @@ class CourierAnnouncementController extends Controller
         foreach( $data as $date ) {
             $dateArchive = new CourierTravelDateArchive ( $date->getAttributes()  );
             $dateArchive->announcementId()->associate( $id );
-            // dd( $dateArchive );
             $dateArchive->save();
         }
     }
 
     private function storePostCodesPLArchive( $data, $id ) {
-        // dd($data);
         $PostCodesArchive = new PostCodePlArchive ( $data->getAttributes()  );
         $PostCodesArchive->announcementId()->associate( $id );
         $PostCodesArchive->save();
@@ -896,7 +738,6 @@ class CourierAnnouncementController extends Controller
     }
 
     private function validateAllRequestData( $request ) {
-        // dd($request->all());
         $loginUser = Auth::user();
         $rules = $this->generateAllCargoRules( $request );
         $messages = [
@@ -990,28 +831,6 @@ class CourierAnnouncementController extends Controller
         }
         return $rules;
     }
-
-    // private function generatePostCodePLValidationRules( $request, $json ) {
-    //     dd( $request->all() );
-    //     $rules = [];
-    //     $postCodePLRequired = true;
-    //     foreach( $json as $postCode ) {
-    //         $postCodeName =  $postCode;
-    //         if( $request->input( $postCodeName ) !== "0" && $request->input( $postCodeName ) !== null && $request->input( $postCodeName ) !== "" ) {
-    //             $postCodePLRequired = false;
-
-    //             break;
-    //         } else {
-    //             $rules[ $postCodeName ] = 'required|not_in:0';
-    //         }
-    //     }
-
-    //     if( $postCodePLRequired === true ) {
-    //         return $rules;
-    //     }
-
-    //     return [];
-    // }
 
     private function getDirectionsFromRequest( $request ) {
         $loginUser = Auth::user();
@@ -1123,7 +942,6 @@ class CourierAnnouncementController extends Controller
             $titleEnd = $cargoNumber > $maxCargoInTitle ? __('base.courier_announcement_full_title_summary_end') : "";
 
             $cargoNames = "";
-            //$companyName = UserModel::with('company')->find($announcement->author)->company->company_name;
             $companyName = UserModel::with('company')->find($announcement->author)?->company?->company_name;
             $userName = UserModel::find($announcement->author)->name;
 
@@ -1174,14 +992,11 @@ class CourierAnnouncementController extends Controller
     private function generatePrevLinksArrayForEdit( $request ) {
         $linksArray = [];
         for( $i = 1; ; $i++ ) {
-            //$isForDelete = $request->input( 'old_image_info_' . $i );
             $value = $request->input( 'old_image_' . $i );
             if ( $value == null ) {
                 break;
             }
-            //if( $isForDelete == 'noDelete' ) {
             $linksArray[ 'image'. $i ] = $value;
-            //}
         }
 
         return $linksArray;
@@ -1202,24 +1017,6 @@ class CourierAnnouncementController extends Controller
 
         return $linksArray;
     }
-
-    // private function getFilesNumber( $request ) {
-    //     return is_null($request->file('files')) ? 0 : count($request->file('files'));
-    // }
-
-    // private function generateCourierAnnouncementSummaryHeader() {
-    //     $directions = $this->json->directionsAction();
-    //     $allPostCodes = $this->generateDirectionsPostcodesArray();
-
-    //     // $postCodesPL = $this->json->getPostCodesDataByCountry('pl');
-    //     // $postCodesUK = $this->json->getPostCodesDataByCountry('uk');
-
-    //     return compact(
-    //         'directions',
-    //         'postCodesPL',
-    //         'postCodesUK'
-    //     );
-    // }
 
     private function generateAllPostCodesSummary( $request ) {
         $userDirections = $this->getDirectionsFromRequest( $request );

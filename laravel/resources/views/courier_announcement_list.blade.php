@@ -233,6 +233,7 @@
                           </table>
                     @endforeach
                     {{ $announcements->links() }}
+                    @php session( [ 'filtersData' => $filtersData ] );  @endphp
                 </div>
             </div>
         </div>
