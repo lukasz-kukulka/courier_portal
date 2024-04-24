@@ -64,6 +64,7 @@ return [
     ],
 
     'step'                 => 'Krok',
+    'show'                 => 'Pokaż',
     'confirm_email'        => 'Potwierdź adres e-mail',
     'choose_new_password'  => 'Wybierz nowe hasło',
     'confirm_new_password' => 'Potwierdź nowe hasło',
@@ -597,7 +598,8 @@ return [
     "announcement_delete_asking_question" => "Czy jestes pewien, że chcesz usunąć ogłoszenie?",
     "announcement_delete_info_title" => "Usunięcię ogłoszenia",
     "announcement_confirm_deleted" => "Twoje ogłoszenie zostało usunięte",
-    "nav_menu_user_announcement_list" => "Moje ogłoszenia",
+    "nav_menu_user_announcement_list" => "Moje ogłoszenia przesyłek",
+    "nav_menu_courier_announcement_list" => "Moje ogłoszenia przewozów",
     "nav_menu_user_login_as" => "Zalogowany jako: ",
     "nav_menu_user_menu_user" => "Menu",
     "courier_announcement_date_direction_name_from" => "Wyjazd z",
@@ -612,6 +614,7 @@ return [
     "courier_announcement_post_codes_from_title_filter" => "Kody pocztowe nadania",
     "courier_announcement_post_codes_to_title_filter" => "Kody pocztowe doręczenia",
     "courier_announcement_date_title_filter" => "Daty wyjazdów",
+    "courier_announcement_cargo_type_title_filter" => "Rodzaje paczek",
     "courier_announcement_date_show_all_checkbox_title_filter" => "Pokaż wszystkie daty wyjazdów",
     "courier_announcement_date_field_label" => "Data wyjazdu",
     "courier_announcement_days_before_field_label" => "Minus dni przed datą",
@@ -621,4 +624,5 @@ return [
     "courier_announcement_confirm_filters" => "Zastosuj filtry",
     "courier_announcement_filteras_show_all_announcement" => "Pokaż wszystkie ogłoszenia",
     "courier_announcement_filteras_no_results" => "Brak wyników o wskazanych parametrach",
+    "user_announcement_filteras_no_results" => "Brak wyników o wskazanych parametrach",
 ];

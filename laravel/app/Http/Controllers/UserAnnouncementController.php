@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\JsonParserController;
+use App\Http\Controllers\AnnouncementSearchFiltersController;
 use Illuminate\Database\Eloquent\Collection;
-// use App\Helpers\translate_helpers;
 use App\Models\UserAnnouncement;
 use App\Models\AnimalAnnouncement;
 use App\Models\HumanAnnouncement;
@@ -32,41 +33,51 @@ class UserAnnouncementController extends Controller
         $this->json = $this->jsonParserController;
     }
 
-    public function index() {
+    private function getAllAnnouncements() {
+        return UserAnnouncement::with([
+            'parcelAnnouncement',
+            'humanAnnouncement',
+            'palletAnnouncement',
+            'animalAnnouncement',
+            'otherAnnouncement',
+        ] );
+    }
+
+    public function searchFiltersSummary( Request $request) {
+        $filters = [];
+        if ( array_key_exists( 'page', $request->query() ) && $request->query()[ 'page' ] ) {
+            $filters = Session::get( 'filtersData' );
+        } else {
+            $filersController =  new AnnouncementSearchFiltersController();
+            $filters = $filersController->getFiltersData( $request );
+        }
+        return $this->index( $filters );
+    }
+
+    public function index( $filtersData = [] ) {
+        $hasFilters = count( $filtersData ) != 0 ? true : false;
+        $query = null;
+        if ( $hasFilters ) {
+            $filersController =  new AnnouncementSearchFiltersController();
+            $query = $filersController->getUserAnnouncementAfterFiltered( $this->getAllAnnouncements(), $filtersData );
+        } else {
+            $query = $this->getAllAnnouncements();
+        }
+
+        $announcements = $query->paginate( $this->announcement_json['number_of_search_announcement_in_one_page'] );
+        $cargoType = $this->json->cargoAction()[ 'cargo_types' ];
+        $directions = $this->generateDirectionData();
         return view('announcement_list', [
-            'announcements' => UserAnnouncement::with([
-                'parcelAnnouncement',
-                'humanAnnouncement',
-                'palletAnnouncement',
-                'animalAnnouncement',
-                'otherAnnouncement',
-            ] )->paginate($this->announcement_json['number_of_search_announcement_in_one_page']),
+            'announcements' => $announcements,
+            'directions' => $directions,
+            'hasFilters' => $hasFilters,
+            'cargoType' => $cargoType,
+            'filtersData' => $filtersData,
         ]);
     }
 
     public function indexForSingleUser() {
-        $authorId = auth()->user()->id;
-        // dd($authorId  );
-        $announcement = view('announcement_list', [
-            'announcements' => UserAnnouncement::where('author', $authorId)
-                ->with('parcelAnnouncement',
-                       'humanAnnouncement',
-                       'palletAnnouncement',
-                       'animalAnnouncement',
-                       'otherAnnouncement')
-                ->paginate( $this->json->searchAnnouncementAction()[ 'number_of_search_announcement_in_one_page' ] ),
-            ] );
-        // dd( $announcement );
-        return view('announcement_list', [
-            'announcements' => UserAnnouncement::where('author', $authorId)
-                ->with('parcelAnnouncement',
-                       'humanAnnouncement',
-                       'palletAnnouncement',
-                       'animalAnnouncement',
-                       'otherAnnouncement')
-
-                ->paginate( $this->json->searchAnnouncementAction()[ 'number_of_search_announcement_in_one_page' ] ),
-        ]);
+        return $this->index( [ 'user_announcements' => auth()->id() ] );
     }
 
     public function create() {
