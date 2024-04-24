@@ -17,7 +17,14 @@
         "name" : "nav_menu_user_announcement_list",
         "route_name" : "user_announcements_list",
         "link" : "user_announcements_list",
-        "icon" : "bi bi-megaphone-fill",
+        "icon" : "bi bi-card-list",
+        "permission": "login"
+    },
+    "courier_announcement_list" : {
+        "name" : "nav_menu_courier_announcement_list",
+        "route_name" : "courier_announcement_user_list",
+        "link" : "courier_announcement_user_list",
+        "icon" : "bi bi-card-checklist",
         "permission": "login"
     }
 }
