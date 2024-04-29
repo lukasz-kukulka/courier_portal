@@ -14,8 +14,10 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
+        "laravel/socialite": "^5.13",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
+        "socialiteproviders/google": "^4.1",
         "tecnickcom/tcpdf": "^6.6",
         "twbs/bootstrap-icons": "^1.10"
     },

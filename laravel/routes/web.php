@@ -8,6 +8,7 @@ use App\Http\Controllers\CourierAnnouncementController;
 use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CustomUserController;
+use App\Http\Controllers\SocialMediaLoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,12 +21,11 @@ use App\Http\Controllers\CustomUserController;
 */
 { //############################### BASIC ##############################
     Auth::routes( ['verify' => true] );
-
     Route::get('/', function () { return view('welcome'); })->name('main');
-
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
     Route::get('/no_access', function () { return view('no_access'); })->name('no_access')->middleware( ['auth', 'verified'] );
+    Route::get('/store/google/data', [ SocialMediaLoginController::class, 'storeGoogleData' ])->name('store_google')->middleware( ['auth', 'verified'] );
+
 } //####################################################################
 
 
@@ -114,9 +114,12 @@ use App\Http\Controllers\CustomUserController;
     Route::get('user_announcement.searchFiltersSummary', [UserAnnouncementController::class, 'searchFiltersSummary'])
         ->middleware(['auth', 'verified', 'account_check:courier_pro,standard,standard_pro'])
         ->name('user_announcement.searchFiltersSummary');
-    // Route::match(['get', 'post'], 'user_announcement.searchFiltersSummary', [UserAnnouncementController::class, 'searchFiltersSummary'])
-    //     ->middleware(['auth', 'verified', 'account_check:courier_pro,courier'])
-    //     ->name('user_announcement.searchFiltersSummary');
+
+
+    Route::get('google/auth/redirect', [SocialMediaLoginController::class, 'googleRedirect'] )->name('google_redirect');
+    Route::get('facebook/auth/redirect', [SocialMediaLoginController::class, 'facebookRedirect'] )->name('facebook_redirect');
+    Route::get('google/auth/callback', [SocialMediaLoginController::class, 'googleCallback'] );
+    Route::get('facebook/auth/callback', [SocialMediaLoginController::class, 'facebookCallback'] );
 
 } //####################################################################
 

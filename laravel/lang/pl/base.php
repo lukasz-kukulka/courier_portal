@@ -40,6 +40,8 @@ return [
     'update_account_info'    => 'Aktualizuj informacje o koncie',
     'save'                   => 'Zapisz',
     'cancel'                 => 'Anuluj',
+    'yes'                    => 'Tak',
+    'no'                     => 'Nie',
     'error'                  => 'Błąd',
     'success'                => 'Sukces',
     'warning'                => 'Ostrzeżenie',
@@ -625,4 +627,8 @@ return [
     "courier_announcement_filteras_show_all_announcement" => "Pokaż wszystkie ogłoszenia",
     "courier_announcement_filteras_no_results" => "Brak wyników o wskazanych parametrach",
     "user_announcement_filteras_no_results" => "Brak wyników o wskazanych parametrach",
+    "login_with_google_button_text" => "Zaloguj przez Google",
+    "login_with_facebook_button_text" => "Zaloguj przez Facebook",
+    "social_account_connected_question" => "Email istnieje już w naszej bazie czy chcesz połączyć konta?",
+    "question_title" => "Odpowiedz na poniższe pytanie",
 ];
