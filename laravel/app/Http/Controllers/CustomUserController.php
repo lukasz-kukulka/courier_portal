@@ -157,7 +157,20 @@ class CustomUserController extends Controller
 
     }
 
-    public function destroy(string $id){
+    public function destroy( $id = 0 ){
+        return view('confirm_access_question')
+            ->with('id', 'delete_user_account')
+            ->with('question', __('base.user_account_delete_question'))
+            ->with('yesRoute', 'confirmDestroy')
+            ->with('noRoute', 'profile');
+    }
+
+    public function confirmedDestroy() {
+        $userId = auth()->user()->id;
+        $user = User::with( 'userAnnouncement', 'courierAnnouncement', 'company' )->find( $userId );
+        dd( $user );
+        Auth::logout();
+
 
     }
 }

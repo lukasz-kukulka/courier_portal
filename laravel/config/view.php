@@ -15,6 +15,7 @@ return [
 
     'paths' => [
         resource_path('views'),
+        base_path('vendor/mgs/mgs_laravel_extensions/ConfirmAccessExtension/Views'),
     ],
 
     /*

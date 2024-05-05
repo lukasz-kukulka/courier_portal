@@ -13,6 +13,13 @@
         "icon" : "bi bi-person-square h5",
         "permission": "login"
     },
+    "user_profile_view" : {
+        "name" : "nav_menu_user_profile_wiev",
+        "route_name" : "profile",
+        "link" : "profile",
+        "icon" : "bi bi-person-square h5",
+        "permission": "login"
+    },
     "user_announcement_list" : {
         "name" : "nav_menu_user_announcement_list",
         "route_name" : "user_announcements_list",

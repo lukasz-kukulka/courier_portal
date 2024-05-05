@@ -1,5 +1,6 @@
 <?php
 
+require base_path('vendor\mgs\mgs_laravel_extensions\ConfirmAccessExtension\Routes\routes.php');
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
@@ -8,6 +9,9 @@ use App\Http\Controllers\CourierAnnouncementController;
 use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CustomUserController;
+
+//debug_print_backtrace(); exit();
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,6 +30,7 @@ use App\Http\Controllers\CustomUserController;
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::get('/no_access', function () { return view('no_access'); })->name('no_access')->middleware( ['auth', 'verified'] );
+
 } //####################################################################
 
 
@@ -37,6 +42,16 @@ use App\Http\Controllers\CustomUserController;
     Route::post('user_update_profile', [ CustomUserController::class, 'update'] )
         ->name('user_update_profile')
         ->middleware( ['auth', 'verified'] );
+
+    Route::delete('user/profile/destroy{id}', [ CustomUserController::class, 'destroy'] )
+        ->name('userDestroy')
+        ->middleware( ['auth', 'verified'] );
+
+    Route::post('user/profile/destroy/confirm', [ CustomUserController::class, 'destroy'] )
+        ->name('confirmDestroy')
+        ->middleware( ['auth', 'verified'] );
+
+    Route::get('user/profile', function () { return view('user_profile'); })->name('profile');
 
     Route::get('user_edit_summary', [ CustomUserController::class, 'editUserSummary'] )
         ->name('user_edit_summary')
