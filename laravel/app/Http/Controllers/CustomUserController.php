@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\UserCompany;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\Auth;
 class CustomUserController extends Controller
 {
     public function create( Request $request ){
@@ -161,16 +162,21 @@ class CustomUserController extends Controller
         return view('confirm_access_question')
             ->with('id', 'delete_user_account')
             ->with('question', __('base.user_account_delete_question'))
-            ->with('yesRoute', 'confirmDestroy')
+            ->with('yesRoute', 'user/profile/destroy/confirm')
             ->with('noRoute', 'profile');
     }
 
     public function confirmedDestroy() {
         $userId = auth()->user()->id;
-        $user = User::with( 'userAnnouncement', 'courierAnnouncement', 'company' )->find( $userId );
-        dd( $user );
+        $user = UserModel::with( 'userAnnouncement', 'courierAnnouncement', 'company' )->find( $userId );
         Auth::logout();
-
-
+        $user->delete();
+        return view('redirection_info')
+            ->with('id', 'delete_user_account_info')
+            ->with('title', __( 'base.user_account_delete_info_title' ) )
+            ->with('infoAnnouncement', __( 'base.user_account_delete_info_after_delete' ) )
+            ->with('redirectionRouteName', 'main' )
+            ->with('redirectedText', __( 'base.user_account_delete_link_text' ) )
+            ->with('delayTime', 5000 );
     }
 }

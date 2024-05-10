@@ -1,6 +1,7 @@
 <?php
 
-require base_path('vendor\mgs\mgs_laravel_extensions\ConfirmAccessExtension\Routes\routes.php');
+require base_path('vendor\mgs\confirm_access\ConfirmAccessExtension\Routes\routes.php');
+require base_path('vendor\mgs\change_password\ChangePasswordExtension\Routes\routes.php');
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
@@ -47,7 +48,7 @@ use App\Http\Controllers\CustomUserController;
         ->name('userDestroy')
         ->middleware( ['auth', 'verified'] );
 
-    Route::post('user/profile/destroy/confirm', [ CustomUserController::class, 'destroy'] )
+    Route::get('user/profile/destroy/confirm', [ CustomUserController::class, 'confirmedDestroy'] )
         ->name('confirmDestroy')
         ->middleware( ['auth', 'verified'] );
 
@@ -86,12 +87,8 @@ use App\Http\Controllers\CustomUserController;
         ->name('confirmed_account')
         ->middleware( ['auth', 'verified'] );
 
-    Route::post('accounts/confirmed_account_last', [ AccountController::class, 'store'] )
-        ->name('create_person_data')
-        ->middleware( ['auth', 'verified'] );
-
-    Route::get('/accounts/confirmed_account_last', function () { return view('accounts.confirmed_account_last'); })
-        ->name('account_last_confirmed')
+    Route::post('add_account_type_and_user_details', [ AccountController::class, 'store'] )
+        ->name('add_account_type_and_user_details')
         ->middleware( ['auth', 'verified'] );
 
     Route::get('edit_type_account', [ AccountController::class, 'edit'] )

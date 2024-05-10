@@ -630,4 +630,10 @@ return [
     "user_profile_title" => "Profil urzytkownika",
     "user_account_delete_question" => "Czy na pewno chcesz permanenetnie usunąć swoje konto ze wszystkimi ogłoszeniami?",
     "user_account_delete_button" => "Usuń konto",
+    "user_account_delete_info_after_delete" => "Twoje konto zostało permamnentnie usuniete, wraz ze wszystkimi ogłoszeniami",
+    "user_account_delete_link_text" => "Przejdz do strony głównej lub poczekaj na automatyczne przekierowanie",
+    "user_account_delete_info_title" => "Usuwanie konta",
+    "user_announcement_info_empty" => "Urzytkownik nie umieścił żadnego opisu przedmiotu, w celu uzyskania szczegółów, prosimy o kontakt z twórca ogłoszenia",
+    "nav_menu_user_profile_view" => "Usuń konto",
+    "nav_menu_user_password_change" => "Zmiana hasła",
 ];

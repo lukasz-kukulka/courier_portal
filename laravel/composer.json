@@ -10,7 +10,9 @@
     "require": {
         "php": "^8.1",
         "backpack/crud": "v6.x-dev",
-        "mgs/mgs_laravel_extensions": "dev-ConfirmAccessExtension",
+        "mgs/confirm_access": "dev-ConfirmAccessExtension",
+        "mgs/redirection_confirm": "dev-RedirectionConfirmExtension",
+        "mgs/change_password": "dev-ChangePasswordExtension",
         "backpack/theme-coreuiv2": "^1.1",
         "backpack/theme-coreuiv4": "^1.0",
         "elibyy/tcpdf-laravel": "^10.0",
@@ -47,7 +49,9 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "TCPDF\\": "vendor/tecnickcom/tcpdf/",
-            "MGS\\": "vendor/mgs/mgs_laravel_extensions"
+            "MGSCAE\\": "vendor/mgs/confirm_access/ConfirmAccessExtension",
+            "MGSRE\\": "vendor/mgs/redirection_confirm/RedirectionExtension",
+            "MGSCPE\\": "vendor/mgs/change_password/ChangePasswordExtension"
         },
         "files": [
             "app/Helpers/translate_helpers.php",

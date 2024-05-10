@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9e29b7ef34e9281f953dbb21f9d9ce96",
+    "content-hash": "89472e23543c28cde2ce77dcccaedaeb",
     "packages": [
         {
             "name": "backpack/basset",
@@ -2726,26 +2726,70 @@
             "time": "2024-01-28T23:22:08+00:00"
         },
         {
-            "name": "mgs/mgs_laravel_extensions",
-            "version": "dev-ConfirmAccessExtension",
+            "name": "mgs/change_password",
+            "version": "dev-ChangePasswordExtension",
             "source": {
                 "type": "git",
                 "url": "git@github.com:lukasz-kukulka/mgs_laravel_extensions.git",
-                "reference": "2b003ecb7be4ec696703e7619ac2b9b3a2b15663"
+                "reference": "86d4bcd78d69263dba756a8d31f67a5b575e610b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/2b003ecb7be4ec696703e7619ac2b9b3a2b15663",
-                "reference": "2b003ecb7be4ec696703e7619ac2b9b3a2b15663",
+                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/86d4bcd78d69263dba756a8d31f67a5b575e610b",
+                "reference": "86d4bcd78d69263dba756a8d31f67a5b575e610b",
                 "shasum": ""
             },
             "type": "library",
             "description": "Opis Twojej paczki",
             "support": {
-                "source": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/tree/0.0.9",
+                "source": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/tree/ChangePasswordExtension",
                 "issues": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/issues"
             },
-            "time": "2024-05-05T06:52:55+00:00"
+            "time": "2024-05-10T09:05:04+00:00"
+        },
+        {
+            "name": "mgs/confirm_access",
+            "version": "dev-ConfirmAccessExtension",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:lukasz-kukulka/mgs_laravel_extensions.git",
+                "reference": "c201b93b0379fedd66b0993f79d686d0c9088a70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/c201b93b0379fedd66b0993f79d686d0c9088a70",
+                "reference": "c201b93b0379fedd66b0993f79d686d0c9088a70",
+                "shasum": ""
+            },
+            "type": "library",
+            "description": "Opis Twojej paczki",
+            "support": {
+                "source": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/tree/ConfirmAccessExtension",
+                "issues": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/issues"
+            },
+            "time": "2024-05-08T12:22:20+00:00"
+        },
+        {
+            "name": "mgs/redirection_confirm",
+            "version": "dev-RedirectionConfirmExtension",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:lukasz-kukulka/mgs_laravel_extensions.git",
+                "reference": "a7651e0875248e5d3c17f502fc84d86e4f038ee3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/a7651e0875248e5d3c17f502fc84d86e4f038ee3",
+                "reference": "a7651e0875248e5d3c17f502fc84d86e4f038ee3",
+                "shasum": ""
+            },
+            "type": "library",
+            "description": "Opis Twojej paczki",
+            "support": {
+                "source": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/tree/RedirectionConfirmExtension",
+                "issues": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/issues"
+            },
+            "time": "2024-05-09T08:15:45+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -3645,20 +3689,20 @@
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35"
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/e616d01114759c4c489f93b099585439f795fe35",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0",
+                "php": ">=7.1",
                 "psr/http-message": "^1.0 || ^2.0"
             },
             "type": "library",
@@ -3682,7 +3726,7 @@
                     "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
             "keywords": [
                 "factory",
                 "http",
@@ -3694,9 +3738,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-factory/tree/1.0.2"
+                "source": "https://github.com/php-fig/http-factory"
             },
-            "time": "2023-04-10T20:10:41+00:00"
+            "time": "2024-04-15T12:06:14+00:00"
         },
         {
             "name": "psr/http-message",
@@ -9550,7 +9594,9 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "backpack/crud": 20,
-        "mgs/mgs_laravel_extensions": 20
+        "mgs/confirm_access": 20,
+        "mgs/redirection_confirm": 20,
+        "mgs/change_password": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

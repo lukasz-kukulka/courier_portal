@@ -609,9 +609,13 @@ class UserAnnouncementController extends Controller
     }
 
     private function getOtherDataArray( $request, $announcementId, $index ) {
+        $otherDescription = $request[ 'other_description_' . $index ];
+        if( $request[ 'other_description_' . $index ] == null ) {
+            $otherDescription = __( 'base.user_announcement_info_empty' );
+        }
         return [
             'announcement_id' =>                  $announcementId,
-            'description' =>                      $request[ 'other_description_' . $index ],
+            'description' =>                      $otherDescription,
         ];
     }
 
