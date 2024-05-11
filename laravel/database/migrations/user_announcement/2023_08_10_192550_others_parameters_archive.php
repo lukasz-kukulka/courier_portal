@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('others_parameters_archive', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('announcement_id'); // klucz obcy
-            $table->longText( 'description' );
+            $table->longText( 'description' )->nullable();
             $table->timestamps();
         });
     }

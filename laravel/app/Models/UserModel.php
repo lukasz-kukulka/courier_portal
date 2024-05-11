@@ -18,7 +18,18 @@ class UserModel extends Model
         return $this->hasMany( UserAnnouncement::class, 'author' );
     }
 
+    public function courierAnnouncement() {
+        return $this->hasMany( CourierAnnouncement::class, 'author' );
+    }
+
     public function company() {
         return $this->hasOne( UserCompany::class, 'author' );
+    }
+
+    public function delete() {
+        $this->userAnnouncement()->delete();
+        $this->courierAnnouncement()->delete();
+        $this->company()->delete();
+        return parent::delete();
     }
 }

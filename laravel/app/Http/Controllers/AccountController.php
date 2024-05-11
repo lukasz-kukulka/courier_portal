@@ -20,6 +20,7 @@ class AccountController extends Controller
     }
 
     public function confirmAccountType( Request $request ){
+        //dd( $request );
         $accountType = $request->account_type_input_id;
 
         return view('accounts.confirmed_account')
@@ -38,18 +39,15 @@ class AccountController extends Controller
     public function store( Request $request ) {
         $user = new CustomUserController;
         $valid = $user->create( $request );
-
         if ($valid->fails()) {
             $accountType = $request->account_type;
-            return redirect()
-                ->route('confirmed_account', $request->all() )
-                ->withErrors( $valid )
-                ->withInput()
+            return view('accounts.confirmed_account')
                 ->with( 'accountType', $accountType )
-                ->with( 'isEdit', false );
+                ->with( 'isEdit', false )
+                ->withErrors( $valid );
         } else {
             $user->store( $request );
-            return redirect()->route('account_last_confirmed' );
+            return view('accounts.confirmed_account_last');
         }
     }
 

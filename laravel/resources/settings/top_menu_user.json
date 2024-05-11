@@ -1,4 +1,18 @@
 {
+    "user_announcement_list" : {
+        "name" : "nav_menu_user_announcement_list",
+        "route_name" : "user_announcements_list",
+        "link" : "user_announcements_list",
+        "icon" : "bi bi-card-list",
+        "permission": "login"
+    },
+    "courier_announcement_list" : {
+        "name" : "nav_menu_courier_announcement_list",
+        "route_name" : "courier_announcement_user_list",
+        "link" : "courier_announcement_user_list",
+        "icon" : "bi bi-card-checklist",
+        "permission": "login"
+    },
     "accounts_type_change" : {
         "name" : "nav_menu_account_type_change",
         "route_name" : "edit_type_account",
@@ -13,18 +27,18 @@
         "icon" : "bi bi-person-square h5",
         "permission": "login"
     },
-    "user_announcement_list" : {
-        "name" : "nav_menu_user_announcement_list",
-        "route_name" : "user_announcements_list",
-        "link" : "user_announcements_list",
-        "icon" : "bi bi-card-list",
+    "user_password_change" : {
+        "name" : "nav_menu_user_password_change",
+        "route_name" : "change_password",
+        "link" : "change_password",
+        "icon" : "bi bi-person-square h5",
         "permission": "login"
     },
-    "courier_announcement_list" : {
-        "name" : "nav_menu_courier_announcement_list",
-        "route_name" : "courier_announcement_user_list",
-        "link" : "courier_announcement_user_list",
-        "icon" : "bi bi-card-checklist",
+    "user_profile_view" : {
+        "name" : "nav_menu_user_profile_view",
+        "route_name" : "profile",
+        "link" : "profile",
+        "icon" : "bi bi-person-square h5",
         "permission": "login"
     }
 }

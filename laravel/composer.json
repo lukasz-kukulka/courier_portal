@@ -2,14 +2,19 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.1",
         "backpack/crud": "v6.x-dev",
+        "mgs/confirm_access": "dev-ConfirmAccessExtension",
+        "mgs/redirection_confirm": "dev-RedirectionConfirmExtension",
+        "mgs/change_password": "dev-ChangePasswordExtension",
         "backpack/theme-coreuiv2": "^1.1",
         "backpack/theme-coreuiv4": "^1.0",
-        "bordercloud/codemirror": "5.65.13",
         "elibyy/tcpdf-laravel": "^10.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
@@ -19,25 +24,6 @@
         "tecnickcom/tcpdf": "^6.6",
         "twbs/bootstrap-icons": "^1.10"
     },
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "bordercloud/codemirror",
-                "version": "5.65.13",
-                "source": {
-                    "url": "https://github.com/codemirror/CodeMirror",
-                    "type": "git",
-                    "reference": "5.65.13"
-                },
-                "autoload": {
-                    "classmap": [
-                        "lib/"
-                    ]
-                }
-            }
-        }
-    ],
     "require-dev": {
         "backpack/generators": "^4.0",
         "barryvdh/laravel-debugbar": "^3.8",
@@ -51,12 +37,21 @@
         "phpunit/phpunit": "^10.1",
         "spatie/laravel-ignition": "^2.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:lukasz-kukulka/mgs_laravel_extensions.git"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "TCPDF\\": "vendor/tecnickcom/tcpdf/"
+            "TCPDF\\": "vendor/tecnickcom/tcpdf/",
+            "MGSCAE\\": "vendor/mgs/confirm_access/ConfirmAccessExtension",
+            "MGSRE\\": "vendor/mgs/redirection_confirm/RedirectionExtension",
+            "MGSCPE\\": "vendor/mgs/change_password/ChangePasswordExtension"
         },
         "files": [
             "app/Helpers/translate_helpers.php",
@@ -82,7 +77,9 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "post-install-cmd": ["php artisan storage:link"]
+        "post-install-cmd": [
+            "php artisan storage:link"
+        ]
     },
     "extra": {
         "laravel": {
