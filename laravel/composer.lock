@@ -2731,12 +2731,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:lukasz-kukulka/mgs_laravel_extensions.git",
-                "reference": "86d4bcd78d69263dba756a8d31f67a5b575e610b"
+                "reference": "6f12e5b369bdc0886968316182371332889d339a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/86d4bcd78d69263dba756a8d31f67a5b575e610b",
-                "reference": "86d4bcd78d69263dba756a8d31f67a5b575e610b",
+                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/6f12e5b369bdc0886968316182371332889d339a",
+                "reference": "6f12e5b369bdc0886968316182371332889d339a",
                 "shasum": ""
             },
             "type": "library",
@@ -2745,7 +2745,7 @@
                 "source": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/tree/ChangePasswordExtension",
                 "issues": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/issues"
             },
-            "time": "2024-05-10T09:05:04+00:00"
+            "time": "2024-05-11T00:16:37+00:00"
         },
         {
             "name": "mgs/confirm_access",

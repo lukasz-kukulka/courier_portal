@@ -17,4 +17,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/app/MGSExtensions
+/app/mgs-laravel-extensions
