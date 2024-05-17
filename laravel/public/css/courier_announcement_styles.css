@@ -10,6 +10,10 @@
     height: 100%;
 }
 
+.blur {
+    filter: blur(5px);
+}
+
 .add_new_cargo_type_button {
     white-space: nowrap;
     margin-bottom: 10px;

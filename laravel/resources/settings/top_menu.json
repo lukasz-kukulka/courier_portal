@@ -59,10 +59,10 @@
             },
             "ele4" : {
                 "name" : "nav_menu_announcement_find_courier",
-                "link" : "courier_announcement.index",
+                "link" : "courier_announcement/index",
                 "route_name" : "courier_announcement.index",
                 "icon": "bi bi-search h5",
-                "permission": "login"
+                "permission": "all"
             }
         }
     }

@@ -2,7 +2,7 @@
 
 @section('add_header')
     {{-- <script src="{{ asset('js/accounts_scripts.js') }}"></script> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/accounts_form_styles.css') }}"> --}}
+    <link rel="stylesheet" href="{{ asset('css/user_announcement_styles.css') }}">
     @php
         $JsonParserController = app(\App\Http\Controllers\JsonParserController::class);
         $cargoData = $JsonParserController->cargoAction();
@@ -18,12 +18,6 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.summary_anounncement_title') }}</div>
                         <div class="card-body">
-                            {{-- @php
-                                foreach( request()->all() as $key => $value ) {
-                                    echo( 'key: ' . $key . '    value: ' . $value );
-                                }
-                            @endphp--}}
-                            {{-- {{ dd( request()->title )}} --}}
                         @if( $isSummary )
                             <form action="{{ route('user_announcement.store') }}" method="POST" id="user_announcement_summary">
                                 @csrf
@@ -48,9 +42,28 @@
 
                                     <p class="alert alert-info text-center">
                                         <span class="font-weight-bold h4"><i class="bi bi-person-rolodex"></i> {{ __( 'base.announcement_contact_title' ) }} <i class="bi bi-person-rolodex"></i></span><br>
-                                        <strong><i class="bi bi-telephone-fill"></i> {{ __( 'base.phone_number' ) }}:</strong> {{ request()->phone_number }}<br>
-                                        <strong><i class="bi bi-envelope-at-fill"></i> {{ __( 'base.email_address' ) }}:</strong> {{ request()->email }}<br>
+                                        @guest
+                                            <strong><i class="bi bi-telephone-fill "></i> {{ __( 'base.phone_number' ) }}:</strong> <span class="blur">{{ str_repeat( '$', strlen( request()->phone_number ) ) }}</span>
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button><br>
+                                            <strong><i class="bi bi-envelope-at-fill"></i> {{ __( 'base.email_address' ) }}:</strong> <span class="blur">{{ str_repeat( '@', strlen( request()->email ) ) }}</span>
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button><br>
+
+                                        @endguest
+                                        @auth
+                                            <strong><i class="bi bi-telephone-fill "></i> {{ __( 'base.phone_number' ) }}:</strong> {{ request()->phone_number }}<br>
+                                            <strong><i class="bi bi-envelope-at-fill"></i> {{ __( 'base.email_address' ) }}:</strong> {{ request()->email }}<br>
+                                        @endauth
                                     </p>
+                                    <x-modal_window_component id="access_limited"
+                                                title="{{ __( 'base.modal_window_accsess_limited_title' ) }}"
+                                                message="{{ __( 'base.modal_window_accsess_limited_message' ) }}"
+                                                closeButtonText="{{ __( 'base.modal_window_close_window' ) }}"
+                                                secondButtonLink="/login"
+                                                secondButtonText="{{ __( 'base.login' ) }}"
+                                                thirdButtonLink="/register"
+                                                thirdButtonText="{{ __( 'base.register' ) }}"
+                                                />
+
 
                                     @if ( request()->parcel > 0 )
                                         <table class="table table-hover table-sm table-info rounded-3 overflow-hidden">
@@ -191,7 +204,13 @@
                                 @if ( request()->input( 'is_edit_mode' ) == true )
                                     <input type="hidden" name="announcement_id" value="{{ request()->input( 'announcementId' ) }}">
                                 @endif
-                                <button type="submit" class="btn btn-primary float-end mt-3">{{ __( 'base.add_announcement_button' ) }}</button>
+                                <div class="row mb-0">
+                                    <div class="col d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary" onclick="window.history.back();"> {{ __('base.back') }} </button>
+                                        <button type="submit" class="btn btn-primary">{{ __( 'base.add_announcement_button' ) }}</button>
+                                    </div>
+                                </div>
+
                             </form>
                         @endif
                         </div>

@@ -23,13 +23,19 @@
                                     <input type="hidden" name="announcement_id" value="{{ request()->input( 'announcementId' ) }}">
                                 @endif
                                 <div class="row mb-0">
-                                    <div class="col text-end">
+                                    <div class="col d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary" onclick="window.history.back();">
+                                            {{ __('base.back') }}
+                                        </button>
+
                                         <button type="submit" class="btn btn-primary">
                                             {{ __('base.next') }}
                                         </button>
                                     </div>
                                 </div>
+
                             </form>
+
                         </div>
                     </div>
                 </div>

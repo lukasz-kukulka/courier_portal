@@ -357,6 +357,15 @@ class UserAnnouncementController extends Controller
             ->with( 'isSummary', false );
     }
 
+    public function showSingle( Request $request, string $id ) {
+        $announcement = $this->getAnnouncementWithRelation( $id );
+        $cargoData = $this->generateRequestSummaryData( $announcement );
+        $request->merge( $cargoData );
+        return view('announcement_summary')
+            ->with( 'title', $announcement->title )
+            ->with( 'isSummary', false );
+    }
+
     public function edit(string $id) {
         $directionsData = $this->generateDirectionData();
         $cargoData = $this->json->cargoAction();

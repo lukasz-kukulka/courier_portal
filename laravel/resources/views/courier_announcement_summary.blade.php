@@ -193,10 +193,9 @@
                                                             <input type="hidden" name="{{ $cellName }}" value="{{ $value }}">
                                                         </div>
                                                     </div>
-                                                    @endif
+                                                @endif
                                             @endforeach
                                         </div>
-
                                     </div>
                                 </div> {{-- END full_summary_container --}}
 

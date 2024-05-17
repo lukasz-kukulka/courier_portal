@@ -18,6 +18,7 @@ return [
         base_path('vendor/mgs/confirm_access/ConfirmAccessExtension/Views'),
         base_path('vendor/mgs/redirection_confirm/RedirectionConfirmExtension/Views'),
         base_path('vendor/mgs/change_password/ChangePasswordExtension/Views'),
+        base_path('vendor/mgs/modal_window/ModalWindowComponent/Views/Components'),
     ],
 
     /*
@@ -35,5 +36,4 @@ return [
         'VIEW_COMPILED_PATH',
         realpath(storage_path('framework/views'))
     ),
-
 ];

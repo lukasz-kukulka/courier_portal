@@ -4,7 +4,7 @@
     align-items: center;
     flex-direction: column;
   }
-  
+
 .declaration_buttons_choice_wrapper form button {
     margin-top: 10px;
     font-size: 18px;
@@ -47,10 +47,12 @@
 }
 
 .single_item_parcel_title {
-  display: block;
+  display: flex;
+  justify-content: center; /* Wyśrodkowanie w poziomie */
+  align-items: center;     /* Wyśrodkowanie w pionie */
 }
 
-[class^="delete_item_button_"] {
+/* [class^="delete_item_button_"] {
   vertical-align: 6px;
   margin: 0px 0px 0px 10px;
   padding: 0px 0px 0px 0px;
@@ -65,7 +67,7 @@
   line-height: 0px;
   width: 130px;
   height: 24px;
-}
+} */
 
 button[class^="add_new_item_button_"][disabled] {
   background: initial;
