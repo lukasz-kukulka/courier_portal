@@ -135,31 +135,30 @@
                                 <tr class="text-center contact_body"><td>
                                     @foreach ( $contactDetails as $key => $value )
                                         @if ( $value != null )
+                                        @auth
                                             <p><strong>{{ __( 'base.' . $key ) . ': ' . $value  }}</strong></p>
+                                        @endauth
+                                        @guest
+                                            <p>
+                                                <strong>{{ __( 'base.' . $key ) . ': ' }}<span class="blur">{{ str_repeat( '@', strlen( $value ) ) }}</span></strong>
+                                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button>
+                                            </p>
+                                        @endguest
                                         @endif
                                     @endforeach
+                                    <x-modal_window_component id="access_limited"
+                                        title="{{ __( 'base.modal_window_accsess_limited_title' ) }}"
+                                        message="{{ __( 'base.modal_window_accsess_limited_message' ) }}"
+                                        closeButtonText="{{ __( 'base.modal_window_close_window' ) }}"
+                                        secondButtonLink="/login"
+                                        secondButtonText="{{ __( 'base.login' ) }}"
+                                        thirdButtonLink="/register"
+                                        thirdButtonText="{{ __( 'base.register' ) }}"
+                                    />
                                 </td></tr>
                             </tbody>
                         </table>
                     </div>
-                    {{-- <div class="contact_container border border-1">
-                        <table class="table table-sm border border-1 contact_table_single">
-                            <thead>
-                                <tr class="table-info contact_header">
-                                    <td colspan="3">
-                                        <p class="h3 text-center">{{ __( 'base.courier_announcement_single_contact_title' ) }}</p>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="contact_body">
-                                    <td>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div> --}}
                 </div>
             </div>
         </div>

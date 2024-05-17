@@ -13,6 +13,7 @@
         "mgs/confirm_access": "dev-ConfirmAccessExtension",
         "mgs/redirection_confirm": "dev-RedirectionConfirmExtension",
         "mgs/change_password": "dev-ChangePasswordExtension",
+        "mgs/modal_window": "dev-ModalWindowComponent",
         "backpack/theme-coreuiv2": "^1.1",
         "backpack/theme-coreuiv4": "^1.0",
         "elibyy/tcpdf-laravel": "^10.0",
@@ -51,7 +52,8 @@
             "TCPDF\\": "vendor/tecnickcom/tcpdf/",
             "MGSCAE\\": "vendor/mgs/confirm_access/ConfirmAccessExtension",
             "MGSRE\\": "vendor/mgs/redirection_confirm/RedirectionExtension",
-            "MGSCPE\\": "vendor/mgs/change_password/ChangePasswordExtension"
+            "MGSCPE\\": "vendor/mgs/change_password/ChangePasswordExtension",
+            "MGSMWC\\": "vendor/mgs/modal_window/ModalWindowComponent"
         },
         "files": [
             "app/Helpers/translate_helpers.php",

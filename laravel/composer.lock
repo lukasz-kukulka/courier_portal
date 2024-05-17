@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "89472e23543c28cde2ce77dcccaedaeb",
+    "content-hash": "8ab4af2115d8402f1c44e3630caf92b2",
     "packages": [
         {
             "name": "backpack/basset",
@@ -2768,6 +2768,28 @@
                 "issues": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/issues"
             },
             "time": "2024-05-08T12:22:20+00:00"
+        },
+        {
+            "name": "mgs/modal_window",
+            "version": "dev-ModalWindowComponent",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:lukasz-kukulka/mgs_laravel_extensions.git",
+                "reference": "db26174b1bbb92ed644dde21fbdd64478d2c2efd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lukasz-kukulka/mgs_laravel_extensions/zipball/db26174b1bbb92ed644dde21fbdd64478d2c2efd",
+                "reference": "db26174b1bbb92ed644dde21fbdd64478d2c2efd",
+                "shasum": ""
+            },
+            "type": "library",
+            "description": "Opis Twojej paczki",
+            "support": {
+                "source": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/tree/ModalWindowComponent",
+                "issues": "https://github.com/lukasz-kukulka/mgs_laravel_extensions/issues"
+            },
+            "time": "2024-05-14T03:44:53+00:00"
         },
         {
             "name": "mgs/redirection_confirm",
@@ -9596,7 +9618,8 @@
         "backpack/crud": 20,
         "mgs/confirm_access": 20,
         "mgs/redirection_confirm": 20,
-        "mgs/change_password": 20
+        "mgs/change_password": 20,
+        "mgs/modal_window": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

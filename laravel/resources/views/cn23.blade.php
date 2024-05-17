@@ -2,7 +2,6 @@
 
 @section('add_header')
     <script src="{{ asset('js/declaration_scripts.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/declaration_styles.css') }}">
     @php
         $declarationFormController = app(\App\Http\Controllers\DeclarationFormController::class);
     @endphp
@@ -22,4 +21,6 @@
         </div>
     </div>
 </div>
+
+<link rel="stylesheet" href="{{ asset('css/declaration_styles.css') }}">
 @endsection

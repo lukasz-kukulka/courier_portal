@@ -28,8 +28,6 @@
                         <div class="filters_container_head_right col-sm-{{ $buttonSectionSize }}">
                             <button type="button" id="courier_announcement_hide_filters_button" class="btn btn-info">{{ __( 'base.courier_announcement_hide_filters_button' ) }}</button>
                         </div>
-
-
                     </div>
 
                     <div class="filters_container_body">
@@ -245,13 +243,12 @@
                               </tr >
                               <tr>
                                 <th scope="row">&nbsp&nbsp</th>
-
                                 <td class="d-flex align-items-center">
                                     <div class="text-start">
-                                        <form class="d-inline-block me-2" action="{{ route( 'user_announcement.show', ['user_announcement' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_show">
+                                        <form class="d-inline-block me-2" action="{{ route( 'user_announcement_show_single', ['id' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_show">
                                             <button type="submit" class="btn btn-primary">{{ __( 'base.details_announcement_button' ) }}</button>
                                         </form>
-                                        @if ( Auth::user()->id == $announcement->author )
+                                        @if ( Auth::check() && Auth::user()->id == $announcement->author )
                                             <form class="d-inline-block me-2" action="{{ route('user_announcement.edit', ['user_announcement' => $announcement->id ] ) }}" method="GET" id="user_announcement_single_announcement_edit">
                                                 <button type="submit" class="btn btn-success">{{ __( 'base.edit_announcement_button' ) }}</button>
                                             </form>

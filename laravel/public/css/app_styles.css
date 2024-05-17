@@ -1,0 +1,16 @@
+body {
+    background-image: url('../images/background.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.logo_page {
+    display: block; /* Ensure the <a> tag behaves like a block element */
+    width: 60px; /* Set width according to your logo size */
+    height: 60px; /* Set height according to your logo size */
+    background-image: url('../images/logo.webp');
+    background-size: contain; /* Ensure the logo fits within the dimensions */
+    background-repeat: no-repeat;
+    background-position: center;
+}

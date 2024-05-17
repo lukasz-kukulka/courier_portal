@@ -163,11 +163,12 @@ function accessForAddNextElementToDate() {
 
 function validateConditionsDate(formDate) {
     const currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() + 1);
+    currentDate.setDate( currentDate.getDate() );
     const userDate = new Date(formDate);
     const oneDayMillisecond = 1000 * 60 * 60 * 24;
 
     var diffDays = parseInt((userDate - currentDate) / oneDayMillisecond);
+    console.log( diffDays );
     if (diffDays < 0) {
         return false;
     } else {
@@ -177,6 +178,7 @@ function validateConditionsDate(formDate) {
 
 function setAddNewDateButtonVisible( inputDirectionFrom, inputDirectionTo, inputDate ) {
     var addButton = document.querySelector(".add_date_component_btn");
+    console.log( inputDirectionFrom, inputDirectionTo, inputDate );
     if ( inputDirectionFrom == true && inputDirectionTo == true && inputDate == true) {
         addButton.style.opacity = 1.0;
         addButton.style.pointerEvents = "auto";
@@ -327,6 +329,6 @@ document.addEventListener("DOMContentLoaded", function () {
     deleteAnyDateButton();
     accessForAddNextElementToDate();
     setDeleteActionOnFirstElementOnDate();
-    setVisibleDateComponents();
     checkLastDateItem();
+    setVisibleDateComponents();
 });
