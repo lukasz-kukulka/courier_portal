@@ -57,7 +57,7 @@ class DeclarationFormController extends Controller
         $this->current_showing_items_num++;
         if ( $this->current_showing_items_num > 1 ) {
             $element_name = "delete_item_button_".$this->current_showing_items_num;
-            $parcel_item_delete_text .= '<button onclick="return false;" id="'.$element_name.'" class="'.$element_name.'_class">Usuń przedmiot</button></br>';
+            $parcel_item_delete_text .= '<button onclick="return false;" id="'.$element_name.'" class="btn btn-danger btn-sm '.$element_name.'_class">Usuń przedmiot</button></br>';
         }
         $form .= '<div id="single_item_in_parcel_div_'.$this->current_showing_items_num.'_id" class="single_item_in_parcel_div_'.$this->current_showing_items_num.'_class">';
         $form .= '</br><div class="single_item_parcel_title"><h2 class="title_parcel_item">Przedmiot '.$this->current_showing_items_num.'</h2>'.$parcel_item_delete_text.'</div>';
@@ -84,14 +84,14 @@ class DeclarationFormController extends Controller
     private function generateAddNewItemButton() {
         $form = null;
         $form .= '<button disabled onclick="return false;" id="add_new_item_button_'.$this->current_showing_items_num.
-        '" class="add_new_item_button_'.$this->current_showing_items_num.'_class">Dodaj kolejny przedmiot</button></br>';
+        '" class="btn btn-success add_new_item_button_'.$this->current_showing_items_num.'_class">Dodaj kolejny przedmiot</button></br>';
         $form .= '<div class="add_new_item_button_msg_'.$this->current_showing_items_num.'">
                         <p id="msg_add_new_item_button_'.$this->current_showing_items_num.'">'.$this->gen_msg->add_item_button_conditions.'</p></div>';
         return $form;
     }
 
     private function generateSendFormButton() {
-        return '</br><button type="submit" id="button_send_form" name="create_pdf_button" class="create_pdf_button_class">Generuj</button>';
+        return '</br><button type="submit" id="button_send_form" name="create_pdf_button" class="btn btn-primary create_pdf_button_class">Generuj</button>';
     }
 
     private function createAllItemsInParcel( $max_items ) {
@@ -187,14 +187,14 @@ class DeclarationFormController extends Controller
 
     private function generateSingeCheckBox( $name, $value, $checkbox_text ) {
         $form = null;
-        $form .= '<div class="'.$name.'_div"><label for="'.$name.'_label_id">';
+        $form .= '<div class="form-control '.$name.'_div"><label for="'.$name.'_label_id">';
         $form .= '<input type="checkbox" id="'.$name.'_id" name="'.$name.'" value="'.$value.'">';
         $form .= '<p>'.$checkbox_text.'</p> </label></div>';
         return $form;
     }
 
     private function getSingleTextInput( $name, $pattern, $title, $required = '', $placeholder = '', $autofocus = '' ) {
-        return '</br><input type="text" id="input_'.$name.'_id" name="'.$name.'"
+        return '</br><input type="text" class="form-control" id="input_'.$name.'_id" name="'.$name.'"
                 placeholder="'.$placeholder.'"
                 '.$required.'
                 '.$autofocus.'
@@ -209,7 +209,7 @@ class DeclarationFormController extends Controller
     private function generateSingleNumberInput( $name, $postfix = '', $required = '') {
         $form = null;
         $form .= '<div class="'.$name.'_div"><label for="'.$name.'_label_id">';
-        $form .= '<input type="number" id="'.$name.'_id" name="'.$name.'" "'.$required.'">';
+        $form .= '<input class="form-control" type="number" id="'.$name.'_id" name="'.$name.'" "'.$required.'">';
         $form .= '<span class="number_postfix">'.$postfix.'</span>';
         $form .= '</label></div>';
         return $form;

@@ -41,3 +41,11 @@
     font-size: 12px;
     font-weight: 900;
 }
+
+.blur {
+    filter: blur(5px);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

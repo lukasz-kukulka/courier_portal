@@ -27,7 +27,10 @@ function clickAddNewItemButton() {
                 var delete_item_button = document.getElementById("delete_item_button_" + ( index + 1 ) );
                 myElement.style.display = "inline";
                 add_new_item_button.style.display = "none";
-                delete_item_button.style.display = "none";
+                if( index > 1 ) {
+                  delete_item_button.style.display = "none";
+                }
+
             });
         })(i);
     }
@@ -53,7 +56,10 @@ function deleteItemButton() {
               description_field.value = "";
               quantity_field.value = "";
               value_field.value = "";
-              delete_item_button.style.display = "inline";
+              if ( index > 1 ) {
+                delete_item_button.style.display = "inline";
+              }
+
           });
       })(i);
   }
@@ -87,6 +93,9 @@ function checkAllInputsInItems() {
 }
 
 function resetAllItemConditionsToFalse( index, buttonConditionsArray ) {
+  if( index > 5 ) {
+    return;
+  }
   (function( i ) {
     var del_button = document.getElementById("delete_item_button_" + ( i + 2 ) );
     del_button.addEventListener('click', function() {
@@ -221,6 +230,6 @@ document.addEventListener('DOMContentLoaded', function() {
     checkBusinessCheckbox();
     setupCheckbox();
     clickAddNewItemButton();
-    deleteItemButton();
     checkAllInputsInItems();
+    deleteItemButton();
 });

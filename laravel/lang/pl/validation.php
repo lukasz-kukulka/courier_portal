@@ -150,6 +150,8 @@ return [
     'url' => 'Pole :attribute musi być poprawnym adresem URL.',
     'ulid' => 'Pole :attribute musi być poprawnym ULID.',
     'uuid' => 'Pole :attribute musi być poprawnym UUID.',
+    'email_no_unique' => 'Email juz istnieje, uzyj innego albo zaloguj sie',
+    'email_confirmation_same' => 'Pole "Potwierdź adres e-mail" musi być takie samo jak "Adres e-mail"',
 
     /*
     |--------------------------------------------------------------------------
