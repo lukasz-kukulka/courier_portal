@@ -111,4 +111,5 @@
         </main>
     </div>
 </body>
+<script src="{{ asset('js/cookies_script.js') }}"></script>
 </html>

@@ -10,10 +10,6 @@
     "require": {
         "php": "^8.1",
         "backpack/crud": "v6.x-dev",
-        "mgs/confirm_access": "dev-ConfirmAccessExtension",
-        "mgs/redirection_confirm": "dev-RedirectionConfirmExtension",
-        "mgs/change_password": "dev-ChangePasswordExtension",
-        "mgs/modal_window": "dev-ModalWindowComponent",
         "backpack/theme-coreuiv2": "^1.1",
         "backpack/theme-coreuiv4": "^1.0",
         "elibyy/tcpdf-laravel": "^10.0",
@@ -22,6 +18,10 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.2",
+        "mgs/change_password": "dev-ChangePasswordExtension",
+        "mgs/confirm_access": "dev-ConfirmAccessExtension",
+        "mgs/modal_window": "dev-ModalWindowComponent",
+        "mgs/redirection_confirm": "dev-RedirectionConfirmExtension",
         "tecnickcom/tcpdf": "^6.6",
         "twbs/bootstrap-icons": "^1.10"
     },
