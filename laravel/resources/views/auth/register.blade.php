@@ -79,6 +79,18 @@
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-6 form-inline">
+                                <input class="form-check-input" type="checkbox" id="rodoCheckbox" name="rodoCheckbox" required {{ old('rodoCheckbox') ? 'checked' : '' }}>
+                                <label class="form-check-label ml-2" for="rodoCheckbox">
+                                    {{ __( 'base.accept_rodo' ) }}
+                                </label>
+                                <a href="{{ route('rodo') }}" class="ml-2" target="_blank" rel="noopener noreferrer">{{ __( 'base.accept_rodo_details' ) }}</a>
+                            </div>
+                        </div>
+
+
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">

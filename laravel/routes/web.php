@@ -1,7 +1,7 @@
 <?php
 
-require base_path('vendor\mgs\confirm_access\ConfirmAccessExtension\Routes\routes.php');
-require base_path('vendor\mgs\change_password\ChangePasswordExtension\Routes\routes.php');
+require base_path('vendor/mgs/confirm_access/ConfirmAccessExtension/Routes/routes.php');
+require base_path('vendor/mgs/change_password/ChangePasswordExtension/Routes/routes.php');
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
@@ -27,6 +27,7 @@ use App\Http\Controllers\CustomUserController;
     Auth::routes( ['verify' => true] );
 
     Route::get('/', function () { return view('welcome'); })->name('main');
+    Route::get('/rodo/rules', function () { return view('rodo'); })->name('rodo');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -161,7 +162,3 @@ use App\Http\Controllers\CustomUserController;
         ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('courier_announcement_user_list');
 } //####################################################################
-
-
-
-

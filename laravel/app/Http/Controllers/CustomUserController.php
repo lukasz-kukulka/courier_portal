@@ -15,8 +15,8 @@ class CustomUserController extends Controller
 
     private function validator( $data) {
         $userRules = [
-            'name' => ['required', 'string', 'max:55'],
-            'surname' => ['required', 'string', 'max:55'],
+            'name' => ['required', 'string', 'max:55', 'regex:/^[a-zA-Z\s]+$/' ],
+            'surname' => ['required', 'string', 'max:55', 'regex:/^[a-zA-Z\s]+$/' ],
             'phone_number' => ['required', 'numeric', 'digits_between:9,14'],
             'email' => ['required', 'email'],
             'd_o_b' => ['required', 'date', 'before:2010-01-01'],
@@ -25,12 +25,12 @@ class CustomUserController extends Controller
 
         if ( array_key_exists( 'company_fields_checkbox', $data ) ) {
             $companyRules = [
-                'company_name' => ['nullable', 'string', 'max:99'],
+                'company_name' => ['nullable', 'string', 'max:99', 'regex:/^[a-zA-Z\s]+$/' ],
                 'company_address' => ['nullable', 'string', 'max:55'],
-                'company_phone_number' => ['nullable', 'string', 'min:9', 'max:14'],
+                'company_phone_number' => ['nullable', 'string', 'digits_between:9,14'],
                 'company_post_code' => ['nullable', 'string', 'max:9'],
-                'company_city' => ['nullable', 'string', 'max:44'],
-                'company_country' => ['nullable', 'string', 'max:44'],
+                'company_city' => ['nullable', 'string', 'max:44', 'regex:/^[a-zA-Z\s]+$/' ],
+                'company_country' => ['nullable', 'string', 'max:44', 'regex:/^[a-zA-Z\s]+$/' ],
             ];
         }
 
