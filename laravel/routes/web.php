@@ -1,7 +1,7 @@
 <?php
 
-require base_path('vendor/mgs/confirm_access/ConfirmAccessExtension/Routes/routes.php');
-require base_path('vendor/mgs/change_password/ChangePasswordExtension/Routes/routes.php');
+require base_path('vendor' . DIRECTORY_SEPARATOR . 'mgs' . DIRECTORY_SEPARATOR . 'confirm_access' . DIRECTORY_SEPARATOR . 'ConfirmAccessExtension' . DIRECTORY_SEPARATOR . 'Routes' . DIRECTORY_SEPARATOR . 'routes.php');
+require base_path('vendor' . DIRECTORY_SEPARATOR . 'mgs' . DIRECTORY_SEPARATOR . 'change_password' . DIRECTORY_SEPARATOR . 'ChangePasswordExtension' . DIRECTORY_SEPARATOR . 'Routes' . DIRECTORY_SEPARATOR . 'routes.php');
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DeclarationPrintController;
