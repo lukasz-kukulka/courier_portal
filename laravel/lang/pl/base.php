@@ -18,7 +18,7 @@ return [
     'user'                   => 'UŻYTKOWNIK',
     'logout'                 => 'Wyloguj',
     'login'                  => 'Zaloguj',
-    'login_in'               => 'Logowanie',
+    'login_title'            => 'Logowanie',
     'register'               => 'Zarejestruj',
     'registering'            => 'Rejestracja',
     'username'               => 'Nazwa użytkownika',
@@ -646,4 +646,6 @@ return [
     "modal_window_accsess_limited_title" => "Brak dostepu do treści",
     "welcome_page_pack" => "Znajdź przesyłkę do zabrania",
     "welcome_page_van" => "Znajdź kuriera",
+    "accept_rodo" => "Akceptuje rodo oraz regulamin: ",
+    "accept_rodo_details" => "Szczegóły",
 ];
