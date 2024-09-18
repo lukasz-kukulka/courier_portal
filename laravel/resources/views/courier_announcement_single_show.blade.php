@@ -100,6 +100,7 @@
                         </table>
                     </div>{{-- END announcement_title --}}
                     <div class="gallery_container border border-1">
+                        
                         <table class="table table-sm border border-1 additional_info_table_single">
                             <thead>
                                 <tr class="table-info gallery_header">
@@ -122,42 +123,62 @@
                             </tbody>
                         </table>
                     </div>
+                    {{-- {{ dd(request() ) }} --}}
                     <div class="contact_container border border-1">
-                        <table class="table table-sm border border-1 additional_info_table_single">
-                            <thead>
-                                <tr class="table-info contact_header">
-                                    <td colspan="2">
-                                        <p class="h3 text-center"><i class="bi bi-person-bounding-box"></i> {{ __( 'base.announcement_contact_title' ) }} <i class="bi bi-person-bounding-box"></i></p>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-center contact_body"><td>
-                                    @foreach ( $contactDetails as $key => $value )
-                                        @if ( $value != null )
-                                        @auth
-                                            <p><strong>{{ __( 'base.' . $key ) . ': ' . $value  }}</strong></p>
-                                        @endauth
-                                        @guest
-                                            <p>
-                                                <strong>{{ __( 'base.' . $key ) . ': ' }}<span class="blur">{{ str_repeat( '@', strlen( $value ) ) }}</span></strong>
-                                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button>
-                                            </p>
-                                        @endguest
-                                        @endif
-                                    @endforeach
-                                    <x-modal_window_component id="access_limited"
-                                        title="{{ __( 'base.modal_window_accsess_limited_title' ) }}"
-                                        message="{{ __( 'base.modal_window_accsess_limited_message' ) }}"
-                                        closeButtonText="{{ __( 'base.modal_window_close_window' ) }}"
-                                        secondButtonLink="/login"
-                                        secondButtonText="{{ __( 'base.login' ) }}"
-                                        thirdButtonLink="/register"
-                                        thirdButtonText="{{ __( 'base.register' ) }}"
-                                    />
-                                </td></tr>
-                            </tbody>
-                        </table>
+                        @php
+                            $experience_date = new DateTime( $announcement->experience_date );
+                            $now_date = new DateTime( );
+
+                        @endphp
+                        
+                        
+                            <table class="table table-sm border border-1 additional_info_table_single">
+                                <thead>
+                                    <tr class="table-info contact_header">
+                                        <td colspan="2">
+                                            <p class="h3 text-center"><i class="bi bi-person-bounding-box"></i> {{ __( 'base.announcement_contact_title' ) }} <i class="bi bi-person-bounding-box"></i></p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{-- {{ dd( $experience_date ,$now_date , $announcement ) }} --}}
+                                    @if ( $experience_date > $now_date || $announcement->experience_date === null )
+                                    <tr class="text-center contact_body"><td>
+                                        @foreach ( $contactDetails as $key => $value )
+                                            @if ( $value != null )
+                                            @auth
+                                                <p><strong>{{ __( 'base.' . $key ) . ': ' . $value  }}</strong></p>
+                                            @endauth
+                                            @guest
+                                                <p>
+                                                    <strong>{{ __( 'base.' . $key ) . ': ' }}<span class="blur">{{ str_repeat( '@', strlen( $value ) ) }}</span></strong>
+                                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button>
+                                                </p>
+                                            @endguest
+                                            @endif
+                                        @endforeach
+                                        <x-modal_window_component id="access_limited"
+                                            title="{{ __( 'base.modal_window_accsess_limited_title' ) }}"
+                                            message="{{ __( 'base.modal_window_accsess_limited_message' ) }}"
+                                            closeButtonText="{{ __( 'base.modal_window_close_window' ) }}"
+                                            secondButtonLink="/login"
+                                            secondButtonText="{{ __( 'base.login' ) }}"
+                                            thirdButtonLink="/register"
+                                            thirdButtonText="{{ __( 'base.register' ) }}"
+                                        />
+                                    </td></tr>
+                                    @else
+                                        <tr class="text-center contact_body"><td>
+                                            <div class="position-relative p-4 my-3" style="background-color: #f8f9fa; border: 2px solid #dc3545;">
+                                                <div class="overlay" style="background-color: rgba(0, 0, 0, 0.8); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: flex; justify-content: center; align-items: center;">
+                                                    <span class="text-danger font-weight-bold">{{ __( 'base.announcement_archive_info' ) }}</span>
+                                                </div>
+                                            </div>
+                                        </td></tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        
                     </div>
                 </div>
             </div>

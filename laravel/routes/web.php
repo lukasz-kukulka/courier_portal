@@ -26,12 +26,15 @@ use App\Http\Controllers\CustomUserController;
 { //############################### BASIC ##############################
     Auth::routes( ['verify' => true] );
 
-    Route::get('/', function () { return view('welcome'); })->name('main');
+    Route::get('/', function () { return view('welcome'); } )->name('main');
     Route::get('/rodo/rules', function () { return view('rodo'); })->name('rodo');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/contact', function () { return view('contact'); } )->name('contact');
+    Route::get('/help', function () { return view('help'); } )->name('help');
 
     Route::get('/no_access', function () { return view('no_access'); })->name('no_access')->middleware( ['auth', 'verified'] );
+    Route::post('/sendMail', [App\Http\Controllers\ContactController::class, 'sendMail'] )->name('sendMail');
 
 } //####################################################################
 

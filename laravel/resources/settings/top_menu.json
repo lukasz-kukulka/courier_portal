@@ -1,7 +1,7 @@
 {
     "home" : {
         "name" : "nav_menu_home",
-        "route_name" : "home",
+        "route_name" : "main",
         "type" : "standard",
         "icon": "bi bi-house-door-fill h4",
         "permission": "all"
@@ -65,5 +65,19 @@
                 "permission": "all"
             }
         }
+    },
+    "contact" : {
+        "name" : "nav_menu_contact",
+        "route_name" : "contact",
+        "type" : "standard",
+        "icon": "bi bi-envelope-fill h4",
+        "permission": "all"
+    },
+    "help" : {
+        "name" : "nav_menu_help",
+        "route_name" : "help",
+        "type" : "standard",
+        "icon": "bi bi-patch-question h4",
+        "permission": "all"
     }
 }

@@ -15,8 +15,8 @@ class CustomUserController extends Controller
 
     private function validator( $data) {
         $userRules = [
-            'name' => ['required', 'string', 'max:55', 'regex:/^[a-zA-Z\s]+$/' ],
-            'surname' => ['required', 'string', 'max:55', 'regex:/^[a-zA-Z\s]+$/' ],
+            'name' => ['required', 'string', 'max:55', 'regex:/^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\s]+$/u'],
+            'surname' => ['required', 'string', 'max:55', 'regex:/^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\s]+$/u'],
             'phone_number' => ['required', 'numeric', 'digits_between:9,14'],
             'email' => ['required', 'email'],
             'd_o_b' => ['required', 'date', 'before:2010-01-01'],

@@ -13,6 +13,9 @@
                     <div class="card">
                         <div class="card-header">{{ __('base.courier_announcement_summary_title') }}</div>
                         <div class="card-body">
+                            <div class="alert alert-danger" role="alert">
+                                {{ __( 'base.announcement_not_ready' ) }}
+                            </div>
                             {{-- {{ dd( request() )}} --}}
                             {{-- @if ( request()->input( 'edit_mode_on') == true )
                             {{ dd( request() )}}
