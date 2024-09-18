@@ -219,11 +219,21 @@
                     @if ( count ( $announcements ) == 0 )
                         <strong><p class="filters_no_results_announcement">{{ __( 'base.user_announcement_filteras_no_results' ) }}</p></strong>
                     @endif
+                    {{-- {{ dd( $announcements ) }} --}}
                     @foreach ( $announcements as $announcement )
                         <table class="table table-sm table-light">
                             <thead>
                               <tr class="table-active">
-                                <th colspan="2" scope="col">{{ $announcement->title }}</th>
+                                <th colspan="2" scope="col">{{ $announcement->title }}
+                                    @php
+                                        $experience_date = new DateTime( $announcement->experience_date );
+                                        $now_date = new DateTime( );
+
+                                    @endphp
+                                    @if ( $experience_date < $now_date )
+                                        <span class="text-danger small"> ( {{ __( 'base.announcement_archive' ) }} )</span>
+                                    @endif
+                                </th>
 
                               </tr>
                             </thead>

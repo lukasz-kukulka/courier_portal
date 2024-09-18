@@ -21,6 +21,9 @@
                         @if( $isSummary )
                             <form action="{{ route('user_announcement.store') }}" method="POST" id="user_announcement_summary">
                                 @csrf
+                                <div class="alert alert-danger" role="alert">
+                                    {{ __( 'base.announcement_not_ready' ) }}
+                                </div>
                         @endif
                                 <div class="form-group">
                                     <p class="alert alert-info font-weight-bold h6">
@@ -42,17 +45,30 @@
 
                                     <p class="alert alert-info text-center">
                                         <span class="font-weight-bold h4"><i class="bi bi-person-rolodex"></i> {{ __( 'base.announcement_contact_title' ) }} <i class="bi bi-person-rolodex"></i></span><br>
-                                        @guest
+                                        @php
+                                            $experience_date = new DateTime( request()->experience_date );
+                                            $now_date = new DateTime( );
+
+                                        @endphp
+                                        @if ( $experience_date > $now_date )
+                                            @guest
                                             <strong><i class="bi bi-telephone-fill "></i> {{ __( 'base.phone_number' ) }}:</strong> <span class="blur">{{ str_repeat( '$', strlen( request()->phone_number ) ) }}</span>
                                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button><br>
                                             <strong><i class="bi bi-envelope-at-fill"></i> {{ __( 'base.email_address' ) }}:</strong> <span class="blur">{{ str_repeat( '@', strlen( request()->email ) ) }}</span>
                                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal_window_access_limited" id="show_contact">{{ __( 'base.show' ) }}</button><br>
 
-                                        @endguest
-                                        @auth
-                                            <strong><i class="bi bi-telephone-fill "></i> {{ __( 'base.phone_number' ) }}:</strong> {{ request()->phone_number }}<br>
-                                            <strong><i class="bi bi-envelope-at-fill"></i> {{ __( 'base.email_address' ) }}:</strong> {{ request()->email }}<br>
-                                        @endauth
+                                            @endguest
+                                            @auth
+                                                <strong><i class="bi bi-telephone-fill "></i> {{ __( 'base.phone_number' ) }}:</strong> {{ request()->phone_number }}<br>
+                                                <strong><i class="bi bi-envelope-at-fill"></i> {{ __( 'base.email_address' ) }}:</strong> {{ request()->email }}<br>
+                                            @endauth
+                                        @else
+                                            <div class="position-relative p-4 my-3" style="background-color: #f8f9fa; border: 2px solid #dc3545;">
+                                                <div class="overlay" style="background-color: rgba(0, 0, 0, 0.8); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; display: flex; justify-content: center; align-items: center;">
+                                                    <span class="text-danger font-weight-bold">{{ __( 'base.announcement_archive_info' ) }}</span>
+                                                </div>
+                                            </div>
+                                        @endif
                                     </p>
                                     <x-modal_window_component id="access_limited"
                                                 title="{{ __( 'base.modal_window_accsess_limited_title' ) }}"

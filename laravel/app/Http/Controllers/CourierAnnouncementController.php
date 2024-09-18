@@ -57,7 +57,7 @@ class CourierAnnouncementController extends Controller
             'postCodesUkAnnouncement',
             'contactAnnouncement',
             'additionalPostCodes'
-        ] );
+        ] )->orderBy('created_at', 'desc');
     }
 
     public function index( $filtersData = [] ) {
@@ -506,8 +506,9 @@ class CourierAnnouncementController extends Controller
         $images= $this->getImagesLinks( $courierAnnouncement->imageAnnouncement );
         $readyDates = $this->generateDates( $dates );
         $contactDetails = $this->generateContactForView( $courierAnnouncement->contactAnnouncement );
+        // dd($courierAnnouncement->first());
         return view( 'courier_announcement_single_show', [] )
-                    ->with( 'announcement', $courierAnnouncement->first() )
+                    ->with( 'announcement', $courierAnnouncement )
                     ->with( 'announcementTitle', $announcementTitle[0] )
                     ->with( 'cargo', $cargo )
                     ->with( 'dates', $readyDates )

@@ -28,3 +28,4 @@ class CourierAnnouncementAdditionalDirectionsArchive extends Model
     public function announcementId() {
         return $this->belongsTo( CourierAnnouncementArchive::class, 'courier_announcement_id' );
     }
+}
