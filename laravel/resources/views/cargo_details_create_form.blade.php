@@ -10,10 +10,14 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('base.user_announcement_card_name') }}</div>
+                        <div class="card-header">{{ __('base.user_announcement_card_name') }} 
                         <div class="card-body">
                             <form action="{{ route('user_announcement_summary') }}" method="POST" id="user_announcement_form_cargo_details">
                                 @csrf
+                                {{-- <span class="text-danger"> {{ __( 'base.announcement_not_ready' ) }} </span></div> --}}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ __( 'base.announcement_not_ready' ) }}
+                                </div>
                                 @foreach ( $cargoData as $cargo )
                                     <x-cargo_details_component :name="$cargo[ 'cargoId' ]" :number="$cargo[ 'cargoQuantity' ]" :params="json_encode( $cargo[ 'cargoParams' ] )" />
                                 @endforeach
