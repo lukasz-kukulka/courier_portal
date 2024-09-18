@@ -187,7 +187,7 @@
                                                 @if ( in_array( $headerData['loginUser']->account_type, $headerData['permDate'][ 'access_accounts' ] ) )
                                                     <td>
                                                         <div class="container_experience_for_premium form-check">
-                                                            <input class="form-check-input" type="checkbox" value="1" {{ old( 'experience_for_premium_date' ) ? 'checked' : '' }} id="experience_for_premium_date" name="experience_for_premium_date">
+                                                            <input class="form-check-input btn btn-outline-dark" type="checkbox" value="1" {{ old( 'experience_for_premium_date' ) ? 'checked' : '' }} id="experience_for_premium_date" name="experience_for_premium_date">
                                                             <label class="form-check-label" for="experience_for_premium_date">
                                                                 {{ __( 'base.perm_experience_announcement_date_info' ) }}
                                                             </label>

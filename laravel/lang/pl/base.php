@@ -426,7 +426,7 @@ return [
     "selecet_all_post_codes_uk" => "Zaznacz wszystkie w UK",
     "clear_all_post_codes_uk" => "Wyczyść wszystkie w UK",
     "courier_announcement_date_experience_title" => "Data wygaśnięcia ogłoszenia",
-    "perm_experience_announcement_date_info" => "Brak daty wygaśnięcia ogłoszenia, do momentu posiadania premium + jeden miesiąc",
+    "perm_experience_announcement_date_info" => "Brak daty wygaśnięcia ogłoszenia",
     "courier_announcement_additional_description_title" => "Dodatkowy opis do ogłoszenia( opcjonalnie )",
     "courier_announcement_picrures_title" => "Dodaj zdjęcia do ogłoszenia( opcjonalnie )",
     "courier_announcement_picrures_name" => "Zdjęcie",
