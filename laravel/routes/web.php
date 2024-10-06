@@ -28,6 +28,7 @@ use App\Http\Controllers\CustomUserController;
 
     Route::get('/', function () { return view('welcome'); } )->name('main');
     Route::get('/rodo/rules', function () { return view('rodo'); })->name('rodo');
+    Route::get('/donate', function () { return view('donations'); })->name('donate');
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/contact', function () { return view('contact'); } )->name('contact');
@@ -87,7 +88,7 @@ use App\Http\Controllers\CustomUserController;
         ->middleware(['auth', 'verified'])
         ->name('register_account');
 
-    Route::post('accounts/confirmed_account', [ AccountController::class, 'confirmAccountType'] )
+    Route::get('accounts/confirmed_account', [ AccountController::class, 'confirmAccountType'] )
         ->name('confirmed_account')
         ->middleware( ['auth', 'verified'] );
 

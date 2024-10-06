@@ -17,7 +17,11 @@ class CheckIsAccountTypeRegistered
     public function handle(Request $request, Closure $next): Response
     {
         // dd("CheckIsAccountTypeRegistered middleware", $request);
-        if ( auth()->check() && auth()->user()->account_type === null && auth()->user()->email_verified_at !== null &&
+        //dd( auth()->user() );
+        if ( auth()->check() && 
+             auth()->user()->account_type === null && 
+             auth()->user()->email_verified_at !== null &&
+             auth()->user()->name === null &&
              !in_array($request->path(), [
                 'logout',
                 'register_account',
@@ -26,7 +30,8 @@ class CheckIsAccountTypeRegistered
                 '/accounts/confirmed_personal_data',
                 'accounts/confirmed_account_last'
              ]) ) {
-           return redirect()->route( 'register_account' )->send();
+           //return redirect()->route( 'register_account' )->send();
+           return redirect()->route( 'confirmed_account' )->send();
         }
 
         return $next($request);

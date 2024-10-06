@@ -17,7 +17,12 @@ class CheckAccountType
     public function handle($request, Closure $next, ...$allowedAccountTypes)
     {
         $user = Auth::user();
-        if ($user && in_array( $user->account_type, $allowedAccountTypes ) ) {
+
+        if( $user->account_type === 'full' ) {
+            return $next($request);
+        }
+        
+        if ( $user && in_array( $user->account_type, $allowedAccountTypes ) ) {
             return $next($request);
         }
 

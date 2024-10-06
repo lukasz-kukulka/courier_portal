@@ -1,7 +1,7 @@
 {
 	"perm_experience_date_for_premium": {
 		"name": "perm_experience_date_for_premium",
-		"access_accounts": [ "courier_pro", "standard_pro" ],
-		"no_access_accounts": [ "standard", "courier" ]
+		"access_accounts": [ "courier_pro", "standard_pro", "full" ],
+		"no_access_accounts": [ "standard", "courier", "full"  ]
 	}
 }

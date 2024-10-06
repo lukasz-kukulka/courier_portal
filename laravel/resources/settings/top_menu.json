@@ -79,5 +79,12 @@
         "type" : "standard",
         "icon": "bi bi-patch-question h4",
         "permission": "all"
+    },
+    "donate" : {
+        "name" : "nav_menu_donate",
+        "route_name" : "donate",
+        "type" : "standard",
+        "icon": "bi bi-currency-pound h4",
+        "permission": "all"
     }
 }

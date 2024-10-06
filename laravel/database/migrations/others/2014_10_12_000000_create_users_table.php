@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->string('account_type')->nullable();
+            //$table->string('account_type')->default( 'full' );
             $table->string('group')->nullable();
             $table->string('is_company')->nullable();
             $table->rememberToken();

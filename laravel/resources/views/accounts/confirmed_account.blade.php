@@ -22,13 +22,15 @@
                             </div>
                         @endforeach
                         <div class="card-body">
-                            @php $accType = isset( $accountType ) ? $accountType : request()->all( )[ 'account_type' ] @endphp
+                            {{-- @php $accType = isset( $accountType ) ? $accountType : request()->all( )[ 'account_type' ] @endphp --}}
+                            @php $accType = 'full' @endphp
                             @php $route = $isEdit === true ? route('user_update_profile') : route( 'add_account_type_and_user_details' ); @endphp
                             @if ( $isEdit )
                                 <div class="edit_profile_title">{{ __('base.edit_user_profile_title') }}</div><br>
                             @else
-                                <div class="confirm_info_account">{{ __('base.account_confirmation') . ' ' . __( 'base.account_confirmation_' . $accType  ) }}</div>
-                                <div class="confirm_info_step">{{ __('base.account_confirmation_account_last_step') }}</div><br>
+                                <div class="confirm_info_account">{{ __('base.create_account_confirmed_email_thanks') }}</div>
+                                {{-- <div class="confirm_info_account">{{ __('base.account_confirmation') . ' ' . __( 'base.account_confirmation_' . $accType  ) }}</div>--}}
+                                <div class="confirm_info_step">{{ __('base.account_confirmation_account_last_step') }}</div><br> 
                             @endif
 
                             <form method="POST" action="{{ $route }}">
