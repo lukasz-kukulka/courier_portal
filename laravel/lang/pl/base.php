@@ -665,4 +665,8 @@ return [
     "announcement_archive" => "Ogłoszenie archiwalne",
     "announcement_archive_info" => "Ogłoszenie archiwalne, dane kontaktowe niedostępne",
     "announcement_not_ready" => "Ogłoszenie nie zostało jeszcze opublikowane, kontynułuj generowanie",
+    "donate_title" => "Dotacje",
+    "nav_menu_donate" => "Dotacje",
+    "donate_body" => "UTRZYMANIE DOMENY, SERWERA I ROZWÓJ SERWISU 🙂",
+    "create_account_confirmed_email_thanks" => "Dziękujemy za potwierdzenie emaila",
 ];

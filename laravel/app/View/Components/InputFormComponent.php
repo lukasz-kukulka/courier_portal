@@ -16,6 +16,8 @@ class InputFormComponent extends Component
         $this->value = $value;
         $this->maxLength = $maxLength;
         $this->defaultValue = $defaultValue;
+
+        $this->json = new JsonParserController;
     }
 
     public function render(): View|Closure|string {
@@ -37,4 +39,5 @@ class InputFormComponent extends Component
     private $value;
     private $maxLength;
     private $defaultValue;
+    private $json;
 }

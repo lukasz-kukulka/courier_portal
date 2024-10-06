@@ -76,4 +76,8 @@ class JsonParserController extends Controller
     public function courierAnnouncementAccessElementsAction() {
         return $this->getJsonData('accounts_access_for_elements');
     }
+
+    public function getRegularExpression() {
+        return $this->getJsonData('regular_expression');
+    }
 }
