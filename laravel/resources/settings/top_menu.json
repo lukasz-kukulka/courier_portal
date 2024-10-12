@@ -68,7 +68,7 @@
     },
     "contact" : {
         "name" : "nav_menu_contact",
-        "route_name" : "contact",
+        "route_name" : "contactData",
         "type" : "standard",
         "icon": "bi bi-envelope-fill h4",
         "permission": "all"

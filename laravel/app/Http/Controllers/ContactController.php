@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-    public function sendMail(Request $request)
+    public function sendMail( Request $request )
     {
         $validated = $request->validate([
             'subject' => 'required|string|max:255',
@@ -41,4 +41,28 @@ class ContactController extends Controller
             ->with('redirectedText', __('base.contact_redirected_text') )
             ->with('delayTime', 5000 );
     }
+
+    public function getContactFormData( Request $request ) {
+        $json = new JsonParserController;
+        $regularExpression = $json->getRegularExpression();  
+        return view( 'contact', [ 'json' => $regularExpression ] );
+    }
+
+    
+    
+    // private function getMessageInput( $name ) {
+    //     //dd( $regularExpression, $name );
+    //     echo( $name . $regularExpression );
+    //     if ( isset( $regularExpression[ $name ] ) && !empty( $regularExpression[ $name ] ) ) {
+    //         return  __( 'base.' . $regularExpression[ $name ][ 'message' ] );
+    //     }
+    //     return null;
+    // }
+
+    // private function getRegexInput( $name ) {
+    //     if ( isset( $regularExpression[ $name ] ) && !empty( $regularExpression[ $name ] ) ) {
+    //         return $regularExpression[ $name ][ 'regex' ];
+    //     }
+    //     return null;
+    // }
 }

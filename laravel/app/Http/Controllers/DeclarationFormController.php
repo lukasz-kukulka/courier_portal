@@ -3,12 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\JsonParserController;
 
 class DeclarationFormController extends Controller
 {
     function __construct()
     {
+        $json = new JsonParserController;
+        $this->regularExpression = $json->getRegularExpression();
         $this->setDefaultGeneralSettings();
+    }
+
+    private function getMessageInput( $name ) {
+        if ( isset( $this->regularExpression[ $name ] ) && !empty( $this->regularExpression[ $name ] ) ) {
+            return  __( 'base.' . $this->regularExpression[ $name ][ 'message' ] );
+        }
+        return null;
+    }
+
+    private function getRegexInput( $name ) {
+        if ( isset( $this->regularExpression[ $name ] ) && !empty( $this->regularExpression[ $name ] ) ) {
+            return $this->regularExpression[ $name ][ 'regex' ];
+        }
+        return null;
     }
 
     public function generateCN22DeclarationForm() {
@@ -62,7 +79,7 @@ class DeclarationFormController extends Controller
         $form .= '<div id="single_item_in_parcel_div_'.$this->current_showing_items_num.'_id" class="single_item_in_parcel_div_'.$this->current_showing_items_num.'_class">';
         $form .= '</br><div class="single_item_parcel_title"><h2 class="title_parcel_item">Przedmiot '.$this->current_showing_items_num.'</h2>'.$parcel_item_delete_text.'</div>';
         $form .= $this->generateFormLabel( 'item_'.$this->current_showing_items_num.'_description', 'Opis przedmiotu' );
-        $form .= $this->getSingleTextInput( 'description_'.$this->current_showing_items_num, '[a-zA-Z0-9!@#$%^&*()_ +-=]*', 'Opis przedmiotu', $required, '' );
+        $form .= $this->getSingleTextInput( 'description_'.$this->current_showing_items_num, 'Opis przedmiotu', $required, '' );
 
         $form .= $this->generateFormLabel( 'quantity_input_'.$this->current_showing_items_num, 'Ilość', $required != '' ? true : false );
         $form .= $this->generateSingleNumberInput( 'input_quantity_'.$this->current_showing_items_num, 'sztuk', $required );
@@ -143,24 +160,24 @@ class DeclarationFormController extends Controller
         $conditions = $this->general_settings->conditions;
 
         $form .= $this->generateFormLabel( $prefix_name.'name_surname', $person->name );
-        $form .= $this->getSingleTextInput( $prefix_name.'name_surname', '[A-Za-z\s]+', $conditions->name_conditions, '', '', 'autofocus' );
+        $form .= $this->getSingleTextInput( $prefix_name.'name_surname', $conditions->name_conditions, '', '', 'autofocus' );
 
         if ( !$is_cn22 ){
             $form .= $this->generateFormLabel( $prefix_name.'business_name', $person->business_name );
-            $form .= $this->getSingleTextInput( $prefix_name.'business_name', '[A-Za-z\s]+', $conditions->business_conditions, '', '', '' );
+            $form .= $this->getSingleTextInput( $prefix_name.'business_name', $conditions->business_conditions, '', '', '' );
         }
 
         $form .= $this->generateFormLabel( $prefix_name.'street', $person->street );
-        $form .= $this->getSingleTextInput( $prefix_name.'street', '[a-zA-Z0-9\s]+', $conditions->street_conditions, '', '' );
+        $form .= $this->getSingleTextInput( $prefix_name.'street', $conditions->street_conditions, '', '' );
 
         $form .= $this->generateFormLabel( $prefix_name.'city', $person->city );
-        $form .= $this->getSingleTextInput( $prefix_name.'city', '[a-zA-Z\s]+', $conditions->city_condition, '', '' );
+        $form .= $this->getSingleTextInput( $prefix_name.'city', $conditions->city_condition, '', '' );
 
         $form .= $this->generateFormLabel( $prefix_name.'country', $person->country);
-        $form .= $this->getSingleTextInput( $prefix_name.'country', 'a-zA-Z\s]+', $conditions->country_conditions, '', '' );
+        $form .= $this->getSingleTextInput( $prefix_name.'country', $conditions->country_conditions, '', '' );
 
         $form .= $this->generateFormLabel( $prefix_name.'post_code', $person->post_code );
-        $form .= $this->getSingleTextInput( $prefix_name.'post_code', '[a-zA-Z0-9-]+', $conditions->post_code_conditions, '', '' );
+        $form .= $this->getSingleTextInput( $prefix_name.'post_code', $conditions->post_code_conditions, '', '' );
         return $form;
     }
 
@@ -193,12 +210,11 @@ class DeclarationFormController extends Controller
         return $form;
     }
 
-    private function getSingleTextInput( $name, $pattern, $title, $required = '', $placeholder = '', $autofocus = '' ) {
-        return '</br><input type="text" class="form-control" id="input_'.$name.'_id" name="'.$name.'"
+    private function getSingleTextInput( $name, $title, $required = '', $placeholder = '', $autofocus = '' ) {
+        return '</br><input type="text" class="form_input form-control" data-message="' . $this->getMessageInput( $name ) . '" pattern="' . $this->getRegexInput( $name ) . '" id="input_'.$name.'_id" name="'.$name.'"
                 placeholder="'.$placeholder.'"
                 '.$required.'
                 '.$autofocus.'
-                pattern="'.$pattern.'"
                 title="'.$title.'"></br>';
     }
 
@@ -208,8 +224,9 @@ class DeclarationFormController extends Controller
 
     private function generateSingleNumberInput( $name, $postfix = '', $required = '') {
         $form = null;
+        // dd( $this->getRegexInput( $name ) );
         $form .= '<div class="'.$name.'_div"><label for="'.$name.'_label_id">';
-        $form .= '<input class="form-control" type="number" id="'.$name.'_id" name="'.$name.'" "'.$required.'">';
+        $form .= '<input class="form_input form-control" title="" type="text" data-message="' . $this->getMessageInput( $name ) . '" pattern="' . $this->getRegexInput( $name ) . '" id="'.$name.'_id" name="'.$name.'" "'.$required.'">';
         $form .= '<span class="number_postfix">'.$postfix.'</span>';
         $form .= '</label></div>';
         return $form;
@@ -248,4 +265,7 @@ class DeclarationFormController extends Controller
     private $gen_msg;
     private $maximum_items_in_declaration;
     private $current_showing_items_num;
+    private $regex = '';
+    private $message = '';
+    private $regularExpression;
 }

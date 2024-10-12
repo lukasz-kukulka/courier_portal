@@ -21,6 +21,7 @@
                                 {{ $error }}
                             </div>
                         @endforeach
+                        
                         <div class="card-body">
                             {{-- @php $accType = isset( $accountType ) ? $accountType : request()->all( )[ 'account_type' ] @endphp --}}
                             @php $accType = 'full' @endphp

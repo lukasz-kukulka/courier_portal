@@ -10,6 +10,7 @@ use App\Http\Controllers\CourierAnnouncementController;
 use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CustomUserController;
+use App\Http\Controllers\JsonParserController;
 
 //debug_print_backtrace(); exit();
 
@@ -32,6 +33,7 @@ use App\Http\Controllers\CustomUserController;
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/contact', function () { return view('contact'); } )->name('contact');
+    Route::get('/contact/data', [ App\Http\Controllers\ContactController::class, 'getContactFormData' ] )->name('contactData');
     Route::get('/help', function () { return view('help'); } )->name('help');
 
     Route::get('/no_access', function () { return view('no_access'); })->name('no_access')->middleware( ['auth', 'verified'] );
@@ -165,4 +167,9 @@ use App\Http\Controllers\CustomUserController;
     Route::get('courier_announcement_user_list', [CourierAnnouncementController::class, 'indexForSingleUser'])
         ->middleware(['auth', 'verified', 'account_check:courier,courier_pro,standard,standard_pro'])
         ->name('courier_announcement_user_list');
+} //####################################################################
+
+
+{ //############################### END POINTS #########################
+    // Route::get('/settings/regex', [ JsonParserController::class, 'getRegularExpression']);
 } //####################################################################
