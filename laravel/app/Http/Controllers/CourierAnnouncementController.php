@@ -174,9 +174,11 @@ class CourierAnnouncementController extends Controller
         $headerData = $this->generateCourierAnnouncementCreateFormHeader();
         $directionsData = $this->json->directionsAction();
         $cargoData = $this->json->cargoAction();
+        $formData = $this->json->getRegularExpression();
         return view( 'courier_announcement_create_form' )
             ->with( 'extensions', $extensions )
             ->with( 'contactData', $contactData )
+            ->with( 'formData', $formData )
             ->with( 'headerData', $headerData )
             ->with( 'directionsData', $directionsData )
             ->with( 'cargoData', $cargoData );
@@ -1044,9 +1046,15 @@ class CourierAnnouncementController extends Controller
 
     private function generateCourierAnnouncementCreateFormHeader() {
         $loginUser = Auth::user();
-        $cargoElementNumber = __CHECK_ACCESS_FOR_ELEMENTS( 'number_of_type_cargo', $loginUser->account_type, 'courier_announcement' );
-        $dateElementNumber = __CHECK_ACCESS_FOR_ELEMENTS( 'number_of_type_date', $loginUser->account_type, 'courier_announcement' );
-        $picturesNumber = __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', $loginUser->account_type, 'courier_announcement' );
+        $userAccountType = $loginUser->account_type;
+        // dd( $userAccountType )
+        // if( $userAccountType === 'full' ) {
+        //     $userAccountType = 'premium';
+        // }
+
+        $cargoElementNumber = __CHECK_ACCESS_FOR_ELEMENTS( 'number_of_type_cargo', $userAccountType, 'courier_announcement' );
+        $dateElementNumber = __CHECK_ACCESS_FOR_ELEMENTS( 'number_of_type_date', $userAccountType, 'courier_announcement' );
+        $picturesNumber = __CHECK_ACCESS_FOR_ELEMENTS( 'picture_file_input_limit', $userAccountType, 'courier_announcement' );
 
         $allPostCodes = $this->generateDirectionsPostcodesArray();
         $directions = $this->json->directionsAction();

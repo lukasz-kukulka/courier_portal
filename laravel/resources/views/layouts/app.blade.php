@@ -17,6 +17,7 @@
     <!-- Scripts -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     {{-- @vite(['resources/js/app.js', 'resources/css/app.css']) --}}
+    <script src="{{ asset('js/regular_expression_scripts.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/app_styles.css') }}">
     @yield('add_header')
     @php

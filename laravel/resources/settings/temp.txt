@@ -1,0 +1,10 @@
+
+
+"accounts_type_change" : {
+        "name" : "nav_menu_account_type_change",
+        "route_name" : "edit_type_account",
+        "link" : "edit_type_account",
+        "icon": "bi bi-cast h5",
+        "permission": "login"
+    },
+

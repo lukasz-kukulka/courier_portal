@@ -5,10 +5,11 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use App\Http\Controllers\JsonParserController;
 
 class InputFormComponent extends Component
 {
-    public function __construct( $name, $type, $options = '', $isRequired = 'required', $value = '', $maxLength = 10000, $defaultValue = '' ) {
+    public function __construct( $name, $type, $options = '', $isRequired = 'required', $value = '', $maxLength = 100, $defaultValue = '' ) {
         $this->input_name = $name;
         $this->input_type = $type;
         $this->select_options_array =  $options;
@@ -16,8 +17,18 @@ class InputFormComponent extends Component
         $this->value = $value;
         $this->maxLength = $maxLength;
         $this->defaultValue = $defaultValue;
-
-        $this->json = new JsonParserController;
+        $json = new JsonParserController;
+        $regularExpression = $json->getRegularExpression();
+         
+        if ( isset( $regularExpression[ $this->input_name ] ) && !empty( $regularExpression[ $this->input_name ] ) ) {
+            if( $regularExpression[ $this->input_name ][ 'regex' ] ) {
+                $this->regex = $regularExpression[ $this->input_name ][ 'regex' ];
+            }
+            // if( $this->input_name == 'surname' ) {
+            //     dd( $regularExpression, $this->regex );
+            //  }
+            $this->message = __( 'base.' . $regularExpression[ $this->input_name ][ 'message' ] );
+        }
     }
 
     public function render(): View|Closure|string {
@@ -29,6 +40,8 @@ class InputFormComponent extends Component
             'value' => $this->value,
             'maxLength' => $this->maxLength,
             'defaultValue' => $this->defaultValue,
+            'pattern' => $this->regex,
+            'message' => $this->message,
         ] );
     }
 
@@ -39,5 +52,6 @@ class InputFormComponent extends Component
     private $value;
     private $maxLength;
     private $defaultValue;
-    private $json;
+    private $regex = '';
+    private $message = '';
 }

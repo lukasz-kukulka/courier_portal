@@ -1,3 +1,114 @@
 {
-    
+    "name" : {
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "message" : "name_message_regex"
+    },
+    "surname" : {
+        "regex" : "",
+        "message" : "surname_message_regex"
+    },
+    "email" : {
+        "regex" : "",
+        "message" : "email_message_regex"
+    },
+    "phone" : {
+        "regex" : "",
+        "message" : "phone_message_regex"
+    },
+    "phone_number" : {
+        "regex" : "",
+        "message" : "phone_number_message_regex"
+    },
+    "telephone_number" : {
+        "regex" : "",
+        "message" : "phone_number_message_regex"
+    },
+    "additional_telephone_number" : {
+        "regex" : "",
+        "message" : "phone_number_message_regex"
+    },
+    "address" : {
+        "regex" : "",
+        "message" : "address_message_regex"
+    },
+    "company_name" : {
+        "regex" : "",
+        "message" : "company_name_message_regex"
+    },
+    "company_address" : {
+        "regex" : "",
+        "message" : "company_address_message_regex"
+    },
+    "company_phone_number" : {
+        "regex" : "",
+        "message" : "company_phone_number_message_regex"
+    },
+    "company_post_code" : {
+        "regex" : "",
+        "message" : "company_post_code_message_regex"
+    },
+    "company_city" : {
+        "regex" : "",
+        "message" : "company_city_message_regex"
+    },
+    "company_country" : {
+        "regex" : "",
+        "message" : "company_country_message_regex"
+    },
+    "quantity_input_" : {
+        "regex" : "",
+        "message" : "quantity_input_message_regex"
+    },
+    "weight_input_" : {
+        "regex" : "",
+        "message" : "weight_input_message_regex"
+    },
+    "value_input_" : {
+        "regex" : "",
+        "message" : "value_input_message_regex"
+    },
+    "description_" : {
+        "regex" : "",
+        "message" : "description_message_regex"
+    },
+    "item_" : {
+        "regex" : "",
+        "message" : "item_message_regex"
+    },
+    "name_surname" : {
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "message" : "name_surname_message_regex"
+    },
+    "business_name" : {
+        "regex" : "",
+        "message" : "business_name_message_regex"
+    },
+    "street" : {
+        "regex" : "",
+        "message" : "street_message_regex"
+    },
+    "city" : {
+        "regex" : "",
+        "message" : "city_message_regex"
+    },
+    "country" : {
+        "regex" : "",
+        "message" : "country_message_regex"
+    },
+    "post_code" : {
+        "regex" : "",
+        "message" : "post_code_message_regex"
+    },
+    "subject" : {
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "message" : "subject_message_regex"
+    },
+    "message" : {
+        "regex" : "",
+        "message" : "message_message_regex"
+    },
+    "courier_announcement_name" : {
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "message" : "courier_announcement_name_message_regex"
+    }
 }
