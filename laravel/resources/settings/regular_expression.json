@@ -8,23 +8,23 @@
         "message" : "surname_message_regex"
     },
     "email" : {
-        "regex" : "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(com|org|net|edu|gov|mil|biz|info|name|pl|eu|co|uk|de|fr|cz|sk|it)$",
+        "regex" : "^[a-zA-Z0-9._%+\\-]+@[a-zA-Z0-9.\\-]+\\.(com|org|net|edu|gov|mil|biz|info|pl|eu|co|uk|de|fr|cz|sk|it)$",
         "message" : "email_message_regex"
     },
     "phone" : {
-        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
+        "regex" : "^\\+?\\d{1,3}[-\\. ]?(\\d{2,3})[-\\. ]?\\d{3}[-\\. ]?\\d{2,3}[-\\. ]?\\d{2,4}$",
         "message" : "phone_message_regex"
     },
     "phone_number" : {
-        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
+        "regex" : "^\\+?\\d{1,3}[-\\. ]?(\\d{2,3})[-\\. ]?\\d{3}[-\\. ]?\\d{2,3}[-\\. ]?\\d{2,4}$",
         "message" : "phone_number_message_regex"
     },
     "telephone_number" : {
-        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
+        "regex" : "^\\+?\\d{1,3}[-\\. ]?(\\d{2,3})[-\\. ]?\\d{3}[-\\. ]?\\d{2,3}[-\\. ]?\\d{2,4}$",
         "message" : "phone_number_message_regex"
     },
     "additional_telephone_number" : {
-        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
+        "regex" : "^\\+?\\d{1,3}[-\\. ]?(\\d{2,3})[-\\. ]?\\d{3}[-\\. ]?\\d{2,3}[-\\. ]?\\d{2,4}$",
         "message" : "phone_number_message_regex"
     },
     "address" : {
@@ -40,7 +40,7 @@
         "message" : "company_address_message_regex"
     },
     "company_phone_number" : {
-        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
+        "regex" : "^\\+?\\d{1,3}[-\\. ]?(\\d{2,3})[-\\. ]?\\d{3}[-\\. ]?\\d{2,3}[-\\. ]?\\d{2,4}$",
         "message" : "company_phone_number_message_regex"
     },
     "company_post_code" : {
