@@ -1,114 +1,110 @@
 {
     "name" : {
-        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ][a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s\\-]{1,25}$",
         "message" : "name_message_regex"
     },
     "surname" : {
-        "regex" : "",
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ][a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s\\-]{1,49}$",
         "message" : "surname_message_regex"
     },
     "email" : {
-        "regex" : "",
+        "regex" : "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.(com|org|net|edu|gov|mil|biz|info|name|pl|eu|co|uk|de|fr|cz|sk|it)$",
         "message" : "email_message_regex"
     },
     "phone" : {
-        "regex" : "",
+        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
         "message" : "phone_message_regex"
     },
     "phone_number" : {
-        "regex" : "",
+        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
         "message" : "phone_number_message_regex"
     },
     "telephone_number" : {
-        "regex" : "",
+        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
         "message" : "phone_number_message_regex"
     },
     "additional_telephone_number" : {
-        "regex" : "",
+        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
         "message" : "phone_number_message_regex"
     },
     "address" : {
-        "regex" : "",
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ0-9.,\\-/\\s]+,\\s*\\d{2,6}\\s?[a-zA-Z]{0,2},\\s?[a-zA-Z\\s]+,\\s?[A-Z]{2,3}$",
         "message" : "address_message_regex"
     },
     "company_name" : {
-        "regex" : "",
+        "regex" : "^[a-zA-Z0-9ąĄćĆęĘłŁńŃóÓśŚżŻźŹ&.,\\-()'\\\"\\s]{2,100}$",
         "message" : "company_name_message_regex"
     },
     "company_address" : {
-        "regex" : "",
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ0-9.,\\-/\\s]+,\\s*\\d{2,6}\\s?[a-zA-Z]{0,2},\\s?[a-zA-Z\\s]+,\\s?[A-Z]{2,3}$",
         "message" : "company_address_message_regex"
     },
     "company_phone_number" : {
-        "regex" : "",
+        "regex" : "^\\+?\\d{1,3}?[-. ]?(\\d{2,3})[-. ]?\\d{3}[-. ]?\\d{2,3}[-. ]?\\d{2,4}$",
         "message" : "company_phone_number_message_regex"
     },
     "company_post_code" : {
-        "regex" : "",
+        "regex" : "^\\d{2}-\\d{3}$|^\\d{5}$|^\\d{4}$|^\\d{4}\\s?[A-Za-z]{2}$|^[A-Za-z]{1,2}\\d{1,2}\\s?\\d[A-Za-z]{2}$",
         "message" : "company_post_code_message_regex"
     },
     "company_city" : {
-        "regex" : "",
+        "regex" : "^[a-zA-ZÀ-ÖØ-öø-ÿąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s\\-]{2,100}$",
         "message" : "company_city_message_regex"
     },
     "company_country" : {
-        "regex" : "",
+        "regex" : "/^[a-zA-ZÀ-ž\\s\\-]{2,60}$/",
         "message" : "company_country_message_regex"
     },
     "quantity_input_" : {
-        "regex" : "",
+        "regex" : "/^(?:[1-9][0-9]{0,2}|10)$/",
         "message" : "quantity_input_message_regex"
     },
     "weight_input_" : {
-        "regex" : "",
+        "regex" : "/^(\\d+(?:[.,]\\d+)?\\s*(kg))$/",
         "message" : "weight_input_message_regex"
     },
     "value_input_" : {
-        "regex" : "",
+        "regex" : "/^\\s*(\\d+(?:\\.\\d{1,2})?)\\s*(£)?\\s*$",
         "message" : "value_input_message_regex"
     },
     "description_" : {
-        "regex" : "",
+        "regex" : "/^.{1,500}$/",
         "message" : "description_message_regex"
     },
-    "item_" : {
-        "regex" : "",
-        "message" : "item_message_regex"
-    },
     "name_surname" : {
-        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ][a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s\\-]{1,75}$",
         "message" : "name_surname_message_regex"
     },
     "business_name" : {
-        "regex" : "",
+        "regex" : "^[a-zA-Z0-9ąĄćĆęĘłŁńŃóÓśŚżŻźŹ&.,\\-()'\\\"\\s]{2,100}$",
         "message" : "business_name_message_regex"
     },
     "street" : {
-        "regex" : "",
+        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ0-9.,\\-/\\s]+,\\s*\\d{2,6}\\s?[a-zA-Z]{0,2},\\s?[a-zA-Z\\s]+,\\s?[A-Z]{2,3}$",
         "message" : "street_message_regex"
     },
     "city" : {
-        "regex" : "",
+        "regex" : "^[a-zA-ZÀ-ÖØ-öø-ÿąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s\\-]{2,100}$",
         "message" : "city_message_regex"
     },
     "country" : {
-        "regex" : "",
+        "regex" : "/^[a-zA-ZÀ-ž\\s\\-]{2,60}$/",
         "message" : "country_message_regex"
     },
     "post_code" : {
-        "regex" : "",
+        "regex" : "^\\d{2}-\\d{3}$|^\\d{5}$|^\\d{4}$|^\\d{4}\\s?[A-Za-z]{2}$|^[A-Za-z]{1,2}\\d{1,2}\\s?\\d[A-Za-z]{2}$",
         "message" : "post_code_message_regex"
     },
     "subject" : {
-        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "regex" : "/^.{2,50}$/",
         "message" : "subject_message_regex"
     },
     "message" : {
-        "regex" : "",
+        "regex" : "/^.{1,500}$/",
         "message" : "message_message_regex"
     },
     "courier_announcement_name" : {
-        "regex" : "^[a-zA-ZąĄćĆęĘłŁńŃóÓśŚżŻźŹ\\s]+$",
+        "regex" : "/^.{2,100}$/",
         "message" : "courier_announcement_name_message_regex"
     }
 }

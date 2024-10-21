@@ -168,7 +168,15 @@ class CourierAnnouncementController extends Controller
     }
 
     public function create( Request $request ) {
-        $company = UserModel::with('company')->find( auth()->user()->id );
+        $company = null;
+
+        if (auth()->user()->is_company !== null && auth()->user()->is_company !== 0 && auth()->user()->is_company !== '0') {
+            $company = UserModel::with('company')->find( auth()->user()->id );
+        } else {
+            $company = UserModel::find( auth()->user()->id );
+        }
+        
+        //dd( $company );
         $extensions = $this->generateAcceptedFileFormatForCreateBlade();
         $contactData = $this->generateDataForContact( $company );
         $headerData = $this->generateCourierAnnouncementCreateFormHeader();
@@ -658,14 +666,13 @@ class CourierAnnouncementController extends Controller
 
     private function generateDataForContact( $data ) {
         $contactArray = [];
-
         $contactArray[ 'name' ] = $data->name;
         $contactArray[ 'surname' ] = $data->surname;
         $contactArray[ 'email' ] = $data->email;
         $contactArray[ 'telephone_number' ] = $data->phone_number;
         $contactArray[ 'additional_telephone_number' ] = '';
 
-        if ( $data->relationLoaded('company') && $data->company !== null ) {
+        if ( $data !== null && $data->relationLoaded('company') && $data->company !== null ) {
             $contactArray[ 'company' ] = $data->company->company_name;
             $contactArray[ 'street' ] = $data->company->company_address;
             $contactArray[ 'city' ] = $data->company->company_city;

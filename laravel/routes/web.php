@@ -11,6 +11,7 @@ use App\Http\Controllers\UploadFileController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CustomUserController;
 use App\Http\Controllers\JsonParserController;
+use App\Http\Controllers\CookiesController;
 
 //debug_print_backtrace(); exit();
 
@@ -38,6 +39,7 @@ use App\Http\Controllers\JsonParserController;
 
     Route::get('/no_access', function () { return view('no_access'); })->name('no_access')->middleware( ['auth', 'verified'] );
     Route::post('/sendMail', [App\Http\Controllers\ContactController::class, 'sendMail'] )->name('sendMail');
+    Route::get('/cookies/moreInfo', function () { return view('cookies_more_info'); } )->name('cookiesMore');
 
 } //####################################################################
 
@@ -172,4 +174,5 @@ use App\Http\Controllers\JsonParserController;
 
 { //############################### END POINTS #########################
     // Route::get('/settings/regex', [ JsonParserController::class, 'getRegularExpression']);
+    Route::get( '/cookies/translate', [ CookiesController::class, 'getTranslations'] );
 } //####################################################################
