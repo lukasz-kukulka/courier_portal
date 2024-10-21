@@ -14,22 +14,6 @@ function regularExpressionsControl( element ) {
         
 }
 
-// async function getRegexFromJson( element ) {
-//     try {
-//         const response = await fetch( '/settings/regex' );
-//         const data = await response.json();
-
-//         if ( element.id in data ) {
-//             return new RegExp( data[ element.id ] );
-//         } else {
-//             return null;
-//         }
-//     } catch ( error ) {
-//         console.error( 'Błąd podczas ładowania pliku JSON: regularExpressionsControl', error );
-//         return null;
-//     }
-// }
-
 function checkFieldValueIfMatchWithRegex( value, regex ) {
     for ( let i = 0; i < value.length; i++ ) {
         if( !regex.test( value[ i ] ) ) {
