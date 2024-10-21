@@ -81,11 +81,21 @@ class CustomUserController extends Controller
 
     public function edit() {
         $accountType = auth()->user()->account_type;
-        $company = UserModel::with('company')->find( auth()->user()->id )->company;
-        return view('accounts.confirmed_account')
-                ->with( 'accountType', $accountType )
-                ->with( 'isEdit', true )
-                ->with( 'company', $company );
+        $company = null;
+    
+        if (auth()->user()->is_company !== null && auth()->user()->is_company !== 0 && auth()->user()->is_company !== '0') {
+            $company = UserModel::with('company')->find(auth()->user()->id)->company;
+        }
+    
+        $view = view('accounts.confirmed_account')
+            ->with('accountType', $accountType)
+            ->with('isEdit', true);
+    
+        if ($company) {
+            $view->with('company', $company);
+        }
+    
+        return $view;
     }
 
     public function editUserSummary() {
@@ -168,9 +178,28 @@ class CustomUserController extends Controller
 
     public function confirmedDestroy() {
         $userId = auth()->user()->id;
-        $user = UserModel::with( 'userAnnouncement', 'courierAnnouncement', 'company' )->find( $userId );
-        Auth::logout();
-        $user->delete();
+        $user = UserModel::find($userId);
+    
+        // Sprawdź, czy użytkownik istnieje
+        if ( $user ) {
+            // Sprawdź istnienie każdej relacji i załaduj, jeśli istnieją
+            if ($user->userAnnouncement()->exists()) {
+                $user->load('userAnnouncement');
+            }
+            
+            if ($user->courierAnnouncement()->exists()) {
+                $user->load('courierAnnouncement');
+            }
+        
+            if ($user->company()->exists()) {
+                $user->load('company');
+            }
+        
+            Auth::logout();
+            $user->delete();
+        }
+        
+    
         return view('redirection_info')
             ->with('id', 'delete_user_account_info')
             ->with('title', __( 'base.user_account_delete_info_title' ) )
